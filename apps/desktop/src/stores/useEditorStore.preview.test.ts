@@ -251,11 +251,11 @@ describe('pane view mode lifecycle', () => {
     open('a', 'permanent')
     open('b', 'permanent')
     const modes = useEditorViewTypeStore.getState()
-    modes.setEditorViewType('a', EditorViewType.WYSIWYG, 'left')
+    modes.setEditorViewType('a', EditorViewType.SOURCECODE, 'left')
     modes.setEditorViewType('b', EditorViewType.PREVIEW, 'left')
     const right = store().splitGroup('left', 'horizontal')!
     modes.setEditorViewType('b', EditorViewType.SOURCECODE, right)
-    expect(modes.getEditorViewType('a', 'left')).toBe(EditorViewType.WYSIWYG)
+    expect(modes.getEditorViewType('a', 'left')).toBe(EditorViewType.SOURCECODE)
     expect(modes.getEditorViewType('b', 'left')).toBe(EditorViewType.PREVIEW)
     store().closeFileInGroup('left', 'a')
     expect(useEditorViewTypeStore.getState().editorGroupViewTypeMap.get('left')?.has('a')).toBe(false)
@@ -264,5 +264,39 @@ describe('pane view mode lifecycle', () => {
     expect(modes.getEditorViewType('b', 'left')).toBe(EditorViewType.PREVIEW)
     setLayout({ type: 'leaf', id: 'restored', opened: ['c'], activeId: 'c' })
     expect(useEditorViewTypeStore.getState().editorGroupViewTypeMap.size).toBe(0)
+  })
+})
+
+describe('same-tab opening', () => {
+  // The first note after a restart must not open a second tab: there is no preview slot yet,
+  // so the active tab has to change file instead.
+  it('replaces the active tab even when no preview slot exists', () => {
+    open('a', 'permanent')
+    expect(group().opened).toEqual(['a'])
+
+    store().openFileInGroup('left', 'b', { mode: 'replace' })
+
+    expect(group().opened).toEqual(['b'])
+    expect(group().activeId).toBe('b')
+  })
+
+  it('keeps a tab with unsaved changes instead of replacing it', () => {
+    open('a', 'permanent')
+    dirty('a')
+
+    store().openFileInGroup('left', 'b', { mode: 'replace' })
+
+    expect(group().opened).toEqual(['a', 'b'])
+    expect(group().activeId).toBe('b')
+  })
+
+  it('does not add a second tab for a note that is already open', () => {
+    open('a', 'permanent')
+    open('b', 'permanent')
+
+    store().openFileInGroup('left', 'a', { mode: 'replace' })
+
+    expect(group().opened).toEqual(['a', 'b'])
+    expect(group().activeId).toBe('a')
   })
 })

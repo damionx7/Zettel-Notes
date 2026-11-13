@@ -1,6 +1,7 @@
 import { getFileObject } from '@/helper/files'
 import { toFileMetadata } from '@/helper/fileMetadata'
 import { beginEditorOpenMeasurement } from '@/components/EditorArea/editorPerformanceDiagnostics'
+import { countEditorPanes } from '@/components/EditorArea/editorPaneLimit'
 import { editorSnapshotRegistry } from '@/components/EditorArea/editorSnapshotRegistry'
 import { createFile, FileResultCode, getFolderPathFromPath, isMdFile, releaseSecurityScope, type IFile } from '@/helper/filesys'
 import { getPathIdentityKey } from '@/helper/pathIdentity'
@@ -85,7 +86,12 @@ export type EditorLayoutNode = EditorLayoutBranch | EditorLayoutLeaf
 
 export interface OpenFileInGroupOptions {
   activate?: boolean
-  mode?: 'preview' | 'permanent'
+  /**
+   * `preview` reuses the preview slot, `permanent` always adds a tab, and `replace` swaps the
+   * file shown in the active tab — the "open notes in the same tab" behaviour, which must work
+   * on the very first note of a session too.
+   */
+  mode?: 'preview' | 'permanent' | 'replace'
 }
 
 export interface EditorLayoutBranch {
@@ -124,6 +130,12 @@ const canPreviewFile = (id: string) => {
     !useEditorStateStore.getState().idStateMap.get(id)?.hasUnsavedChanges
 }
 
+/** Replacing a tab may drop unsaved work, so only a clean, real file may be swapped out. */
+const canReplaceFile = (id: string) => {
+  const file = getFileObject(id)
+  return file?.kind === 'file' && Boolean(file.path) &&
+    !useEditorStateStore.getState().idStateMap.get(id)?.hasUnsavedChanges
+}
 const normalizeSizes = (length: number) => {
   if (length <= 0) return []
   return Array.from({ length }, () => 100 / length)
@@ -790,8 +802,20 @@ const useEditorStore = create<EditorStore>()(subscribeWithSelector((set, get) =>
       if (!group) return false
       const alreadyOpen = group.opened.includes(id)
       const preview = options.mode === 'preview' && canPreviewFile(id)
+      const replaceTarget =
+        options.mode === 'replace' && canReplaceFile(id) && group.activeId && group.activeId !== id &&
+        canReplaceFile(group.activeId)
+          ? group.activeId
+          : undefined
       if (!alreadyOpen) {
-        if (preview && group.previewId && group.opened.includes(group.previewId) && canPreviewFile(group.previewId)) {
+        if (replaceTarget) {
+          // Same-tab mode: the active tab changes file instead of a new tab appearing, which
+          // also covers the first note after a restart, when no preview slot exists yet.
+          const targetIndex = group.opened.indexOf(replaceTarget)
+          if (targetIndex >= 0) group.opened.splice(targetIndex, 1, id)
+          else addFileToGroup(group, id)
+          if (group.previewId === replaceTarget) group.previewId = id
+        } else if (preview && group.previewId && group.opened.includes(group.previewId) && canPreviewFile(group.previewId)) {
           group.opened.splice(group.opened.indexOf(group.previewId), 1, id)
         } else {
           addFileToGroup(group, id)
@@ -896,6 +920,9 @@ const useEditorStore = create<EditorStore>()(subscribeWithSelector((set, get) =>
 
     splitGroup: (groupId, direction, insertion = 'after') => {
       const state = get()
+      // The work area splits once. The owner asked for two panes and no more, whatever
+      // the path that tries to create a third one.
+      if (countEditorPanes(state.editorLayout) >= 2) return undefined
       const sourceGroup = findGroup(state.editorLayout, groupId)
       if (!sourceGroup) return
       const layout = cloneEditorLayout(state.editorLayout)

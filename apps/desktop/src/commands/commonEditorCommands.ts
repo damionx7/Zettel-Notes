@@ -21,6 +21,20 @@ export function registerCommonEditorCommands() {
         }
       },
     })),
+    commandRegistry.registerCommand({
+      id: 'editor:insert_note_link',
+      handler: async () => {
+        const target = captureEditorCommandTarget()
+        try {
+          const NiceModal = (await import('@ebay/nice-modal-react')).default
+          const { MODAL_NOTE_LINK_ID } = await import('@/constants/modals')
+          const data = await NiceModal.show<boolean>(MODAL_NOTE_LINK_ID, { fileId: target?.fileId })
+          return data === true
+        } finally {
+          releaseEditorCommandTarget(target)
+        }
+      },
+    }),
     ...ZOOM_COMMANDS.map((id) => commandRegistry.registerCommand({
       id,
       handler: () => executeZoomCommand(id),

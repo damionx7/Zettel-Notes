@@ -69,14 +69,6 @@ const supplementalFields: SupplementalField[] = [
   },
   {
     categoryKey: 'image',
-    groupKey: 'paste_event',
-    groupI18nKey: 'settings.image.paste_event.label',
-    settingKey: 'when_paste_image',
-    titleI18nKey: 'settings.image.paste_event.when_paste_image.label',
-    descI18nKey: 'settings.image.paste_event.when_paste_image.desc',
-  },
-  {
-    categoryKey: 'image',
     groupKey: 'upload_img',
     groupI18nKey: 'settings.image.upload_img.label',
     settingKey: 'when_upload_image',
