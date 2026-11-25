@@ -4,6 +4,7 @@ import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promi
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import test from 'node:test'
+import { fileURLToPath } from 'node:url'
 import { promisify } from 'node:util'
 import glob from 'fast-glob'
 import yaml from 'yaml'
@@ -91,7 +92,7 @@ test('native E2E is a required macOS gate and always retains diagnostics', () =>
     assert.equal(step['continue-on-error'], undefined)
   }
   assert.equal(steps[execution]['timeout-minutes'], 20)
-  const artifact = steps.find((step) => step.uses === 'actions/upload-artifact@v4')
+  const artifact = steps.find((step) => step.uses?.startsWith('actions/upload-artifact@'))
   assert.equal(artifact.if, 'always()')
   assert.equal(artifact.with.path, 'apps/desktop/e2e/reports/')
   assert.equal(artifact.with['retention-days'], 7)
@@ -314,7 +315,7 @@ test('all release packages retain matching signatures through collection and pub
     }
 
     const upload = job.steps.find(
-      (step) => step.uses === 'actions/upload-artifact@v4' && step.if === scenario.uploadIf,
+      (step) => step.uses?.startsWith('actions/upload-artifact@') && step.if === scenario.uploadIf,
     )
     assert.ok(upload, `Missing artifact upload: ${label}`)
     const patterns = upload.with.path
@@ -356,6 +357,47 @@ test('all release packages retain matching signatures through collection and pub
         `fixture:${build}-${arch}:${source}`,
         `Published bytes changed for ${destination}`,
       )
+    }
+  }
+})
+
+test('workflows use only actions that run on Node 24', async () => {
+  // GitHub is retiring the Node 20 runtime for actions. These are the first majors of each
+  // action that run on Node 24; anything older, or not listed here, must be checked first.
+  const firstNode24Major = {
+    'actions/checkout': 5,
+    'actions/setup-node': 5,
+    'actions/cache': 5,
+    'actions/cache/restore': 5,
+    'actions/cache/save': 5,
+    'actions/upload-artifact': 6,
+    'actions/download-artifact': 7,
+    'softprops/action-gh-release': 3,
+    'peaceiris/actions-gh-pages': 4,
+  }
+  const pinned = {
+    // v2.9.3, the first rust-cache release on Node 24.
+    'Swatinem/rust-cache': '2201cc584a476d1b508be977bbe4b7d1c7a52e9c',
+  }
+  const files = await glob('.github/workflows/*.yml', {
+    cwd: fileURLToPath(new URL('..', import.meta.url)),
+  })
+  assert.ok(files.length > 0)
+  for (const file of files) {
+    const { jobs } = yaml.parse(await readFile(new URL(`../${file}`, import.meta.url), 'utf8'))
+    for (const [id, job] of Object.entries(jobs)) {
+      for (const { uses } of job.steps ?? []) {
+        if (!uses || uses.startsWith('./') || uses.startsWith('dtolnay/rust-toolchain@')) continue
+        const [action, ref] = uses.split('@')
+        const label = `${file} ${id}: ${uses}`
+        if (pinned[action]) {
+          assert.equal(ref, pinned[action], label)
+          continue
+        }
+        assert.ok(action in firstNode24Major, `${label} is not known to run on Node 24`)
+        assert.match(ref, /^v\d+/, label)
+        assert.ok(Number(ref.slice(1).split('.')[0]) >= firstNode24Major[action], label)
+      }
     }
   }
 })
