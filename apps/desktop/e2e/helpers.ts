@@ -69,6 +69,10 @@ export async function fixture(name: string, content: string): Promise<string> {
 
 export async function openFile(path: string, content: string): Promise<FileState> {
   await cli('file', 'open', path, '--wait', 'applied', '--sha256', sha256(content))
+  const opened = await waitState(path, { open: true, active: true, ready: true,
+    dirty: false, contentSha256: sha256(content) })
+  // WinZettel opens existing notes in the reading pane; the scenarios edit in the source editor.
+  if (opened.mode !== 'sourceCode') await switchMode('sourceCode', path)
   const state = await waitState(path, { open: true, active: true, ready: true,
     dirty: false, contentSha256: sha256(content), mode: 'sourceCode' })
   await $(`${editor} .cm-content`).waitForDisplayed()
@@ -115,10 +119,11 @@ export async function save(path: string, content: string) {
 }
 
 export async function switchMode(mode: 'sourceCode' | 'preview', path: string) {
+  // The toolbar's viewer/editor toggle is labelled with the mode it switches to.
   const labels = { sourceCode: 'Source Code', preview: 'Preview' }
-  await $('button[aria-label="more"][aria-haspopup="menu"]').click()
-  await $("//*[@role='menuitem'][normalize-space(.)='View']").click()
-  await $(`//*[@role='menuitemcheckbox'][contains(., '${labels[mode]}')]`).click()
+  const toggle = $(`button[aria-pressed][aria-label="${labels[mode]}"]`)
+  await toggle.waitForClickable()
+  await toggle.click()
   await waitState(path, { mode, ready: true, active: true })
 }
 

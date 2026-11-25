@@ -8,7 +8,7 @@ import { basename, join, resolve } from 'node:path'
 
 // Must match `e2e::identifier()` in src-tauri/src/e2e.rs.
 export const E2E_IDENTIFIER_PREFIX = 'pt.zekabra.winzettel.e2e.'
-export const E2E_SETTINGS = { md_editor_default_mode: 'sourceCode', autosave: false }
+export const E2E_SETTINGS = { autosave: false }
 
 export const scenarios = [
   'save-reopen',
@@ -46,9 +46,8 @@ export async function createEnvironment(name, parent = tmpdir()) {
   await writeFile(join(root, '.markflowy-e2e'), id)
   await mkdir(join(root, 'files'))
   await mkdir(join(root, 'config'))
-  // WinZettel opens Markdown in the reading pane and autosaves by default. The scenarios edit
-  // through the source editor and observe unsaved drafts, so start them in source mode with
-  // autosave off (the upstream defaults these scenarios were written against).
+  // WinZettel autosaves by default; the scenarios observe unsaved drafts, so start with
+  // autosave off (the upstream default these scenarios were written against).
   await writeFile(join(root, 'config', 'markflowy.conf.json'), JSON.stringify(E2E_SETTINGS))
   return { root, id, identifier: `${E2E_IDENTIFIER_PREFIX}${id.replaceAll('-', '')}` }
 }
