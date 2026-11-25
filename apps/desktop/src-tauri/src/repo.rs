@@ -329,15 +329,8 @@ pub fn remove_dir(relative: &str) -> Result<(), String> {
 pub fn rename(from: &str, to: &str) -> Result<(), String> {
     let guard = lock();
     let repo = guard.as_ref().ok_or("no repository is unlocked")?;
-    let bytes = repo
-        .volume
-        .read(from)
-        .map_err(|error| error.to_string())?;
     repo.volume
-        .write(to, &bytes)
-        .map_err(|error| error.to_string())?;
-    repo.volume
-        .remove_file(from)
+        .rename(from, to)
         .map_err(|error| error.to_string())
 }
 
@@ -525,6 +518,173 @@ mod tests {
         assert!(is_hidden("gocryptfs.longname.abc.name"));
         assert!(!is_hidden("teste.md"));
         assert!(!is_hidden("notas"));
+    }
+}
+
+/// The whole life of an encrypted repository as the app drives it: create, write, read,
+/// rename, delete, lock and unlock again. Each test reopens the volume from disk at the end,
+/// so what it checks is what the Android app would find.
+#[cfg(test)]
+mod lifecycle_tests {
+    use super::*;
+    use std::sync::MutexGuard;
+
+    const PASSWORD: &str = "teste1000";
+
+    /// Only one repository can be unlocked per process, so these tests take turns.
+    static SERIAL: Mutex<()> = Mutex::new(());
+
+    struct Repository {
+        _serial: MutexGuard<'static, ()>,
+        folder: tempfile::TempDir,
+    }
+
+    impl Repository {
+        fn create(plaintext_names: bool, cipher: &str) -> Self {
+            let serial = SERIAL.lock().unwrap_or_else(|poisoned| poisoned.into_inner());
+            lock_volume();
+            let folder = tempfile::tempdir().unwrap();
+            create(&folder.path().to_string_lossy(), PASSWORD, plaintext_names, cipher, 14)
+                .expect("the repository must be created");
+            Self { _serial: serial, folder }
+        }
+
+        fn root(&self) -> String {
+            self.folder.path().to_string_lossy().to_string()
+        }
+
+        fn absolute(&self, relative: &str) -> String {
+            self.folder.path().join(relative).to_string_lossy().to_string()
+        }
+
+        /// A fresh volume straight from disk, with none of this process' caches.
+        fn reopened(&self) -> Volume {
+            Volume::open(self.folder.path(), PASSWORD.as_bytes()).expect("must reopen")
+        }
+    }
+
+    impl Drop for Repository {
+        fn drop(&mut self) {
+            lock_volume();
+        }
+    }
+
+    fn names(relative_dir: &str) -> Vec<String> {
+        list(relative_dir).unwrap().into_iter().map(|entry| entry.name).collect()
+    }
+
+    #[test]
+    fn a_new_repository_is_unlocked_and_written_encrypted() {
+        for (plaintext_names, cipher) in [(false, "auto"), (false, "aes"), (true, "xchacha")] {
+            let repo = Repository::create(plaintext_names, cipher);
+            let state = status(&repo.root());
+            assert!(state.is_repo && state.is_unlocked);
+            assert_eq!(state.creator.as_deref(), Some("Zettel Notes"));
+
+            write("notas/teste.md", b"# teste").unwrap();
+            assert_eq!(read("notas/teste.md").unwrap(), b"# teste");
+            assert_eq!(names(""), vec!["notas"]);
+            assert_eq!(names("notas"), vec!["teste.md"]);
+            assert!(exists("notas/teste.md") && is_dir("notas") && !is_dir("notas/teste.md"));
+
+            let on_disk = std::fs::read_dir(repo.folder.path())
+                .unwrap()
+                .map(|entry| entry.unwrap().file_name().to_string_lossy().to_string())
+                .collect::<Vec<_>>();
+            assert_eq!(on_disk.contains(&"notas".to_string()), plaintext_names, "{cipher}");
+            assert_eq!(repo.reopened().read("notas/teste.md").unwrap(), b"# teste");
+        }
+    }
+
+    #[test]
+    fn writes_route_through_the_volume_only_while_unlocked() {
+        let repo = Repository::create(false, "auto");
+        let note = repo.absolute("teste.md");
+        assert!(matches!(classify_write(&note), WriteTarget::Volume(ref path) if path == "teste.md"));
+        assert_eq!(relative_path(&note).as_deref(), Some("teste.md"));
+
+        lock_volume();
+        assert!(matches!(classify_write(&note), WriteTarget::Locked));
+        assert!(is_locked_repository(&repo.root()));
+        assert!(is_in_locked_repository(&note));
+        assert!(read("teste.md").is_err() && write("teste.md", b"x").is_err());
+
+        let outside = tempfile::tempdir().unwrap();
+        let plain = outside.path().join("a.md").to_string_lossy().to_string();
+        assert!(matches!(classify_write(&plain), WriteTarget::Disk));
+    }
+
+    #[test]
+    fn unlocking_needs_the_right_password() {
+        let repo = Repository::create(false, "auto");
+        write("teste.md", b"teste").unwrap();
+        lock_volume();
+
+        assert_eq!(unlock(&repo.root(), "errada").unwrap_err(), "bad_password");
+        assert!(!status(&repo.root()).is_unlocked);
+
+        let state = unlock(&repo.root(), PASSWORD).unwrap();
+        assert!(state.is_unlocked);
+        assert_eq!(read("teste.md").unwrap(), b"teste");
+    }
+
+    #[test]
+    fn the_android_state_and_configuration_stay_hidden() {
+        let _repo = Repository::create(false, "auto");
+        write(".zettel-notes/config.toml", b"").unwrap();
+        write("teste.md", b"teste").unwrap();
+        assert_eq!(names(""), vec!["teste.md"]);
+    }
+
+    #[test]
+    fn renaming_a_note_keeps_its_text_and_drops_the_old_name() {
+        let repo = Repository::create(false, "auto");
+        write("teste.md", b"teste").unwrap();
+        rename("teste.md", "notas/novo.md").unwrap();
+        assert!(!exists("teste.md"));
+        assert_eq!(read("notas/novo.md").unwrap(), b"teste");
+        assert_eq!(repo.reopened().read("notas/novo.md").unwrap(), b"teste");
+    }
+
+    #[test]
+    fn renaming_a_folder_moves_everything_inside_it() {
+        let repo = Repository::create(false, "auto");
+        write("notas/a.md", b"a").unwrap();
+        write("notas/sub/b.md", b"b").unwrap();
+        rename("notas", "arquivo").unwrap();
+
+        assert_eq!(names(""), vec!["arquivo"]);
+        assert_eq!(read("arquivo/a.md").unwrap(), b"a");
+        assert_eq!(read("arquivo/sub/b.md").unwrap(), b"b");
+        let volume = repo.reopened();
+        assert_eq!(volume.read("arquivo/sub/b.md").unwrap(), b"b");
+    }
+
+    #[test]
+    fn a_folder_deleted_and_made_again_gets_names_the_phone_can_read() {
+        let repo = Repository::create(false, "auto");
+        create_dir("notas").unwrap();
+        write("notas/a.md", b"a").unwrap();
+        remove_file("notas/a.md").unwrap();
+        remove_dir("notas").unwrap();
+
+        create_dir("notas").unwrap();
+        write("notas/b.md", b"b").unwrap();
+        assert_eq!(names("notas"), vec!["b.md"]);
+        let volume = repo.reopened();
+        let reopened: Vec<String> =
+            volume.list("notas").unwrap().into_iter().map(|entry| entry.name).collect();
+        assert_eq!(reopened, vec!["b.md"]);
+        assert_eq!(volume.read("notas/b.md").unwrap(), b"b");
+    }
+
+    #[test]
+    fn locking_a_root_only_locks_that_repository() {
+        let repo = Repository::create(false, "auto");
+        cmd::lock_if_root(&repo.absolute("notas"));
+        assert!(status(&repo.root()).is_unlocked);
+        cmd::lock_if_root(&repo.root());
+        assert!(!status(&repo.root()).is_unlocked);
     }
 }
 
