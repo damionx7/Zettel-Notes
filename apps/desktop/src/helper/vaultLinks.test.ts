@@ -100,7 +100,7 @@ describe.skipIf(!vault)('links in a real notes folder', () => {
 
       // 2. Wiki links the resolver could not place stay literal; report them too.
       for (const match of expanded.matchAll(/\[\[([^\]|]+)(?:\|[^\]]*)?\]\]/g)) {
-        problems.push(`${relativeNote} -> [[${match[1]}]] não resolvida`)
+        problems.push(`${relativeNote} -> [[${match[1]}]] is unresolved`)
       }
     }
 

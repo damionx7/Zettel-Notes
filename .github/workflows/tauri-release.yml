@@ -388,10 +388,18 @@ jobs:
           files: ./apps/desktop/updater/install.json
           overwrite: true
 
+      # GitHub Pages serves the gh-pages branch: the README as the home page, and install.json
+      # for the updater endpoint in tauri.conf.json. Each release replaces both.
+      - name: Stage the Pages site
+        if: env.HAS_SIGNING_KEY == 'true'
+        run: |
+          mkdir -p pages-site
+          cp ./apps/desktop/updater/install.json pages-site/install.json
+          cp README.md pages-site/README.md
+
       - name: Deploy install.json
         if: env.HAS_SIGNING_KEY == 'true'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./apps/desktop/updater
-          # force_orphan: true
+          publish_dir: ./pages-site

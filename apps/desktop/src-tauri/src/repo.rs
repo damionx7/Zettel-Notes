@@ -581,33 +581,33 @@ mod lifecycle_tests {
             assert!(state.is_repo && state.is_unlocked);
             assert_eq!(state.creator.as_deref(), Some("Zettel Notes"));
 
-            write("notas/teste.md", b"# teste").unwrap();
-            assert_eq!(read("notas/teste.md").unwrap(), b"# teste");
-            assert_eq!(names(""), vec!["notas"]);
-            assert_eq!(names("notas"), vec!["teste.md"]);
-            assert!(exists("notas/teste.md") && is_dir("notas") && !is_dir("notas/teste.md"));
+            write("notes/note.md", b"# note").unwrap();
+            assert_eq!(read("notes/note.md").unwrap(), b"# note");
+            assert_eq!(names(""), vec!["notes"]);
+            assert_eq!(names("notes"), vec!["note.md"]);
+            assert!(exists("notes/note.md") && is_dir("notes") && !is_dir("notes/note.md"));
 
             let on_disk = std::fs::read_dir(repo.folder.path())
                 .unwrap()
                 .map(|entry| entry.unwrap().file_name().to_string_lossy().to_string())
                 .collect::<Vec<_>>();
-            assert_eq!(on_disk.contains(&"notas".to_string()), plaintext_names, "{cipher}");
-            assert_eq!(repo.reopened().read("notas/teste.md").unwrap(), b"# teste");
+            assert_eq!(on_disk.contains(&"notes".to_string()), plaintext_names, "{cipher}");
+            assert_eq!(repo.reopened().read("notes/note.md").unwrap(), b"# note");
         }
     }
 
     #[test]
     fn writes_route_through_the_volume_only_while_unlocked() {
         let repo = Repository::create(false, "auto");
-        let note = repo.absolute("teste.md");
-        assert!(matches!(classify_write(&note), WriteTarget::Volume(ref path) if path == "teste.md"));
-        assert_eq!(relative_path(&note).as_deref(), Some("teste.md"));
+        let note = repo.absolute("note.md");
+        assert!(matches!(classify_write(&note), WriteTarget::Volume(ref path) if path == "note.md"));
+        assert_eq!(relative_path(&note).as_deref(), Some("note.md"));
 
         lock_volume();
         assert!(matches!(classify_write(&note), WriteTarget::Locked));
         assert!(is_locked_repository(&repo.root()));
         assert!(is_in_locked_repository(&note));
-        assert!(read("teste.md").is_err() && write("teste.md", b"x").is_err());
+        assert!(read("note.md").is_err() && write("note.md", b"x").is_err());
 
         let outside = tempfile::tempdir().unwrap();
         let plain = outside.path().join("a.md").to_string_lossy().to_string();
@@ -617,71 +617,71 @@ mod lifecycle_tests {
     #[test]
     fn unlocking_needs_the_right_password() {
         let repo = Repository::create(false, "auto");
-        write("teste.md", b"teste").unwrap();
+        write("note.md", b"text").unwrap();
         lock_volume();
 
-        assert_eq!(unlock(&repo.root(), "errada").unwrap_err(), "bad_password");
+        assert_eq!(unlock(&repo.root(), "wrong").unwrap_err(), "bad_password");
         assert!(!status(&repo.root()).is_unlocked);
 
         let state = unlock(&repo.root(), PASSWORD).unwrap();
         assert!(state.is_unlocked);
-        assert_eq!(read("teste.md").unwrap(), b"teste");
+        assert_eq!(read("note.md").unwrap(), b"text");
     }
 
     #[test]
     fn the_android_state_and_configuration_stay_hidden() {
         let _repo = Repository::create(false, "auto");
         write(".zettel-notes/config.toml", b"").unwrap();
-        write("teste.md", b"teste").unwrap();
-        assert_eq!(names(""), vec!["teste.md"]);
+        write("note.md", b"text").unwrap();
+        assert_eq!(names(""), vec!["note.md"]);
     }
 
     #[test]
     fn renaming_a_note_keeps_its_text_and_drops_the_old_name() {
         let repo = Repository::create(false, "auto");
-        write("teste.md", b"teste").unwrap();
-        rename("teste.md", "notas/novo.md").unwrap();
-        assert!(!exists("teste.md"));
-        assert_eq!(read("notas/novo.md").unwrap(), b"teste");
-        assert_eq!(repo.reopened().read("notas/novo.md").unwrap(), b"teste");
+        write("note.md", b"text").unwrap();
+        rename("note.md", "notes/new.md").unwrap();
+        assert!(!exists("note.md"));
+        assert_eq!(read("notes/new.md").unwrap(), b"text");
+        assert_eq!(repo.reopened().read("notes/new.md").unwrap(), b"text");
     }
 
     #[test]
     fn renaming_a_folder_moves_everything_inside_it() {
         let repo = Repository::create(false, "auto");
-        write("notas/a.md", b"a").unwrap();
-        write("notas/sub/b.md", b"b").unwrap();
-        rename("notas", "arquivo").unwrap();
+        write("notes/a.md", b"a").unwrap();
+        write("notes/sub/b.md", b"b").unwrap();
+        rename("notes", "archive").unwrap();
 
-        assert_eq!(names(""), vec!["arquivo"]);
-        assert_eq!(read("arquivo/a.md").unwrap(), b"a");
-        assert_eq!(read("arquivo/sub/b.md").unwrap(), b"b");
+        assert_eq!(names(""), vec!["archive"]);
+        assert_eq!(read("archive/a.md").unwrap(), b"a");
+        assert_eq!(read("archive/sub/b.md").unwrap(), b"b");
         let volume = repo.reopened();
-        assert_eq!(volume.read("arquivo/sub/b.md").unwrap(), b"b");
+        assert_eq!(volume.read("archive/sub/b.md").unwrap(), b"b");
     }
 
     #[test]
     fn a_folder_deleted_and_made_again_gets_names_the_phone_can_read() {
         let repo = Repository::create(false, "auto");
-        create_dir("notas").unwrap();
-        write("notas/a.md", b"a").unwrap();
-        remove_file("notas/a.md").unwrap();
-        remove_dir("notas").unwrap();
+        create_dir("notes").unwrap();
+        write("notes/a.md", b"a").unwrap();
+        remove_file("notes/a.md").unwrap();
+        remove_dir("notes").unwrap();
 
-        create_dir("notas").unwrap();
-        write("notas/b.md", b"b").unwrap();
-        assert_eq!(names("notas"), vec!["b.md"]);
+        create_dir("notes").unwrap();
+        write("notes/b.md", b"b").unwrap();
+        assert_eq!(names("notes"), vec!["b.md"]);
         let volume = repo.reopened();
         let reopened: Vec<String> =
-            volume.list("notas").unwrap().into_iter().map(|entry| entry.name).collect();
+            volume.list("notes").unwrap().into_iter().map(|entry| entry.name).collect();
         assert_eq!(reopened, vec!["b.md"]);
-        assert_eq!(volume.read("notas/b.md").unwrap(), b"b");
+        assert_eq!(volume.read("notes/b.md").unwrap(), b"b");
     }
 
     #[test]
     fn locking_a_root_only_locks_that_repository() {
         let repo = Repository::create(false, "auto");
-        cmd::lock_if_root(&repo.absolute("notas"));
+        cmd::lock_if_root(&repo.absolute("notes"));
         assert!(status(&repo.root()).is_unlocked);
         cmd::lock_if_root(&repo.root());
         assert!(!status(&repo.root()).is_unlocked);
