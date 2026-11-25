@@ -84,17 +84,15 @@ export async function shortcut(key: string) {
 
 export async function replaceDocument(path: string, content: string) {
   await writeFile(join(report, `${basename(path)}.expected-draft.md`), content)
-  // Actions include mouse down/up and real coordinates, which the editor uses for its caret.
-  await $(`${editor} [data-cap-leaf]`).click({ x: 1, y: 1 })
+  // Actions include mouse down/up and real coordinates, which CodeMirror uses for its caret.
+  await $(`${editor} .cm-content`).click({ x: 1, y: 1 })
   await browser.waitUntil(
     () =>
       browser.execute(() => {
-        const key = document
-          .querySelector('[data-editor-active="true"] [data-cap-editable][data-cap-key]')
-          ?.getAttribute('data-cap-key')
-        return !!key && document.activeElement?.getAttribute('data-cap-dockey') === key
+        const content = document.querySelector('[data-editor-active="true"] .cm-content')
+        return !!content && !!document.activeElement && content.contains(document.activeElement)
       }),
-    { timeoutMsg: 'The active Capricorn document did not receive keyboard focus' },
+    { timeoutMsg: 'The active source editor did not receive keyboard focus' },
   )
   await shortcut('a')
   await browser.keys(Key.Backspace)

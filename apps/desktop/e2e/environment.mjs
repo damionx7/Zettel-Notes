@@ -6,6 +6,10 @@ import { createServer } from 'node:net'
 import { homedir, tmpdir } from 'node:os'
 import { basename, join, resolve } from 'node:path'
 
+// Must match `e2e::identifier()` in src-tauri/src/e2e.rs.
+export const E2E_IDENTIFIER_PREFIX = 'pt.zekabra.winzettel.e2e.'
+export const E2E_SETTINGS = { md_editor_default_mode: 'sourceCode', autosave: false }
+
 export const scenarios = [
   'save-reopen',
   'switch-modes',
@@ -42,12 +46,16 @@ export async function createEnvironment(name, parent = tmpdir()) {
   await writeFile(join(root, '.markflowy-e2e'), id)
   await mkdir(join(root, 'files'))
   await mkdir(join(root, 'config'))
-  return { root, id, identifier: `com.drl990114.markflowy.e2e.${id.replaceAll('-', '')}` }
+  // WinZettel opens Markdown in the reading pane and autosaves by default. The scenarios edit
+  // through the source editor and observe unsaved drafts, so start them in source mode with
+  // autosave off (the upstream defaults these scenarios were written against).
+  await writeFile(join(root, 'config', 'markflowy.conf.json'), JSON.stringify(E2E_SETTINGS))
+  return { root, id, identifier: `${E2E_IDENTIFIER_PREFIX}${id.replaceAll('-', '')}` }
 }
 
 export async function assertOwner(environment) {
   assert.match(environment.id, /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/)
-  assert.equal(environment.identifier, `com.drl990114.markflowy.e2e.${environment.id.replaceAll('-', '')}`)
+  assert.equal(environment.identifier, `${E2E_IDENTIFIER_PREFIX}${environment.id.replaceAll('-', '')}`)
   assert.equal(await readFile(join(environment.root, '.markflowy-e2e'), 'utf8'), environment.id)
   assert.equal(await realpath(environment.root), environment.root, 'E2E root was replaced')
 }
