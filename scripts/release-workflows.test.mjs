@@ -77,7 +77,7 @@ test('unit and Rust tests also run on Linux and Windows, except for tag releases
 })
 
 test('native E2E is a required macOS gate and always retains diagnostics', () => {
-  assert.equal(quality.jobs.test['runs-on'], 'macos-latest')
+  assert.equal(quality.jobs.test['runs-on'], 'macos-26-intel')
   const steps = quality.jobs.test.steps
   const frontend = steps.findIndex((step) => step.run === 'yarn build')
   const native = steps.findIndex(
@@ -463,4 +463,33 @@ test('CI reuses caches that only main saves, and releases never replay Turbo bui
   await execFileAsync('bash', ['-e', '-c', trim], {
     cwd: await mkdtemp(path.join(tmpdir(), 'turbo-none-')),
   })
+})
+
+test('Test CI cancels superseded branch runs, skips document-only pushes and tests on Intel Macs', async () => {
+  assert.equal(quality.jobs.test['runs-on'], 'macos-26-intel')
+  assert.equal(quality.concurrency.group, 'test-ci-${{ github.ref }}')
+  const cancel = quality.concurrency['cancel-in-progress']
+  assert.match(cancel, /github\.ref != 'refs\/heads\/main'/)
+  assert.match(cancel, /!startsWith\(github\.ref, 'refs\/tags\/'\)/)
+
+  const ignored = quality.on.push['paths-ignore']
+  const skips = (file) => ignored.some((pattern) => path.matchesGlob(file, pattern))
+  for (const file of ['README.md', 'FORK.md', 'LICENSE', '.github/ISSUE_TEMPLATE/bug.md']) {
+    assert.ok(skips(file), `${file} should not start Test CI`)
+  }
+  for (const file of [
+    'docs/en/Extension/index.md',
+    'packages/editor/src/playground/test-md/basic.md',
+    'apps/desktop/src/main.tsx',
+    '.github/workflows/test-ci.yml',
+  ]) {
+    assert.ok(!skips(file), `${file} must still start Test CI`)
+  }
+
+  // The translation check runs inside the Mac job, so it has no workflow of its own.
+  const files = await glob('.github/workflows/*.yml', {
+    cwd: fileURLToPath(new URL('..', import.meta.url)),
+  })
+  assert.ok(!files.includes('.github/workflows/translate-check.yml'))
+  assert.ok(quality.jobs.test.steps.some((step) => step.run?.includes('yarn translate:check')))
 })
