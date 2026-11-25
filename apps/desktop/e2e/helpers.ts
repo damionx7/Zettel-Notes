@@ -53,7 +53,10 @@ export async function waitState(path: string, expected: Partial<FileState>): Pro
     state = await status(path)
     if (state.error) throw new Error(state.error)
     return Object.entries(expected).every(([key, value]) => state![key as keyof FileState] === value)
-  }, { timeoutMsg: `File never reached ${JSON.stringify(expected)}: ${path}` })
+  }, { timeoutMsg: `File never reached ${JSON.stringify(expected)}: ${path}` }).catch((error) => {
+    // Name the fields that never matched, so a CI log alone explains the failure.
+    throw new Error(`${error instanceof Error ? error.message : String(error)}; last state: ${JSON.stringify(state)}`)
+  })
   return state!
 }
 
