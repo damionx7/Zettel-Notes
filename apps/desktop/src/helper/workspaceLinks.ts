@@ -6,7 +6,7 @@ import useEditorStore from '@/stores/useEditorStore'
  * Resolve the targets Zettel Notes writes inside wiki links.
  *
  * The app links notes by name (`[[livros]]`), by name with extension (`[[livros.md]]`) or by a
- * path from the repository root (`[[pasta/nota.md]]`). Only folders that have been opened are
+ * path from the repository root (`[[folder/note.md]]`). Only folders that have been opened are
  * present in the tree, which is why an unknown name falls back to the raw target: the link stays
  * clickable and the resolver at click time has another chance.
  */
