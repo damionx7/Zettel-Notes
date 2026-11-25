@@ -342,7 +342,7 @@ fn print_version() {
 
 fn print_cli_help() {
     println!(
-        r#"WinZettel - Markdown editor, fork of MarkFlowy
+        r#"Zettel Notes - Markdown editor, fork of MarkFlowy
 
 Usage: markflowy [COMMAND] [OPTIONS]
        mf [COMMAND] [OPTIONS]
@@ -460,14 +460,14 @@ pub(crate) fn runtime_dir() -> Option<PathBuf> {
                 env::var_os("USERPROFILE")
                     .map(|home| PathBuf::from(home).join("AppData").join("Local"))
             })
-            .map(|dir| dir.join("WinZettel"))
+            .map(|dir| dir.join("ZettelNotes"))
     }
 
     #[cfg(all(not(windows), not(feature = "e2e")))]
     {
         env::var_os("HOME")
             .map(PathBuf::from)
-            .map(|home| home.join(".winzettel"))
+            .map(|home| home.join(DATA_ROOT_DIR))
     }
 }
 
@@ -967,7 +967,7 @@ fn spawn_cli_gui_child_and_exit(args: &[String]) {
     let exe = match env::current_exe() {
         Ok(exe) => exe,
         Err(error) => {
-            eprintln!("Failed to resolve the WinZettel executable: {error}");
+            eprintln!("Failed to resolve the Zettel Notes executable: {error}");
             std::process::exit(1);
         }
     };
@@ -981,7 +981,7 @@ fn spawn_cli_gui_child_and_exit(args: &[String]) {
         .stderr(std::process::Stdio::null());
 
     if let Err(error) = command.spawn() {
-        eprintln!("Failed to start the WinZettel GUI process: {error}");
+        eprintln!("Failed to start the Zettel Notes GUI process: {error}");
         std::process::exit(1);
     }
 
@@ -1722,6 +1722,34 @@ fn install_cli_in_background(app: &tauri::App) {
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
+/// The app's own data root under the home folder (settings, workspace cache, runtime state).
+pub(crate) const DATA_ROOT_DIR: &str = ".zettel-notes";
+/// The data root used while the app was named WinZettel.
+pub(crate) const LEGACY_DATA_ROOT_DIR: &str = ".winzettel";
+
+/// Moves `~/.winzettel` to `~/.zettel-notes` once, before anything reads or creates the new
+/// folder, so settings and the workspace cache survive the rename. Nothing happens when the
+/// new folder already exists or the old one is missing.
+#[cfg(not(feature = "e2e"))]
+fn migrate_legacy_data_root() {
+    let home = env::var_os("HOME").or_else(|| env::var_os("USERPROFILE"));
+    let Some(home) = home.map(PathBuf::from) else {
+        return;
+    };
+    if let Err(error) = move_legacy_dir(&home.join(LEGACY_DATA_ROOT_DIR), &home.join(DATA_ROOT_DIR)) {
+        eprintln!("Failed to move the WinZettel data folder to {DATA_ROOT_DIR}: {error}");
+    }
+}
+
+#[cfg_attr(feature = "e2e", allow(dead_code))]
+fn move_legacy_dir(legacy: &std::path::Path, current: &std::path::Path) -> std::io::Result<bool> {
+    if current.exists() || !legacy.is_dir() {
+        return Ok(false);
+    }
+    std::fs::rename(legacy, current)?;
+    Ok(true)
+}
+
 pub fn run() {
     app::startup_timing::record_native_entry();
     // é»˜è®¤ç¦ç”¨ DMA-BUFï¼Œä»¥å…¼å®¹éƒ¨åˆ† Linux å›¾å½¢é©±åŠ¨ï¼›ä¿ç•™ç”¨æˆ·é¢„è®¾å€¼ä»¥ä¾¿ä½¿ç”¨é»˜è®¤æ¸²æŸ“è·¯å¾„ã€‚
@@ -1737,6 +1765,8 @@ pub fn run() {
     #[cfg(feature = "e2e")]
     e2e::initialize();
     attach_parent_console();
+    #[cfg(not(feature = "e2e"))]
+    migrate_legacy_data_root();
     reliable_cli::run_client_if_requested();
     handle_read_only_cli_command();
 
@@ -2214,3 +2244,41 @@ pub fn run() {
     });
 }
 
+#[cfg(test)]
+mod legacy_data_root_tests {
+    use super::move_legacy_dir;
+
+    #[test]
+    fn moves_the_old_folder_when_the_new_one_is_missing() {
+        let home = tempfile::tempdir().unwrap();
+        let legacy = home.path().join(".winzettel");
+        let current = home.path().join(".zettel-notes");
+        std::fs::create_dir_all(&legacy).unwrap();
+        std::fs::write(legacy.join("conf.json"), "{}").unwrap();
+
+        assert!(move_legacy_dir(&legacy, &current).unwrap());
+        assert!(!legacy.exists());
+        assert_eq!(std::fs::read_to_string(current.join("conf.json")).unwrap(), "{}");
+    }
+
+    #[test]
+    fn keeps_both_folders_when_the_new_one_exists() {
+        let home = tempfile::tempdir().unwrap();
+        let legacy = home.path().join(".winzettel");
+        let current = home.path().join(".zettel-notes");
+        std::fs::create_dir_all(&legacy).unwrap();
+        std::fs::create_dir_all(&current).unwrap();
+
+        assert!(!move_legacy_dir(&legacy, &current).unwrap());
+        assert!(legacy.exists());
+    }
+
+    #[test]
+    fn does_nothing_without_an_old_folder() {
+        let home = tempfile::tempdir().unwrap();
+        let current = home.path().join(".zettel-notes");
+
+        assert!(!move_legacy_dir(&home.path().join(".winzettel"), &current).unwrap());
+        assert!(!current.exists());
+    }
+}

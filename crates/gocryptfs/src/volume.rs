@@ -25,7 +25,7 @@ use crate::keys;
 const SCRYPT_R: u32 = 8;
 const SCRYPT_P: u32 = 1;
 const SALT_LEN: usize = 32;
-const DEFAULT_CREATOR: &str = "WinZettel";
+const DEFAULT_CREATOR: &str = "Zettel Notes";
 
 /// One entry of a directory listing, already decrypted.
 #[derive(Debug, Clone, PartialEq, Eq)]

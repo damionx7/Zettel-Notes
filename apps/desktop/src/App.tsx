@@ -153,7 +153,7 @@ function StartupFailureSurface({ error, retry }: { error: unknown; retry: () => 
       <AsyncSurface
         state={{
           status: 'error',
-          title: 'Unable to start WinZettel',
+          title: 'Unable to start Zettel Notes',
           description: getStartupErrorDescription(error),
           retry,
         }}
@@ -167,7 +167,7 @@ function StartupFailureSurface({ error, retry }: { error: unknown; retry: () => 
 function StartupLoadingSurface() {
   return (
     <div className='flex h-screen w-screen'>
-      <StartupProgress label='Starting WinZettelâ€¦' />
+      <StartupProgress label='Starting Zettel Notesâ€¦' />
     </div>
   )
 }

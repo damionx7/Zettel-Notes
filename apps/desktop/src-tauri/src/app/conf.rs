@@ -574,7 +574,7 @@ fn app_root_default() -> PathBuf {
 
     #[cfg(not(target_os = "macos"))]
     {
-        let data_root = base_dir.join(".winzettel");
+        let data_root = base_dir.join(crate::DATA_ROOT_DIR);
 
         if exists(&data_root) {
             return data_root;
@@ -1229,7 +1229,7 @@ pub mod cmd {
         tauri::async_runtime::spawn(async move {
             let conf_win =
                 WebviewWindowBuilder::new(&app, "conf", WebviewUrl::App("./setting".into()))
-                    .title("WinZettel settings")
+                    .title("Zettel Notes settings")
                     .resizable(true)
                     .fullscreen(false)
                     .theme(theme)

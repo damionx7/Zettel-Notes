@@ -73,7 +73,7 @@ fn creates_a_repository_with_plaintext_names() {
         plaintext_names: true,
         cipher: Cipher::XChaCha20Poly1305,
         log_n: 14,
-        creator: "WinZettel".to_string(),
+        creator: "Zettel Notes".to_string(),
     };
     let volume = Volume::create(&root, b"Teste1@00", &options).expect("create");
     assert!(volume.plaintext_names());

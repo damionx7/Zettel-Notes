@@ -4,18 +4,19 @@ use tauri::Manager;
 /// The WebView profile is locked while the app runs, so a reset is finished on the next
 /// start: the command records the intent outside the folders it will delete.
 fn flag_path(app: &tauri::AppHandle) -> Option<PathBuf> {
-    app.path().temp_dir().ok().map(|dir| dir.join("winzettel-reset.flag"))
+    app.path().temp_dir().ok().map(|dir| dir.join("zettel-notes-reset.flag"))
 }
 
 fn reset_targets(app: &tauri::AppHandle) -> Vec<PathBuf> {
     let mut targets = Vec::new();
 
-    // The app's own data root is `~/.winzettel`.
+    // The app's own data root is `~/.zettel-notes`, and `~/.winzettel` before the rename.
     if let Ok(home) = app.path().home_dir() {
-        targets.push(home.join(".winzettel"));
+        targets.push(home.join(crate::DATA_ROOT_DIR));
+        targets.push(home.join(crate::LEGACY_DATA_ROOT_DIR));
     }
 
-    // Identifier-derived folders, which follow `pt.zekabra.winzettel`.
+    // Identifier-derived folders, which follow `org.eu.thedoc.zettelnotes.desktop`.
     if let Ok(local) = app.path().app_local_data_dir() {
         targets.push(local);
     }

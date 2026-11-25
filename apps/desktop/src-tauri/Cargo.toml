@@ -8,7 +8,7 @@ repository = "https://github.com/drl990114/MarkFlowy"
 edition = "2021"
 
 [[bin]]
-name = "winzettel"
+name = "zettel-notes"
 path = "src/main.rs"
 
 [lib]

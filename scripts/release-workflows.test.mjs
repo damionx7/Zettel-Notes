@@ -126,9 +126,9 @@ test('all release packages retain matching signatures through collection and pub
       uploadIf: "matrix.os == 'ubuntu-22.04'",
       download: 'Download x86_64 artifacts',
       fixtures: withSignatures([
-        ['deb/WinZettel_1.2.3_amd64.deb', 'WinZettel_v1.2.3_amd64.deb'],
-        ['rpm/WinZettel-1.2.3-1.x86_64.rpm', 'WinZettel-1.2.3-1.x86_64.rpm'],
-        ['appimage/WinZettel_1.2.3_amd64.AppImage', 'WinZettel_v1.2.3_amd64.AppImage'],
+        ['deb/Zettel Notes_1.2.3_amd64.deb', 'Zettel-Notes_v1.2.3_amd64.deb'],
+        ['rpm/Zettel Notes-1.2.3-1.x86_64.rpm', 'Zettel-Notes-1.2.3-1.x86_64.rpm'],
+        ['appimage/Zettel Notes_1.2.3_amd64.AppImage', 'Zettel-Notes_v1.2.3_amd64.AppImage'],
       ]),
     },
     ...[
@@ -141,8 +141,8 @@ test('all release packages retain matching signatures through collection and pub
       uploadIf: `matrix.target == '${arch}-apple-darwin'`,
       download,
       fixtures: [
-        [`dmg/WinZettel_1.2.3_${filenameArch}.dmg`, `WinZettel_v1.2.3_${filenameArch}.dmg`],
-        ...withSignatures([['macos/WinZettel.app.tar.gz', `WinZettel_${filenameArch}.app.tar.gz`]]),
+        [`dmg/Zettel Notes_1.2.3_${filenameArch}.dmg`, `Zettel-Notes_v1.2.3_${filenameArch}.dmg`],
+        ...withSignatures([['macos/Zettel Notes.app.tar.gz', `Zettel-Notes_${filenameArch}.app.tar.gz`]]),
       ],
     })),
     {
@@ -153,10 +153,10 @@ test('all release packages retain matching signatures through collection and pub
       download: 'Download x86_64 artifacts',
       fixtures: [
         ...withSignatures([
-          ['msi/WinZettel_1.2.3_x64_en-US.msi', 'WinZettel_v1.2.3_x64.msi'],
-          ['nsis/WinZettel_1.2.3_x64-setup.exe', 'WinZettel_v1.2.3_x64-setup.exe'],
+          ['msi/Zettel Notes_1.2.3_x64_en-US.msi', 'Zettel-Notes_v1.2.3_x64.msi'],
+          ['nsis/Zettel Notes_1.2.3_x64-setup.exe', 'Zettel-Notes_v1.2.3_x64-setup.exe'],
         ]),
-        ['portable/WinZettel_1.2.3_x64_portable.zip', 'WinZettel_v1.2.3_x64_portable.zip'],
+        ['portable/Zettel-Notes_1.2.3_x64_portable.zip', 'Zettel-Notes_v1.2.3_x64_portable.zip'],
       ],
     },
     {
@@ -166,8 +166,8 @@ test('all release packages retain matching signatures through collection and pub
       uploadIf: "matrix.os == 'windows-latest'",
       download: 'Download offline installer artifacts',
       fixtures: withSignatures([
-        ['msi/WinZettel_1.2.3_x64_en-US.msi', 'WinZettel_v1.2.3_offline_installer_x64.msi'],
-        ['nsis/WinZettel_1.2.3_x64-setup.exe', 'WinZettel_v1.2.3_offline_installer_x64-setup.exe'],
+        ['msi/Zettel Notes_1.2.3_x64_en-US.msi', 'Zettel-Notes_v1.2.3_offline_installer_x64.msi'],
+        ['nsis/Zettel Notes_1.2.3_x64-setup.exe', 'Zettel-Notes_v1.2.3_offline_installer_x64-setup.exe'],
       ]),
     },
   ]
