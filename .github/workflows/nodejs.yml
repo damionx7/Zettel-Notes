@@ -24,7 +24,8 @@ jobs:
             arch: x86_64
             target: x86_64-apple-darwin
           - build: macos
-            os: macos-latest
+            # Cross-compiled on Intel: hosted Apple Silicon runners are often unavailable.
+            os: macos-26-intel
             arch: aarch64
             target: aarch64-apple-darwin
           - build: windows
@@ -76,6 +77,36 @@ jobs:
         run: |
           echo "::warning::TAURI_PRIVATE_KEY is not set, so packages are built without updater signatures."
           node -e "const fs=require('fs');const f='apps/desktop/src-tauri/tauri.conf.json';const c=JSON.parse(fs.readFileSync(f,'utf8'));c.bundle.createUpdaterArtifacts=false;fs.writeFileSync(f,JSON.stringify(c,null,2)+'\\n')"
+
+      # Hosted macOS runners intermittently fail `hdiutil create` with "Resource busy" while
+      # XProtect scans new disk images, which fails the DMG after a full build. Stop XProtect
+      # and retry that one command on this error.
+      - name: Retry disk image creation when macOS reports it busy
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          sudo pkill -9 XProtect >/dev/null 2>&1 || true
+          shim="$RUNNER_TEMP/hdiutil-retry"
+          mkdir -p "$shim"
+          cat > "$shim/hdiutil" <<'SHIM'
+          #!/bin/bash
+          [ "$1" = create ] || exec /usr/bin/hdiutil "$@"
+          for attempt in 1 2 3 4 5; do
+            errors=$(mktemp)
+            /usr/bin/hdiutil "$@" 2> "$errors"
+            status=$?
+            cat "$errors" >&2
+            if [ $status -eq 0 ] || ! grep -q 'Resource busy' "$errors"; then rm -f "$errors"; exit $status; fi
+            rm -f "$errors"
+            image="${@: -1}"
+            rm -f "$image" "$image.dmg"
+            echo "hdiutil create: resource busy, retrying ($attempt/5)" >&2
+            sleep $((attempt * 10))
+          done
+          exit $status
+          SHIM
+          chmod +x "$shim/hdiutil"
+          echo "$shim" >> "$GITHUB_PATH"
 
       - name: Build the app
         run: yarn build:desktop --target ${{ matrix.target }}
