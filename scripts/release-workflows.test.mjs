@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { execFile } from 'node:child_process'
-import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, mkdtemp, readFile, rm, utimes, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import test from 'node:test'
@@ -447,15 +447,13 @@ test('CI reuses caches that only main saves, and releases never replay Turbo bui
       .run
   const directory = await mkdtemp(path.join(tmpdir(), 'turbo-trim-'))
   t.after(() => rm(directory, { recursive: true, force: true }))
-  await execFileAsync(
-    'bash',
-    [
-      '-e',
-      '-c',
-      'mkdir -p .turbo/cache && for i in $(seq 1 700); do touch -d "@$((1700000000 + i))" .turbo/cache/entry-$i; done',
-    ],
-    { cwd: directory },
-  )
+  // Set the times from Node: `touch -d @…` is GNU-only and fails on the macOS runner.
+  await mkdir(path.join(directory, '.turbo/cache'), { recursive: true })
+  for (let i = 1; i <= 700; i++) {
+    const entry = path.join(directory, `.turbo/cache/entry-${i}`)
+    await writeFile(entry, '')
+    await utimes(entry, 1_700_000_000 + i, 1_700_000_000 + i)
+  }
   await execFileAsync('bash', ['-e', '-c', trim], { cwd: directory })
   const kept = await glob('.turbo/cache/*', { cwd: directory })
   assert.equal(kept.length, 600)
