@@ -44,10 +44,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: .node-version
 
@@ -68,7 +68,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
-      - uses: Swatinem/rust-cache@2656b87321093db1cb55fbd73183d195214fdfd1 # v2
+      - uses: Swatinem/rust-cache@2201cc584a476d1b508be977bbe4b7d1c7a52e9c # v2.9.3
         with:
           key: ${{ matrix.target }}
 
@@ -163,7 +163,7 @@ jobs:
           Copy-Item -Path "packages/theme/licenses/*.txt" -Destination $themeLicenses
           Compress-Archive -Path $portableDir -DestinationPath $portableZip -Force
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: matrix.os == 'ubuntu-22.04'
         with:
           name: artifacts-${{ matrix.target }}
@@ -175,7 +175,7 @@ jobs:
             ./target/${{ matrix.target }}/release/bundle/rpm/**.rpm
             ./target/${{ matrix.target }}/release/bundle/rpm/**.rpm.sig
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: matrix.target == 'aarch64-apple-darwin'
         with:
           name: aarch64artifacts-${{ matrix.target }}
@@ -183,7 +183,7 @@ jobs:
             ./target/${{ matrix.target }}/release/bundle/dmg/**.dmg
             ./target/${{ matrix.target }}/release/bundle/macos/**.app.*
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: matrix.target == 'x86_64-apple-darwin'
         with:
           name: artifacts-${{ matrix.target }}
@@ -191,7 +191,7 @@ jobs:
             ./target/${{ matrix.target }}/release/bundle/dmg/**.dmg
             ./target/${{ matrix.target }}/release/bundle/macos/**.app.*
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: matrix.os == 'windows-latest'
         with:
           name: artifacts-${{ matrix.target }}
@@ -219,10 +219,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: .node-version
 
@@ -237,7 +237,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
-      - uses: Swatinem/rust-cache@2656b87321093db1cb55fbd73183d195214fdfd1 # v2
+      - uses: Swatinem/rust-cache@2201cc584a476d1b508be977bbe4b7d1c7a52e9c # v2.9.3
         with:
           key: ${{ matrix.target }}
 
@@ -308,7 +308,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: matrix.os == 'windows-latest'
         with:
           name: offline-installer-artifacts-${{ matrix.target }}
@@ -328,21 +328,21 @@ jobs:
         run: echo "version=${GITHUB_REF:11}" >> $GITHUB_ENV
 
       - name: Download x86_64 artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           pattern: artifacts-*
           path: artifacts/x86_64
           merge-multiple: true
 
       - name: Download aarch64 artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           pattern: aarch64artifacts-*
           path: artifacts/aarch64
           merge-multiple: true
 
       - name: Download offline installer artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           pattern: offline-installer-artifacts-*
           path: artifacts/offline-installer
@@ -418,7 +418,7 @@ jobs:
           EOF
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2.1.0
+        uses: softprops/action-gh-release@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -429,10 +429,10 @@ jobs:
           prerelease: true
           files: ./artifacts/**/*
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: .node-version
 
@@ -451,7 +451,7 @@ jobs:
 
       - name: Upload Additional File to Same Release
         if: env.HAS_SIGNING_KEY == 'true'
-        uses: softprops/action-gh-release@v2.1.0
+        uses: softprops/action-gh-release@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -470,7 +470,7 @@ jobs:
 
       - name: Deploy install.json
         if: env.HAS_SIGNING_KEY == 'true'
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./pages-site

@@ -34,10 +34,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: .node-version
 
@@ -63,7 +63,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
-      - uses: Swatinem/rust-cache@2656b87321093db1cb55fbd73183d195214fdfd1 # v2
+      - uses: Swatinem/rust-cache@2201cc584a476d1b508be977bbe4b7d1c7a52e9c # v2.9.3
         with:
           key: ${{ matrix.target }}
 
@@ -118,7 +118,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: matrix.os == 'ubuntu-24.04'
         with:
           name: artifacts-${{ matrix.target }}
@@ -128,7 +128,7 @@ jobs:
             ./target/${{ matrix.target }}/release/bundle/deb/**.deb
             ./target/${{ matrix.target }}/release/bundle/rpm/**.rpm
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: matrix.target == 'aarch64-apple-darwin'
         with:
           name: aarch64artifacts-${{ matrix.target }}
@@ -136,7 +136,7 @@ jobs:
             ./target/${{ matrix.target }}/release/bundle/dmg/**.dmg
             ./target/${{ matrix.target }}/release/bundle/macos/**.app.*
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: matrix.target == 'x86_64-apple-darwin'
         with:
           name: artifacts-${{ matrix.target }}
@@ -144,7 +144,7 @@ jobs:
             ./target/${{ matrix.target }}/release/bundle/dmg/**.dmg
             ./target/${{ matrix.target }}/release/bundle/macos/**.app.*
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: matrix.os == 'windows-latest'
         with:
           name: artifacts-${{ matrix.target }}
@@ -167,10 +167,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: .node-version
 
@@ -190,7 +190,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
-      - uses: Swatinem/rust-cache@2656b87321093db1cb55fbd73183d195214fdfd1 # v2
+      - uses: Swatinem/rust-cache@2201cc584a476d1b508be977bbe4b7d1c7a52e9c # v2.9.3
         with:
           key: ${{ matrix.target }}
 
@@ -249,7 +249,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: matrix.os == 'windows-latest'
         with:
           name: offline-installer-artifacts-${{ matrix.target }}
