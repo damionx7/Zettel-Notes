@@ -62,8 +62,9 @@ test('the shared gate requires real runtime, type, Rust and content validation',
   assert.ok(generation >= 0 && verification > generation)
 })
 
-test('unit and Rust tests also run on Linux and Windows', () => {
+test('unit and Rust tests also run on Linux and Windows, except for tag releases', () => {
   const unit = quality.jobs.unit
+  assert.equal(unit.if, "${{ !startsWith(github.ref, 'refs/tags/') }}")
   assert.equal(unit['runs-on'], '${{ matrix.os }}')
   assert.deepEqual(unit.strategy.matrix.os, ['ubuntu-22.04', 'windows-latest'])
   assert.equal(unit.strategy['fail-fast'], false)
