@@ -103,11 +103,12 @@ export async function replaceDocument(path: string, content: string) {
   )
   await shortcut('a')
   await browser.keys(Key.Backspace)
-  // keys(string) holds every character down before releasing them. Send complete
-  // keystrokes so repeated letters and the editor's keyup/render cycle stay ordered.
-  const typing = browser.action('key')
-  for (const character of content) typing.down(character).up(character)
-  await typing.perform()
+  // The embedded driver's character keystrokes reach keydown handlers but never insert text
+  // into WKWebView's contenteditable, so CodeMirror sees nothing. Insert the text through the
+  // browser's own editing command instead: CodeMirror reads it from the DOM like typed input.
+  await browser.execute((text) => {
+    document.execCommand('insertText', false, text)
+  }, content)
   await waitState(path, { dirty: true, contentSha256: sha256(content) })
   await visibleContent(content)
 }
