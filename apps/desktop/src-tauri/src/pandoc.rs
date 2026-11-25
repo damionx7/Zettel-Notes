@@ -561,8 +561,20 @@ async fn export_with_timeout(
         }
     };
 
-    writer
-        .await
+    let input = writer.await;
+
+    // A Pandoc that fails before reading all of its input closes the pipe, so the writer then
+    // reports a broken pipe. The exit status and stderr are the real error in that case.
+    if !output.status.success() {
+        return Err(PandocError::new(
+            PandocErrorCode::ConversionFailed,
+            "Pandoc could not convert the document.",
+        )
+        .with_detail(String::from_utf8_lossy(&output.stderr))
+        .with_exit_code(output.status.code()));
+    }
+
+    input
         .map_err(|error| {
             PandocError::new(
                 PandocErrorCode::ConversionFailed,
@@ -577,15 +589,6 @@ async fn export_with_timeout(
             )
             .with_detail(error.to_string())
         })?;
-
-    if !output.status.success() {
-        return Err(PandocError::new(
-            PandocErrorCode::ConversionFailed,
-            "Pandoc could not convert the document.",
-        )
-        .with_detail(String::from_utf8_lossy(&output.stderr))
-        .with_exit_code(output.status.code()));
-    }
 
     let generated_metadata = fs::metadata(&temp_path).map_err(|error| {
         PandocError::new(
