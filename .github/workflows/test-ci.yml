@@ -12,8 +12,10 @@ permissions:
 jobs:
   # Unit and Rust tests on the platforms the macOS gate below does not cover.
   # Windows runs the CNG crypto backend of crates/gocryptfs, Linux the portable one.
+  # Branch pushes only: tag releases call this workflow too, and skip this job.
   unit:
     name: unit (${{ matrix.os }})
+    if: ${{ !startsWith(github.ref, 'refs/tags/') }}
     strategy:
       fail-fast: false
       matrix:
