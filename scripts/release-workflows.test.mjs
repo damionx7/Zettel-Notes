@@ -138,6 +138,67 @@ test('installers take their version from the release tag', async () => {
   )
 })
 
+test('DMG creation retries hdiutil when macOS reports the image busy', async (t) => {
+  const builds = [
+    ['tauri-release', 'build'],
+    ['tauri-release', 'build-offline-installer'],
+    ['nodejs', 'build'],
+    ['test-bundle', 'build'],
+  ]
+  let shim
+  for (const [name, id] of builds) {
+    const steps = (await workflow(name)).jobs[id].steps
+    const retry = steps.findIndex((step) => step.name === 'Retry disk image creation when macOS reports it busy')
+    const build = steps.findIndex((step) => step.name === 'Build the app')
+    assert.ok(retry >= 0 && retry < build, `${name} ${id} must install the retry before building`)
+    assert.equal(steps[retry].if, "runner.os == 'macOS'")
+    shim ??= steps[retry].run.match(/<<'SHIM'\n([\s\S]*?)\nSHIM/)[1]
+  }
+
+  const directory = await mkdtemp(path.join(tmpdir(), 'markflowy-hdiutil-'))
+  t.after(() => rm(directory, { recursive: true, force: true }))
+  const fake = path.join(directory, 'real-hdiutil')
+  const counter = path.join(directory, 'calls')
+  await writeFile(
+    fake,
+    `#!/bin/bash
+echo "$*" >> "${counter}"
+calls=$(wc -l < "${counter}")
+case "$FAKE_MODE" in
+  busy-twice) if [ "$calls" -le 2 ]; then echo 'hdiutil: create failed - Resource busy' >&2; exit 1; fi; touch "\${@: -1}"; exit 0 ;;
+  other) echo 'hdiutil: create failed - No space left' >&2; exit 3 ;;
+  *) echo "real $*"; exit 0 ;;
+esac
+`,
+    { mode: 0o755 },
+  )
+  const script = path.join(directory, 'hdiutil')
+  await writeFile(
+    script,
+    shim.replaceAll('/usr/bin/hdiutil', fake).replace(/sleep \$\(\(attempt \* 10\)\)/, 'sleep 0'),
+    { mode: 0o755 },
+  )
+  const run = async (mode, args) => {
+    await rm(counter, { force: true })
+    try {
+      const result = await execFileAsync(script, args, { env: { ...process.env, FAKE_MODE: mode } })
+      return { code: 0, ...result, calls: (await readFile(counter, 'utf8')).trim().split('\n').length }
+    } catch (error) {
+      return { code: error.code, stderr: error.stderr, calls: (await readFile(counter, 'utf8')).trim().split('\n').length }
+    }
+  }
+  const image = path.join(directory, 'rw.Zettel Notes.dmg')
+  const busy = await run('busy-twice', ['create', '-srcfolder', directory, image])
+  assert.equal(busy.code, 0)
+  assert.equal(busy.calls, 3)
+  assert.match(busy.stderr, /retrying \(2\/5\)/)
+  const other = await run('other', ['create', image])
+  assert.equal(other.code, 3, 'other failures must not be retried')
+  assert.equal(other.calls, 1)
+  const attach = await run('pass', ['attach', image])
+  assert.equal(attach.stdout.trim(), `real attach ${image}`, 'other subcommands pass through untouched')
+})
+
 test('both macOS packages build on Intel runners', async () => {
   // Apple Silicon is cross-compiled: hosted arm64 runners were repeatedly not available.
   for (const name of ['tauri-release', 'test-bundle', 'nodejs']) {
