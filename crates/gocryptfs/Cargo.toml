@@ -6,8 +6,9 @@ description = "gocryptfs volume reader/writer, compatible with Zettel Notes encr
 license = "MIT"
 
 [dependencies]
-# AES-ECB, AES-256-GCM with 128-bit nonces and ChaCha20-Poly1305 come from Windows CNG,
-# HKDF/PBKDF2/SHA-256 from `ring`. Neither needs to be downloaded at build time.
+# HKDF/PBKDF2/SHA-256 come from `ring` on every platform. AES-ECB, AES-256-GCM with 128-bit
+# nonces and ChaCha20-Poly1305 come from Windows CNG on Windows and from the RustCrypto
+# crates everywhere else (see src/crypto/{cng,portable}.rs).
 ring = "0.17"
 base64 = "0.21"
 serde = { version = "1.0", features = ["derive"] }
@@ -17,6 +18,11 @@ zeroize = "1"
 
 [target.'cfg(windows)'.dependencies]
 windows-sys = { version = "0.59", features = ["Win32_Security_Cryptography"] }
+
+[target.'cfg(not(windows))'.dependencies]
+aes = "0.8"
+aes-gcm = { version = "0.10", default-features = false, features = ["aes", "alloc"] }
+chacha20poly1305 = { version = "0.10", default-features = false, features = ["alloc"] }
 
 [dev-dependencies]
 tempfile = "3"

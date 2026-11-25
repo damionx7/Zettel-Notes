@@ -1,352 +1,39 @@
-﻿//! Crypto primitives for gocryptfs, taken from Windows CNG plus `ring`.
+﻿//! Crypto primitives for gocryptfs.
 //!
-//! Nothing here is hand-rolled except Salsa20/8 (scrypt's mixing core) and HChaCha20 (the
-//! XChaCha20 key derivation), because Windows CNG already provides AES-ECB, AES-256-GCM with
-//! arbitrary nonces and ChaCha20-Poly1305, and `ring` provides HKDF, PBKDF2 and SHA-256.
-//!
-//! Keeping this Windows-only is deliberate: the desktop application is Windows-only, and the
-//! alternative was shipping hand-written AES and GCM implementations.
-
-use std::ptr;
+//! The block cipher and AEAD primitives (AES-ECB, AES-256-GCM with gocryptfs' 128-bit nonce,
+//! ChaCha20-Poly1305) come from a per-platform backend: Windows CNG on Windows, and the audited
+//! RustCrypto crates everywhere else (Linux, macOS). `ring` provides HKDF, PBKDF2 and SHA-256
+//! on every platform. Nothing here is hand-rolled except Salsa20/8 (scrypt's mixing core) and
+//! HChaCha20 (the XChaCha20 key derivation), which are shared by both backends so that the
+//! on-disk format is produced by the same code everywhere.
 
 use ring::digest;
 use ring::hkdf;
 use ring::pbkdf2;
 use ring::rand::{SecureRandom, SystemRandom};
-use windows_sys::Win32::Security::Cryptography::{
-    BCryptCloseAlgorithmProvider, BCryptDecrypt, BCryptDestroyKey, BCryptEncrypt,
-    BCryptGenerateSymmetricKey, BCryptGetProperty, BCryptOpenAlgorithmProvider, BCryptSetProperty,
-    BCRYPT_ALG_HANDLE, BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO, BCRYPT_KEY_HANDLE,
-};
 
-const AES_BLOCK: usize = 16;
-const TAG: usize = 16;
-const AUTH_MODE_INFO_VERSION: u32 = 1;
+#[cfg(windows)]
+mod cng;
+#[cfg(windows)]
+use cng as backend;
 
-fn wide(value: &str) -> Vec<u16> {
-    value.encode_utf16().chain(std::iter::once(0)).collect()
-}
+#[cfg(not(windows))]
+mod portable;
+#[cfg(not(windows))]
+use portable as backend;
 
-/// Owned CNG algorithm handle.
-struct Algorithm(BCRYPT_ALG_HANDLE);
-
-impl Algorithm {
-    fn open(name: &str) -> Result<Self> {
-        let name = wide(name);
-        let mut handle: BCRYPT_ALG_HANDLE = ptr::null_mut();
-        // SAFETY: `name` is NUL-terminated and outlives the call.
-        let status = unsafe { BCryptOpenAlgorithmProvider(&mut handle, name.as_ptr(), ptr::null(), 0) };
-        if status < 0 || handle.is_null() {
-            return Err(Error::Unsupported(format!(
-                "this Windows build does not provide the CNG algorithm {name:?} ({status:#x})"
-            )));
-        }
-        Ok(Self(handle))
-    }
-
-    fn set_chain_mode(&self, mode: &str) -> Result<()> {
-        let property = wide("ChainingMode");
-        let value = wide(mode);
-        let bytes = ((value.len() - 1) * std::mem::size_of::<u16>()) as u32;
-        // SAFETY: the property name and value are NUL-terminated wide strings.
-        let status = unsafe {
-            BCryptSetProperty(
-                self.0,
-                property.as_ptr(),
-                value.as_ptr() as *const u8,
-                bytes,
-                0,
-            )
-        };
-        if status < 0 {
-            return Err(Error::Unsupported(format!(
-                "cannot set the CNG chaining mode to {mode} ({status:#x})"
-            )));
-        }
-        Ok(())
-    }
-
-    fn object_length(&self) -> Result<usize> {
-        let property = wide("ObjectLength");
-        let mut length: u32 = 0;
-        let mut written: u32 = 0;
-        // SAFETY: the output buffer is exactly one u32, as the property requires.
-        let status = unsafe {
-            BCryptGetProperty(
-                self.0,
-                property.as_ptr(),
-                &mut length as *mut u32 as *mut u8,
-                std::mem::size_of::<u32>() as u32,
-                &mut written,
-                0,
-            )
-        };
-        if status < 0 {
-            return Err(Error::Damaged(format!(
-                "cannot size a CNG key object ({status:#x})"
-            )));
-        }
-        Ok(length as usize)
-    }
-
-    fn symmetric_key(&self, key: &[u8]) -> Result<SymmetricKey> {
-        let mut object = vec![0u8; self.object_length()?];
-        let mut handle: BCRYPT_KEY_HANDLE = ptr::null_mut();
-        // SAFETY: the object buffer is sized from the queried object length.
-        let status = unsafe {
-            BCryptGenerateSymmetricKey(
-                self.0,
-                &mut handle,
-                object.as_mut_ptr(),
-                object.len() as u32,
-                key.as_ptr(),
-                key.len() as u32,
-                0,
-            )
-        };
-        if status < 0 || handle.is_null() {
-            return Err(Error::Damaged(format!(
-                "cannot import a CNG key ({status:#x})"
-            )));
-        }
-        Ok(SymmetricKey {
-            handle,
-            _object: object,
-        })
-    }
-}
-
-impl Drop for Algorithm {
-    fn drop(&mut self) {
-        if !self.0.is_null() {
-            // SAFETY: opened by us, closed exactly once.
-            unsafe { BCryptCloseAlgorithmProvider(self.0, 0) };
-        }
-    }
-}
-
-// SAFETY: CNG handles are opaque process-wide pointers. The volume is only reachable through
-// the repository mutex, so every call is serialized, and a handle lives until it is dropped.
-unsafe impl Send for Algorithm {}
-unsafe impl Sync for Algorithm {}
-
-struct SymmetricKey {
-    handle: BCRYPT_KEY_HANDLE,
-    _object: Vec<u8>,
-}
-
-// SAFETY: as for `Algorithm`; the key handle is owned by this value and used under the
-// repository mutex.
-unsafe impl Send for SymmetricKey {}
-unsafe impl Sync for SymmetricKey {}
-
-impl Drop for SymmetricKey {
-    fn drop(&mut self) {
-        if !self.handle.is_null() {
-            // SAFETY: generated by us, destroyed exactly once.
-            unsafe { BCryptDestroyKey(self.handle) };
-        }
-    }
-}
-
-/// AES-256 in ECB mode. EME needs single-block transforms.
-pub struct EcbCipher {
-    key: SymmetricKey,
-}
-
-impl EcbCipher {
-    pub fn new(key: &[u8; 32]) -> Result<Self> {
-        let algorithm = Algorithm::open("AES")?;
-        algorithm.set_chain_mode("ChainingModeECB")?;
-        Ok(Self {
-            key: algorithm.symmetric_key(key)?,
-        })
-    }
-
-    fn crypt(&self, data: &[u8], encrypt: bool) -> Result<Vec<u8>> {
-        if data.is_empty() || data.len() % AES_BLOCK != 0 {
-            return Err(Error::Damaged(format!(
-                "ECB input must be a non-zero multiple of {AES_BLOCK} bytes, got {}",
-                data.len()
-            )));
-        }
-        let mut out = vec![0u8; data.len()];
-        let mut written: u32 = 0;
-        // SAFETY: input and output are the same length and both alive; ECB needs no IV.
-        let status = unsafe {
-            if encrypt {
-                BCryptEncrypt(
-                    self.key.handle,
-                    data.as_ptr(),
-                    data.len() as u32,
-                    ptr::null(),
-                    ptr::null_mut(),
-                    0,
-                    out.as_mut_ptr(),
-                    out.len() as u32,
-                    &mut written,
-                    0,
-                )
-            } else {
-                BCryptDecrypt(
-                    self.key.handle,
-                    data.as_ptr(),
-                    data.len() as u32,
-                    ptr::null(),
-                    ptr::null_mut(),
-                    0,
-                    out.as_mut_ptr(),
-                    out.len() as u32,
-                    &mut written,
-                    0,
-                )
-            }
-        };
-        if status < 0 {
-            return Err(Error::Damaged(format!("AES-ECB failed ({status:#x})")));
-        }
-        out.truncate(written as usize);
-        Ok(out)
-    }
-
-    pub fn encrypt_blocks(&self, data: &[u8]) -> Result<Vec<u8>> {
-        self.crypt(data, true)
-    }
-
-    pub fn decrypt_blocks(&self, data: &[u8]) -> Result<Vec<u8>> {
-        self.crypt(data, false)
-    }
-}
-
-/// One authenticated encryption or decryption call.
-struct AuthCipher<'a> {
-    // Kept alive because the key handle belongs to it.
-    _algorithm: Algorithm,
-    key: SymmetricKey,
-    nonce: &'a [u8],
-}
-
-impl<'a> AuthCipher<'a> {
-    fn new(algorithm: &str, key: &[u8; 32], nonce: &'a [u8]) -> Result<Self> {
-        let algorithm = Algorithm::open(algorithm)?;
-        let key = algorithm.symmetric_key(key)?;
-        Ok(Self {
-            _algorithm: algorithm,
-            key,
-            nonce,
-        })
-    }
-
-    fn gcm(key: &[u8; 32], nonce: &'a [u8]) -> Result<Self> {
-        let algorithm = Algorithm::open("AES")?;
-        algorithm.set_chain_mode("ChainingModeGCM")?;
-        let key = algorithm.symmetric_key(key)?;
-        Ok(Self {
-            _algorithm: algorithm,
-            key,
-            nonce,
-        })
-    }
-
-    fn chacha(key: &[u8; 32], nonce: &'a [u8]) -> Result<Self> {
-        Self::new("CHACHA20_POLY1305", key, nonce)
-    }
-
-    fn info(
-        nonce: &[u8],
-        aad: &[u8],
-        tag: &mut [u8; TAG],
-    ) -> BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO {
-        // SAFETY: the struct is plain old data; zeroing then filling it is the documented way.
-        let mut info: BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO = unsafe { std::mem::zeroed() };
-        info.cbSize = std::mem::size_of::<BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO>() as u32;
-        info.dwInfoVersion = AUTH_MODE_INFO_VERSION;
-        info.pbNonce = nonce.as_ptr() as *mut u8;
-        info.cbNonce = nonce.len() as u32;
-        info.pbAuthData = aad.as_ptr() as *mut u8;
-        info.cbAuthData = aad.len() as u32;
-        info.pbTag = tag.as_mut_ptr();
-        info.cbTag = TAG as u32;
-        info
-    }
-
-    fn seal(&self, aad: &[u8], plaintext: &[u8]) -> Result<Vec<u8>> {
-        let mut tag = [0u8; TAG];
-        let mut info = Self::info(self.nonce, aad, &mut tag);
-        let mut out = vec![0u8; plaintext.len() + TAG];
-        let mut written: u32 = 0;
-        // SAFETY: buffers are sized as CNG requires and `info` borrows live data.
-        let status = unsafe {
-            BCryptEncrypt(
-                self.key.handle,
-                plaintext.as_ptr(),
-                plaintext.len() as u32,
-                &mut info as *mut _ as *const std::ffi::c_void,
-                ptr::null_mut(),
-                0,
-                out.as_mut_ptr(),
-                plaintext.len() as u32,
-                &mut written,
-                0,
-            )
-        };
-        if status < 0 {
-            return Err(Error::Damaged(format!(
-                "AEAD encryption failed ({status:#x})"
-            )));
-        }
-        out.truncate(written as usize);
-        out.extend_from_slice(&tag);
-        Ok(out)
-    }
-
-    fn open(&self, aad: &[u8], body: &[u8]) -> Result<Vec<u8>> {
-        if body.len() < TAG {
-            return Err(Error::Damaged(
-                "the ciphertext is shorter than its tag".into(),
-            ));
-        }
-        let ciphertext_len = body.len() - TAG;
-        let mut tag = [0u8; TAG];
-        tag.copy_from_slice(&body[ciphertext_len..]);
-        let mut info = Self::info(self.nonce, aad, &mut tag);
-        let mut out = vec![0u8; ciphertext_len];
-        let mut written: u32 = 0;
-        // SAFETY: as above; the tag holds the value read from the ciphertext.
-        let status = unsafe {
-            BCryptDecrypt(
-                self.key.handle,
-                body.as_ptr(),
-                ciphertext_len as u32,
-                &mut info as *mut _ as *const std::ffi::c_void,
-                ptr::null_mut(),
-                0,
-                out.as_mut_ptr(),
-                ciphertext_len as u32,
-                &mut written,
-                0,
-            )
-        };
-        if status < 0 {
-            return Err(Error::Damaged(
-                "a block failed authentication".to_string(),
-            ));
-        }
-        out.truncate(written as usize);
-        Ok(out)
-    }
-}
+pub use backend::EcbCipher;
 
 /// AES-256-GCM with gocryptfs' 128-bit nonce: the master key envelope and AES-GCM volumes.
 pub fn aes_gcm_seal(key: &[u8; 32], nonce: &[u8], aad: &[u8], plaintext: &[u8]) -> Result<Vec<u8>> {
-    AuthCipher::gcm(key, nonce)?.seal(aad, plaintext)
+    backend::aes_gcm_seal(key, nonce, aad, plaintext)
 }
 
 pub fn aes_gcm_open(key: &[u8; 32], nonce: &[u8], aad: &[u8], body: &[u8]) -> Result<Vec<u8>> {
-    AuthCipher::gcm(key, nonce)?.open(aad, body)
+    backend::aes_gcm_open(key, nonce, aad, body)
 }
 
-/// XChaCha20-Poly1305: HChaCha20 derives the subkey, CNG does the AEAD with a 96-bit nonce.
+/// XChaCha20-Poly1305: HChaCha20 derives the subkey, the backend does the AEAD with a 96-bit nonce.
 pub fn xchacha20poly1305_seal(
     key: &[u8; 32],
     nonce: &[u8],
@@ -354,7 +41,7 @@ pub fn xchacha20poly1305_seal(
     plaintext: &[u8],
 ) -> Result<Vec<u8>> {
     let (subkey, short) = xchacha_parts(key, nonce)?;
-    AuthCipher::chacha(&subkey, &short)?.seal(aad, plaintext)
+    backend::chacha20poly1305_seal(&subkey, &short, aad, plaintext)
 }
 
 pub fn xchacha20poly1305_open(
@@ -364,7 +51,7 @@ pub fn xchacha20poly1305_open(
     body: &[u8],
 ) -> Result<Vec<u8>> {
     let (subkey, short) = xchacha_parts(key, nonce)?;
-    AuthCipher::chacha(&subkey, &short)?.open(aad, body)
+    backend::chacha20poly1305_open(&subkey, &short, aad, body)
 }
 
 fn xchacha_parts(key: &[u8; 32], nonce: &[u8]) -> Result<([u8; 32], [u8; 12])> {

@@ -422,8 +422,16 @@ fn strip_windows_prefix(path: &str) -> &str {
 }
 
 /// Canonical text form used for every path comparison inside the repository layer.
+///
+/// Case is folded only where the file system is case-insensitive by default (Windows and
+/// macOS); on Linux `Notes` and `notes` are different folders and must stay distinct.
 fn normalize_identity(path: &str) -> String {
-    let mut value = strip_windows_prefix(path).replace('/', "\\").to_lowercase();
+    let value = strip_windows_prefix(path).replace('/', "\\");
+    let mut value = if cfg!(any(windows, target_os = "macos")) {
+        value.to_lowercase()
+    } else {
+        value
+    };
     while value.len() > 3 && value.ends_with('\\') {
         value.pop();
     }
@@ -469,7 +477,16 @@ mod tests {
     fn path_identity_ignores_case_separators_and_trailing_slash() {
         assert!(same_path(
             Path::new("E:\\TesteNotas"),
-            Path::new("e:/testenotas/")
+            Path::new("E:/TesteNotas/")
+        ));
+        // Case only folds where the file system does.
+        assert_eq!(
+            same_path(Path::new("E:\\TesteNotas"), Path::new("e:/testenotas/")),
+            cfg!(any(windows, target_os = "macos"))
+        );
+        assert!(same_path(
+            Path::new("/home/user/Notes"),
+            Path::new("/home/user/Notes/")
         ));
         assert!(!same_path(
             Path::new("E:\\TesteNotas"),
@@ -479,8 +496,17 @@ mod tests {
 
     #[test]
     fn relative_paths_keep_casing_and_nesting() {
+        #[cfg(any(windows, target_os = "macos"))]
         assert_eq!(
             relative_from_root("E:\\Repo", "E:\\repo\\teste\\Nota.md"),
+            Some("teste/Nota.md".to_string())
+        );
+        assert_eq!(
+            relative_from_root("E:\\Repo", "E:\\Repo\\teste\\Nota.md"),
+            Some("teste/Nota.md".to_string())
+        );
+        assert_eq!(
+            relative_from_root("/home/user/Repo", "/home/user/Repo/teste/Nota.md"),
             Some("teste/Nota.md".to_string())
         );
         assert_eq!(
