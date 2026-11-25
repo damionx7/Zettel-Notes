@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api'
 import type { EventBus, PDFFindController, PDFLinkService } from 'pdfjs-dist/types/web/pdf_viewer'
 import type * as PdfRuntime from 'pdfjs-dist/legacy/build/pdf.mjs'
@@ -124,6 +124,13 @@ const callbacks = (): PdfPreviewCallbacks => ({
   onPassword: vi.fn(),
   onError: vi.fn(),
 })
+// The mocked viewer module loads the real PDF.js core and viewer. On a cold, busy runner
+// (Windows CI) that import alone outlasts the 5 s test timeout, and the first test then fails
+// while the next one runs against a half-initialised module. Load both once, before any test.
+beforeAll(async () => {
+  await import('pdfjs-dist/legacy/build/pdf.mjs')
+  await import('pdfjs-dist/legacy/web/pdf_viewer.mjs')
+}, 60_000)
 beforeEach(() => {
   vi.clearAllMocks()
   mocks.read.mockResolvedValue({ code: 'Success', content: btoa('%PDF-test') })
