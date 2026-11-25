@@ -50,7 +50,7 @@ jobs:
 
       # Reuse the Yarn packages that main's test runs cache, to skip their download.
       - name: Restore the Yarn package cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: .yarn/cache
           key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
