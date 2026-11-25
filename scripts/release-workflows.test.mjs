@@ -103,7 +103,11 @@ test('installers are built only for tag releases or by hand', async () => {
   assert.deepEqual(Object.keys(release.on.push), ['tags'])
   for (const name of ['nodejs', 'test-bundle']) {
     const triggers = (await workflow(name)).on
-    assert.deepEqual(Object.keys(triggers), ['workflow_dispatch'], `${name} must not build on every commit`)
+    assert.deepEqual(
+      Object.keys(triggers),
+      ['workflow_dispatch'],
+      `${name} must not build on every commit`,
+    )
   }
   assert.deepEqual(quality.on.push.branches, ['**'], 'Test CI must keep checking every commit')
   assert.ok('workflow_call' in quality.on)
@@ -148,7 +152,9 @@ test('DMG creation retries hdiutil when macOS reports the image busy', async (t)
   let shim
   for (const [name, id] of builds) {
     const steps = (await workflow(name)).jobs[id].steps
-    const retry = steps.findIndex((step) => step.name === 'Retry disk image creation when macOS reports it busy')
+    const retry = steps.findIndex(
+      (step) => step.name === 'Retry disk image creation when macOS reports it busy',
+    )
     const build = steps.findIndex((step) => step.name === 'Build the app')
     assert.ok(retry >= 0 && retry < build, `${name} ${id} must install the retry before building`)
     assert.equal(steps[retry].if, "runner.os == 'macOS'")
@@ -182,9 +188,17 @@ esac
     await rm(counter, { force: true })
     try {
       const result = await execFileAsync(script, args, { env: { ...process.env, FAKE_MODE: mode } })
-      return { code: 0, ...result, calls: (await readFile(counter, 'utf8')).trim().split('\n').length }
+      return {
+        code: 0,
+        ...result,
+        calls: (await readFile(counter, 'utf8')).trim().split('\n').length,
+      }
     } catch (error) {
-      return { code: error.code, stderr: error.stderr, calls: (await readFile(counter, 'utf8')).trim().split('\n').length }
+      return {
+        code: error.code,
+        stderr: error.stderr,
+        calls: (await readFile(counter, 'utf8')).trim().split('\n').length,
+      }
     }
   }
   const image = path.join(directory, 'rw.Zettel Notes.dmg')
@@ -196,7 +210,11 @@ esac
   assert.equal(other.code, 3, 'other failures must not be retried')
   assert.equal(other.calls, 1)
   const attach = await run('pass', ['attach', image])
-  assert.equal(attach.stdout.trim(), `real attach ${image}`, 'other subcommands pass through untouched')
+  assert.equal(
+    attach.stdout.trim(),
+    `real attach ${image}`,
+    'other subcommands pass through untouched',
+  )
 })
 
 test('both macOS packages build on Intel runners', async () => {
@@ -244,7 +262,9 @@ test('all release packages retain matching signatures through collection and pub
       download,
       fixtures: [
         [`dmg/Zettel Notes_1.2.3_${filenameArch}.dmg`, `Zettel-Notes_v1.2.3_${filenameArch}.dmg`],
-        ...withSignatures([['macos/Zettel Notes.app.tar.gz', `Zettel-Notes_${filenameArch}.app.tar.gz`]]),
+        ...withSignatures([
+          ['macos/Zettel Notes.app.tar.gz', `Zettel-Notes_${filenameArch}.app.tar.gz`],
+        ]),
       ],
     })),
     {
@@ -269,7 +289,10 @@ test('all release packages retain matching signatures through collection and pub
       download: 'Download offline installer artifacts',
       fixtures: withSignatures([
         ['msi/Zettel Notes_1.2.3_x64_en-US.msi', 'Zettel-Notes_v1.2.3_offline_installer_x64.msi'],
-        ['nsis/Zettel Notes_1.2.3_x64-setup.exe', 'Zettel-Notes_v1.2.3_offline_installer_x64-setup.exe'],
+        [
+          'nsis/Zettel Notes_1.2.3_x64-setup.exe',
+          'Zettel-Notes_v1.2.3_offline_installer_x64-setup.exe',
+        ],
       ]),
     },
   ]
@@ -335,4 +358,67 @@ test('all release packages retain matching signatures through collection and pub
       )
     }
   }
+})
+
+test('CI reuses caches that only main saves, and releases never replay Turbo builds', async (t) => {
+  const index = (steps, name) => steps.findIndex((step) => step.name === name)
+  for (const id of ['unit', 'test']) {
+    const steps = quality.jobs[id].steps
+    const install = index(steps, 'Install dependencies')
+    for (const name of ['Restore the Yarn package cache', 'Restore the Turbo build cache']) {
+      assert.ok(index(steps, name) >= 0 && index(steps, name) < install, `${id}: ${name}`)
+    }
+    for (const name of [
+      'Keep the Turbo cache to recent builds',
+      'Save the Turbo build cache',
+      'Save the Yarn package cache',
+    ]) {
+      const step = steps[index(steps, name)]
+      assert.ok(step, `${id}: ${name}`)
+      assert.equal(step.if, "github.ref == 'refs/heads/main'", `${id}: ${name}`)
+      assert.ok(
+        index(steps, name) > index(steps, 'Run Test'),
+        `${id}: ${name} saves before the tests`,
+      )
+    }
+    const rust = steps.find((step) => step.uses?.startsWith('Swatinem/rust-cache'))
+    assert.equal(rust.with['save-if'], "${{ github.ref == 'refs/heads/main' }}", id)
+  }
+
+  // Release builds write the Sentry DSN to an ignored .env file that Turbo does not hash,
+  // so a Turbo cache from main would ship a frontend built without it.
+  for (const name of ['tauri-release', 'nodejs', 'test-bundle']) {
+    const jobs = Object.entries((await workflow(name)).jobs)
+    for (const [id, job] of jobs.filter(([, job]) => job.steps)) {
+      const steps = job.steps
+      assert.ok(!steps.some((step) => step.with?.path === '.turbo/cache'), `${name}.${id}`)
+      assert.ok(!steps.some((step) => step.uses?.startsWith('actions/cache/save')), `${name}.${id}`)
+      if (index(steps, 'Install dependencies') >= 0) {
+        const yarn = index(steps, 'Restore the Yarn package cache')
+        assert.ok(yarn >= 0 && yarn < index(steps, 'Install dependencies'), `${name}.${id}`)
+      }
+    }
+  }
+
+  const trim =
+    quality.jobs.unit.steps[index(quality.jobs.unit.steps, 'Keep the Turbo cache to recent builds')]
+      .run
+  const directory = await mkdtemp(path.join(tmpdir(), 'turbo-trim-'))
+  t.after(() => rm(directory, { recursive: true, force: true }))
+  await execFileAsync(
+    'bash',
+    [
+      '-e',
+      '-c',
+      'mkdir -p .turbo/cache && for i in $(seq 1 700); do touch -d "@$((1700000000 + i))" .turbo/cache/entry-$i; done',
+    ],
+    { cwd: directory },
+  )
+  await execFileAsync('bash', ['-e', '-c', trim], { cwd: directory })
+  const kept = await glob('.turbo/cache/*', { cwd: directory })
+  assert.equal(kept.length, 600)
+  assert.ok(kept.includes('.turbo/cache/entry-700') && !kept.includes('.turbo/cache/entry-100'))
+  await execFileAsync('bash', ['-e', '-c', trim], {
+    cwd: await mkdtemp(path.join(tmpdir(), 'turbo-none-')),
+  })
 })
