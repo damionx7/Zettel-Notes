@@ -109,6 +109,35 @@ test('installers are built only for tag releases or by hand', async () => {
   assert.ok('workflow_call' in quality.on)
 })
 
+test('installers take their version from the release tag', async () => {
+  for (const id of ['build', 'build-offline-installer']) {
+    const steps = release.jobs[id].steps
+    const stamp = steps.findIndex((step) => step.name === "Use the tag's version")
+    const build = steps.findIndex((step) => step.name === 'Build the app')
+    assert.ok(stamp >= 0 && stamp < build, `${id} must set the version before building`)
+    assert.equal(steps[stamp].shell, 'bash', `${id} must run the same shell on Windows`)
+    const directory = await mkdtemp(path.join(tmpdir(), 'markflowy-tag-version-'))
+    try {
+      const config = path.join(directory, 'apps/desktop/src-tauri/tauri.conf.json')
+      await mkdir(path.dirname(config), { recursive: true })
+      await writeFile(config, JSON.stringify({ productName: 'Zettel Notes', version: '1.0.4' }))
+      const script = steps[stamp].run.match(/node -e "(.*)"$/s)[1].replaceAll('\\\\n', '\\n')
+      await execFileAsync('node', ['-e', script], {
+        cwd: directory,
+        env: { ...process.env, GITHUB_REF_NAME: 'v0.0.3' },
+      })
+      const written = JSON.parse(await readFile(config, 'utf8'))
+      assert.deepEqual(written, { productName: 'Zettel Notes', version: '0.0.3' })
+    } finally {
+      await rm(directory, { recursive: true, force: true })
+    }
+  }
+  assert.equal(
+    release.jobs.release.steps.find((step) => step.name === 'Query version number').run,
+    'echo "version=${GITHUB_REF:11}" >> $GITHUB_ENV',
+  )
+})
+
 test('Intel macOS packages build on Intel runners', async () => {
   for (const name of ['tauri-release', 'test-bundle', 'nodejs']) {
     const { build } = (await workflow(name)).jobs
