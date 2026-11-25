@@ -159,7 +159,11 @@ mod snapshot_tests {
                         tempfile::NamedTempFile::new_in(directory.path()).unwrap();
                     replacement.write_all(b"identical").unwrap();
                     replacement.as_file().set_modified(modified).unwrap();
-                    replacement.persist(path).unwrap();
+                    // `std::fs::rename` replaces the file with POSIX semantics on Windows, so it
+                    // succeeds while the sampled handle is still open; tempfile's `persist`
+                    // uses MoveFileEx, which Windows refuses with "Access is denied".
+                    let replacement = replacement.into_temp_path().keep().unwrap();
+                    fs::rename(&replacement, path).unwrap();
                     // Keep the old open identity but remove other stability signals.
                     sample.metadata = fs::metadata(path).unwrap();
                     sample.generations = file_write_generations(path, &sample.metadata).unwrap();
