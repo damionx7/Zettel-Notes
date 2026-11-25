@@ -7,7 +7,7 @@ import { homedir, tmpdir } from 'node:os'
 import { basename, join, resolve } from 'node:path'
 
 // Must match `e2e::identifier()` in src-tauri/src/e2e.rs.
-export const E2E_IDENTIFIER_PREFIX = 'pt.zekabra.winzettel.e2e.'
+export const E2E_IDENTIFIER_PREFIX = 'org.eu.thedoc.zettelnotes.desktop.e2e.'
 export const E2E_SETTINGS = { autosave: false }
 
 export const scenarios = [
@@ -46,7 +46,7 @@ export async function createEnvironment(name, parent = tmpdir()) {
   await writeFile(join(root, '.markflowy-e2e'), id)
   await mkdir(join(root, 'files'))
   await mkdir(join(root, 'config'))
-  // WinZettel autosaves by default; the scenarios observe unsaved drafts, so start with
+  // Zettel Notes autosaves by default; the scenarios observe unsaved drafts, so start with
   // autosave off (the upstream default these scenarios were written against).
   await writeFile(join(root, 'config', 'markflowy.conf.json'), JSON.stringify(E2E_SETTINGS))
   return { root, id, identifier: `${E2E_IDENTIFIER_PREFIX}${id.replaceAll('-', '')}` }

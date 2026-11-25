@@ -107,21 +107,21 @@ jobs:
 
           $version = $env:GITHUB_REF_NAME -replace '^v', ''
           $releaseDir = Join-Path "target/${{ matrix.target }}" "release"
-          $exe = Join-Path $releaseDir "winzettel.exe"
+          $exe = Join-Path $releaseDir "zettel-notes.exe"
 
           if (-not (Test-Path -LiteralPath $exe -PathType Leaf)) {
             throw "Release executable not found: $exe"
           }
 
-          $portableRoot = Join-Path $env:RUNNER_TEMP "WinZettel-portable-package"
-          $portableDir = Join-Path $portableRoot "WinZettel-portable"
+          $portableRoot = Join-Path $env:RUNNER_TEMP "Zettel-Notes-portable-package"
+          $portableDir = Join-Path $portableRoot "Zettel-Notes-portable"
           $portableOutput = Join-Path $releaseDir "bundle/portable"
-          $portableZip = Join-Path $portableOutput "WinZettel_${version}_x64_portable.zip"
+          $portableZip = Join-Path $portableOutput "Zettel-Notes_${version}_x64_portable.zip"
 
           Remove-Item -LiteralPath $portableRoot -Recurse -Force -ErrorAction SilentlyContinue
           New-Item -ItemType Directory -Path $portableDir -Force | Out-Null
           New-Item -ItemType Directory -Path $portableOutput -Force | Out-Null
-          Copy-Item -LiteralPath $exe -Destination (Join-Path $portableDir "WinZettel.exe")
+          Copy-Item -LiteralPath $exe -Destination (Join-Path $portableDir "Zettel Notes.exe")
           $themeLicenses = Join-Path $portableDir "licenses/themes"
           New-Item -ItemType Directory -Path $themeLicenses -Force | Out-Null
           Copy-Item -Path "packages/theme/licenses/*.txt" -Destination $themeLicenses
@@ -282,33 +282,34 @@ jobs:
           # Updater signatures exist only when TAURI_PRIVATE_KEY is configured.
           mv_sig() { if [ -f "$1" ]; then mv "$1" "$2"; elif [ "$HAS_SIGNING_KEY" = "true" ]; then echo "Missing signature: $1" >&2; return 1; fi; }
 
-          mv "artifacts/aarch64/dmg/WinZettel_${{ env.version }}_aarch64.dmg" "artifacts/WinZettel_v${{ env.version }}_aarch64.dmg"
-          mv "artifacts/aarch64/macos/WinZettel.app.tar.gz" "artifacts/WinZettel_aarch64.app.tar.gz"
-          mv_sig "artifacts/aarch64/macos/WinZettel.app.tar.gz.sig" "artifacts/WinZettel_aarch64.app.tar.gz.sig"
+          mv "artifacts/aarch64/dmg/Zettel Notes_${{ env.version }}_aarch64.dmg" "artifacts/Zettel-Notes_v${{ env.version }}_aarch64.dmg"
+          mv "artifacts/aarch64/macos/Zettel Notes.app.tar.gz" "artifacts/Zettel-Notes_aarch64.app.tar.gz"
+          mv_sig "artifacts/aarch64/macos/Zettel Notes.app.tar.gz.sig" "artifacts/Zettel-Notes_aarch64.app.tar.gz.sig"
 
-          mv "artifacts/x86_64/dmg/WinZettel_${{ env.version }}_x64.dmg" "artifacts/WinZettel_v${{ env.version }}_x64.dmg"
-          mv "artifacts/x86_64/macos/WinZettel.app.tar.gz" "artifacts/WinZettel_x64.app.tar.gz"
-          mv_sig "artifacts/x86_64/macos/WinZettel.app.tar.gz.sig" "artifacts/WinZettel_x64.app.tar.gz.sig"
+          mv "artifacts/x86_64/dmg/Zettel Notes_${{ env.version }}_x64.dmg" "artifacts/Zettel-Notes_v${{ env.version }}_x64.dmg"
+          mv "artifacts/x86_64/macos/Zettel Notes.app.tar.gz" "artifacts/Zettel-Notes_x64.app.tar.gz"
+          mv_sig "artifacts/x86_64/macos/Zettel Notes.app.tar.gz.sig" "artifacts/Zettel-Notes_x64.app.tar.gz.sig"
 
-          mv "artifacts/x86_64/deb/WinZettel_${{ env.version }}_amd64.deb" "artifacts/WinZettel_v${{ env.version }}_amd64.deb"
-          mv_sig "artifacts/x86_64/deb/WinZettel_${{ env.version }}_amd64.deb.sig" "artifacts/WinZettel_v${{ env.version }}_amd64.deb.sig"
-          mv "artifacts/x86_64/appimage/WinZettel_${{ env.version }}_amd64.AppImage" "artifacts/WinZettel_v${{ env.version }}_amd64.AppImage"
-          mv_sig "artifacts/x86_64/appimage/WinZettel_${{ env.version }}_amd64.AppImage.sig" "artifacts/WinZettel_v${{ env.version }}_amd64.AppImage.sig"
-          mv artifacts/x86_64/rpm/* artifacts/
+          mv "artifacts/x86_64/deb/Zettel Notes_${{ env.version }}_amd64.deb" "artifacts/Zettel-Notes_v${{ env.version }}_amd64.deb"
+          mv_sig "artifacts/x86_64/deb/Zettel Notes_${{ env.version }}_amd64.deb.sig" "artifacts/Zettel-Notes_v${{ env.version }}_amd64.deb.sig"
+          mv "artifacts/x86_64/appimage/Zettel Notes_${{ env.version }}_amd64.AppImage" "artifacts/Zettel-Notes_v${{ env.version }}_amd64.AppImage"
+          mv_sig "artifacts/x86_64/appimage/Zettel Notes_${{ env.version }}_amd64.AppImage.sig" "artifacts/Zettel-Notes_v${{ env.version }}_amd64.AppImage.sig"
+          mv "artifacts/x86_64/rpm/Zettel Notes-${{ env.version }}-1.x86_64.rpm" "artifacts/Zettel-Notes-${{ env.version }}-1.x86_64.rpm"
+          mv_sig "artifacts/x86_64/rpm/Zettel Notes-${{ env.version }}-1.x86_64.rpm.sig" "artifacts/Zettel-Notes-${{ env.version }}-1.x86_64.rpm.sig"
 
-          mv "artifacts/x86_64/msi/WinZettel_${{ env.version }}_x64_en-US.msi" "artifacts/WinZettel_v${{ env.version }}_x64.msi"
-          mv_sig "artifacts/x86_64/msi/WinZettel_${{ env.version }}_x64_en-US.msi.sig" "artifacts/WinZettel_v${{ env.version }}_x64.msi.sig"
+          mv "artifacts/x86_64/msi/Zettel Notes_${{ env.version }}_x64_en-US.msi" "artifacts/Zettel-Notes_v${{ env.version }}_x64.msi"
+          mv_sig "artifacts/x86_64/msi/Zettel Notes_${{ env.version }}_x64_en-US.msi.sig" "artifacts/Zettel-Notes_v${{ env.version }}_x64.msi.sig"
 
-          mv "artifacts/x86_64/nsis/WinZettel_${{ env.version }}_x64-setup.exe" "artifacts/WinZettel_v${{ env.version }}_x64-setup.exe"
-          mv_sig "artifacts/x86_64/nsis/WinZettel_${{ env.version }}_x64-setup.exe.sig" "artifacts/WinZettel_v${{ env.version }}_x64-setup.exe.sig"
+          mv "artifacts/x86_64/nsis/Zettel Notes_${{ env.version }}_x64-setup.exe" "artifacts/Zettel-Notes_v${{ env.version }}_x64-setup.exe"
+          mv_sig "artifacts/x86_64/nsis/Zettel Notes_${{ env.version }}_x64-setup.exe.sig" "artifacts/Zettel-Notes_v${{ env.version }}_x64-setup.exe.sig"
 
-          mv "artifacts/x86_64/portable/WinZettel_${{ env.version }}_x64_portable.zip" "artifacts/WinZettel_v${{ env.version }}_x64_portable.zip"
+          mv "artifacts/x86_64/portable/Zettel-Notes_${{ env.version }}_x64_portable.zip" "artifacts/Zettel-Notes_v${{ env.version }}_x64_portable.zip"
 
-          mv "artifacts/offline-installer/msi/WinZettel_${{ env.version }}_x64_en-US.msi" "artifacts/WinZettel_v${{ env.version }}_offline_installer_x64.msi"
-          mv_sig "artifacts/offline-installer/msi/WinZettel_${{ env.version }}_x64_en-US.msi.sig" "artifacts/WinZettel_v${{ env.version }}_offline_installer_x64.msi.sig"
+          mv "artifacts/offline-installer/msi/Zettel Notes_${{ env.version }}_x64_en-US.msi" "artifacts/Zettel-Notes_v${{ env.version }}_offline_installer_x64.msi"
+          mv_sig "artifacts/offline-installer/msi/Zettel Notes_${{ env.version }}_x64_en-US.msi.sig" "artifacts/Zettel-Notes_v${{ env.version }}_offline_installer_x64.msi.sig"
 
-          mv "artifacts/offline-installer/nsis/WinZettel_${{ env.version }}_x64-setup.exe" "artifacts/WinZettel_v${{ env.version }}_offline_installer_x64-setup.exe"
-          mv_sig "artifacts/offline-installer/nsis/WinZettel_${{ env.version }}_x64-setup.exe.sig" "artifacts/WinZettel_v${{ env.version }}_offline_installer_x64-setup.exe.sig"
+          mv "artifacts/offline-installer/nsis/Zettel Notes_${{ env.version }}_x64-setup.exe" "artifacts/Zettel-Notes_v${{ env.version }}_offline_installer_x64-setup.exe"
+          mv_sig "artifacts/offline-installer/nsis/Zettel Notes_${{ env.version }}_x64-setup.exe.sig" "artifacts/Zettel-Notes_v${{ env.version }}_offline_installer_x64-setup.exe.sig"
 
       - run: |
           cat > release.txt << EOF
@@ -323,23 +324,23 @@ jobs:
 
           ### Windows users
           - We provide an Offline Installer with built-in ​​WebView2 Runtime​​ for devices that cannot automatically install WebView2 online or are in a no-network environment. Please note that this installer is relatively large in size and is recommended to be used only when necessary.
-          - The Portable ZIP can be extracted and run without installation. It uses the system WebView2 Runtime and keeps WinZettel's existing user-level data location. In-app updates currently launch an installer; to remain portable, download and extract the new ZIP manually.
+          - The Portable ZIP can be extracted and run without installation. It uses the system WebView2 Runtime and keeps Zettel Notes' existing user-level data location. In-app updates currently launch an installer; to remain portable, download and extract the new ZIP manually.
 
           ### macOS users
           - ​​macOS x86_64 version​​: When you launch the app for the first time, you may see a prompt saying "Cannot open the application" because the app is from an unidentified developer. Please go to "System Preferences" > "Security & Privacy", and click "Open Anyway" in the "General" tab.
           - ​​macOS aarch64 (Apple Silicon) users​​: If you see a prompt saying "The application is damaged" when you launch it for the first time, it is usually due to system security restrictions. Please open the terminal and run the following command to fix the permission issue, and then you can open the app normally:
-            xattr -cr /Applications/WinZettel.app
+            xattr -cr "/Applications/Zettel Notes.app"
 
           ## 常见问题：
 
           ### Windows 用户
           - 我们提供了内置 ​​WebView2 运行时​​的离线安装包（Offline Installer），适用于无法自动在线安装 WebView2 或处于无网络环境的设备。请注意，此安装包体积较大，建议仅在必要时使用.
-          - Portable ZIP 解压后即可运行，无需安装；它使用系统 WebView2 Runtime，并继续使用 WinZettel 现有的用户级数据目录。应用内更新目前会启动安装器；如需继续使用便携版，请手动下载并解压新版 ZIP。
+          - Portable ZIP 解压后即可运行，无需安装；它使用系统 WebView2 Runtime，并继续使用 Zettel Notes 现有的用户级数据目录。应用内更新目前会启动安装器；如需继续使用便携版，请手动下载并解压新版 ZIP。
 
           ### macOS 用户
           - ​​macOS x86_64 版本​​：首次启动应用时，系统可能会提示“无法打开应用程序”，这是因为应用来自未识别的开发者。请前往“系统偏好设置” > “安全性与隐私”，在“通用”标签页中点击“仍要打开”即可.
           - ​​macOS aarch64 (Apple Silicon) 用户​​：首次启动若提示“应用程序已损坏”，通常是由于系统的安全限制。请打开终端，执行以下命令来修复权限问题，之后即可正常打开应用
-            xattr -cr /Applications/WinZettel.app
+            xattr -cr "/Applications/Zettel Notes.app"
 
           </details>
 

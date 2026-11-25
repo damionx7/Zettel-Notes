@@ -52,7 +52,7 @@
                        "show_more":  "Show more ({{count}} remaining)",
                        "keyboard_hint":  "↑ ↓ to navigate · Enter to open · Esc to close"
                    },
-    "app_name":  "WinZettel",
+    "app_name":  "Zettel Notes",
     "editor":  {
                    "render_failed":  "Unable to render the editor",
                    "split_limit":  "The editor splits into two panes. Close one before splitting again."
@@ -881,7 +881,7 @@
                                                    "label":  "Pandoc",
                                                    "executable":  {
                                                                       "label":  "Pandoc executable",
-                                                                      "desc":  "Pandoc is not bundled with WinZettel. Use automatic detection or select a local executable."
+                                                                      "desc":  "Pandoc is not bundled with Zettel Notes. Use automatic detection or select a local executable."
                                                                   },
                                                    "status":  {
                                                                   "checking":  "Checking for Pandoc...",
@@ -899,7 +899,7 @@
                                                 "label":  "PDF export",
                                                 "executable":  {
                                                                    "label":  "PDF export browser",
-                                                                   "desc":  "WinZettel uses a local Chrome, Chromium, or Edge browser to export PDF with heading bookmarks. Detect it automatically or select its executable."
+                                                                   "desc":  "Zettel Notes uses a local Chrome, Chromium, or Edge browser to export PDF with heading bookmarks. Detect it automatically or select its executable."
                                                                },
                                                 "status":  {
                                                                "checking":  "Checking for a PDF export browser…",
@@ -1005,7 +1005,7 @@
                                                          "loadingPreview":  "Loading theme preview",
                                                          "reinstall":  "Reinstall",
                                                          "builtIn":  "Built-in themes",
-                                                         "builtInDescription":  "Included with WinZettel.",
+                                                         "builtInDescription":  "Included with Zettel Notes.",
                                                          "local":  "Local themes",
                                                          "localDescription":  "Themes you created or imported.",
                                                          "active":  "In use",
@@ -1177,7 +1177,7 @@
                     "install_failed":  "Unable to install the update: {{error}}",
                     "check_failed":  "Unable to check for updates: {{error}}",
                     "interrupted_title":  "Update not completed",
-                    "interrupted_description":  "The previous update to {{version}} did not complete. Automatic installation is paused. You can retry, disable automatic updates, or cancel to continue using WinZettel.",
+                    "interrupted_description":  "The previous update to {{version}} did not complete. Automatic installation is paused. You can retry, disable automatic updates, or cancel to continue using Zettel Notes.",
                     "disable_auto_update":  "Disable automatic updates"
                 },
     "workspace":  {
@@ -1285,7 +1285,7 @@
                     "title":  "Local history",
                     "description":  "Review changes and restore a version as an unsaved draft.",
                     "enabled":  "Enable local history",
-                    "enabled_description":  "Keep versions of documents opened in WinZettel. Unsaved draft protection continues when this is off.",
+                    "enabled_description":  "Keep versions of documents opened in Zettel Notes. Unsaved draft protection continues when this is off.",
                     "retention":  "Ordinary history: 30 days, up to 100 versions per document, with a 1 GB target budget. Unsaved drafts and active editing sessions are protected.",
                     "count":  "{{count}} versions",
                     "clear_title":  "Manage stored history",

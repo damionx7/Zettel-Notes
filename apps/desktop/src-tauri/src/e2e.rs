@@ -47,7 +47,7 @@ pub fn root() -> PathBuf {
 
 pub fn identifier() -> String {
     format!(
-        "pt.zekabra.winzettel.e2e.{}",
+        "org.eu.thedoc.zettelnotes.desktop.e2e.{}",
         ENVIRONMENT.get().unwrap().id.simple()
     )
 }

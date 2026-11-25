@@ -130,7 +130,7 @@ pub fn create(
         plaintext_names,
         cipher,
         log_n,
-        creator: "WinZettel".to_string(),
+        creator: "Zettel Notes".to_string(),
     };
     let volume = mf_gocryptfs::Volume::create(&folder, password.as_bytes(), &options)
         .map_err(|error| error.to_string())?;

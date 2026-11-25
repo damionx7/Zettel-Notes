@@ -52,7 +52,7 @@
                        "show_more":  "Mostrar más ({{count}} restantes)",
                        "keyboard_hint":  "↑ ↓ para navegar · Intro para abrir · Esc para cerrar"
                    },
-    "app_name":  "WinZettel",
+    "app_name":  "Zettel Notes",
     "editor":  {
                    "render_failed":  "No se pudo renderizar el editor",
                    "split_limit":  "El editor se divide en dos paneles. Cierra uno para volver a dividir."
@@ -804,7 +804,7 @@
                                                    "label":  "Pandoc",
                                                    "executable":  {
                                                                       "label":  "Ejecutable de Pandoc",
-                                                                      "desc":  "Pandoc no se incluye con WinZettel. Usa la detección automática o selecciona un ejecutable local."
+                                                                      "desc":  "Pandoc no se incluye con Zettel Notes. Usa la detección automática o selecciona un ejecutable local."
                                                                   },
                                                    "status":  {
                                                                   "checking":  "Buscando Pandoc...",
@@ -822,7 +822,7 @@
                                                 "label":  "PDF export",
                                                 "executable":  {
                                                                    "label":  "PDF export browser",
-                                                                   "desc":  "WinZettel uses a local Chrome, Chromium, or Edge browser to export PDF with heading bookmarks. Detect it automatically or select its executable."
+                                                                   "desc":  "Zettel Notes uses a local Chrome, Chromium, or Edge browser to export PDF with heading bookmarks. Detect it automatically or select its executable."
                                                                },
                                                 "status":  {
                                                                "checking":  "Checking for a PDF export browser…",
@@ -928,7 +928,7 @@
                                                          "loadingPreview":  "Cargando vista previa del tema",
                                                          "reinstall":  "Reinstalar",
                                                          "builtIn":  "Temas integrados",
-                                                         "builtInDescription":  "Incluidos con WinZettel.",
+                                                         "builtInDescription":  "Incluidos con Zettel Notes.",
                                                          "local":  "Temas locales",
                                                          "localDescription":  "Temas que has creado o importado.",
                                                          "active":  "En uso",
@@ -1100,7 +1100,7 @@
                     "install_failed":  "No se pudo instalar la actualización: {{error}}",
                     "check_failed":  "No se pudieron buscar actualizaciones: {{error}}",
                     "interrupted_title":  "Actualización incompleta",
-                    "interrupted_description":  "La actualización anterior a {{version}} no se completó. La instalación automática está en pausa. Puedes reintentar, desactivar las actualizaciones automáticas o cancelar para seguir usando WinZettel.",
+                    "interrupted_description":  "La actualización anterior a {{version}} no se completó. La instalación automática está en pausa. Puedes reintentar, desactivar las actualizaciones automáticas o cancelar para seguir usando Zettel Notes.",
                     "disable_auto_update":  "Desactivar actualizaciones automáticas"
                 },
     "explorer":  {
@@ -1285,7 +1285,7 @@
                     "title":  "Historial local",
                     "description":  "Revisa los cambios y restaura una versión como borrador sin guardar.",
                     "enabled":  "Activar el historial local",
-                    "enabled_description":  "Conserva versiones de los documentos abiertos en WinZettel. La protección de borradores continúa al desactivarlo.",
+                    "enabled_description":  "Conserva versiones de los documentos abiertos en Zettel Notes. La protección de borradores continúa al desactivarlo.",
                     "retention":  "Historial ordinario: 30 días, hasta 100 versiones por documento y un objetivo de 1 GB. Se protegen los borradores sin guardar y las sesiones activas.",
                     "count":  "{{count}} versiones",
                     "clear_title":  "Gestionar el historial",

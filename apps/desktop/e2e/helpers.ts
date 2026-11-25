@@ -71,7 +71,7 @@ export async function openFile(path: string, content: string): Promise<FileState
   await cli('file', 'open', path, '--wait', 'applied', '--sha256', sha256(content))
   const opened = await waitState(path, { open: true, active: true, ready: true,
     dirty: false, contentSha256: sha256(content) })
-  // WinZettel opens existing notes in the reading pane; the scenarios edit in the source editor.
+  // Zettel Notes opens existing notes in the reading pane; the scenarios edit in the source editor.
   if (opened.mode !== 'sourceCode') await switchMode('sourceCode', path)
   const state = await waitState(path, { open: true, active: true, ready: true,
     dirty: false, contentSha256: sha256(content), mode: 'sourceCode' })
