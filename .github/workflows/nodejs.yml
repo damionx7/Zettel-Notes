@@ -24,7 +24,8 @@ jobs:
             arch: x86_64
             target: x86_64-apple-darwin
           - build: macos
-            os: macos-latest
+            # Cross-compiled on Intel: hosted Apple Silicon runners are often unavailable.
+            os: macos-26-intel
             arch: aarch64
             target: aarch64-apple-darwin
           - build: windows

@@ -138,14 +138,15 @@ test('installers take their version from the release tag', async () => {
   )
 })
 
-test('Intel macOS packages build on Intel runners', async () => {
+test('both macOS packages build on Intel runners', async () => {
+  // Apple Silicon is cross-compiled: hosted arm64 runners were repeatedly not available.
   for (const name of ['tauri-release', 'test-bundle', 'nodejs']) {
     const { build } = (await workflow(name)).jobs
-    const intel = build.strategy.matrix.include.find(
-      (entry) => entry.target === 'x86_64-apple-darwin',
-    )
     assert.equal(build['runs-on'], '${{ matrix.os }}', name)
-    assert.equal(intel?.os, 'macos-26-intel', name)
+    for (const target of ['x86_64-apple-darwin', 'aarch64-apple-darwin']) {
+      const entry = build.strategy.matrix.include.find((item) => item.target === target)
+      assert.equal(entry?.os, 'macos-26-intel', `${name} ${target}`)
+    }
   }
 })
 
