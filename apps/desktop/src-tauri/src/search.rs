@@ -194,7 +194,12 @@ fn search_repository(
                 continue;
             }
 
-            let absolute = format!("{root}\\{}", relative.replace('/', "\\"));
+            // Rebuild the on-disk path with the platform separator: `\` on Windows, `/` elsewhere.
+            let absolute = format!(
+                "{root}{sep}{}",
+                relative.replace('/', std::path::MAIN_SEPARATOR_STR),
+                sep = std::path::MAIN_SEPARATOR_STR,
+            );
             data.push(FileInfo {
                 id: absolute.clone(),
                 path: absolute,

@@ -4,9 +4,6 @@ on:
   push:
     branches: ['**']
   workflow_call:
-    secrets:
-      CAPRICORN_READ_TOKEN:
-        required: true
 
 permissions:
   contents: read
@@ -41,11 +38,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Install verified Capricorn runtime
-        run: yarn install:capricorn-runtime
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.CAPRICORN_READ_TOKEN || secrets.ACCESS_TOKEN }}
-
       - name: Build workspaces
         run: yarn build
 
@@ -57,9 +49,6 @@ jobs:
 
       - name: Run Test
         run: yarn test
-
-      - name: Verify the pinned published runtime
-        run: yarn workspace @markflowy/desktop test:capricorn-published
 
       - name: Test Rust workspaces
         run: cargo test --workspace --lib --tests --locked

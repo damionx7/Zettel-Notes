@@ -21,7 +21,7 @@ assert.equal(process.platform, 'darwin', 'The first native E2E suite supports ma
 const { stdout: macosVersion } = await promisify(execFile)('/usr/bin/sw_vers', ['-productVersion'])
 assertSupportedPlatform(process.platform, macosVersion)
 const binary = await assertBinary(resolve(process.env.MARKFLOWY_E2E_BINARY ??
-  join(repository, 'target/debug/markflowy')))
+  join(repository, 'target/debug/winzettel')))
 const output = join(directory, 'reports', new Date().toISOString().replaceAll(':', '-'))
 await mkdir(output, { recursive: true })
 const wdio = resolve(dirname(fileURLToPath(import.meta.resolve('@wdio/cli'))), '../bin/wdio.js')

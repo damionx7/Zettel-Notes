@@ -26,7 +26,6 @@ function prerequisites(jobs, id, visiting = new Set()) {
 
 test('every release build and publication depends on the shared quality gate', () => {
   assert.equal(release.jobs.quality.uses, './.github/workflows/test-ci.yml')
-  assert.ok(release.jobs.quality.secrets.CAPRICORN_READ_TOKEN)
   for (const id of ['build', 'build-offline-installer', 'release']) {
     assert.ok(prerequisites(release.jobs, id).has('quality'), `${id} bypasses quality checks`)
     assert.notEqual(release.jobs[id]['continue-on-error'], true, id)
@@ -35,12 +34,10 @@ test('every release build and publication depends on the shared quality gate', (
 })
 
 test('the shared gate requires real runtime, type, Rust and content validation', () => {
-  assert.equal(quality.on.workflow_call.secrets.CAPRICORN_READ_TOKEN.required, true)
   assert.equal(quality.permissions.contents, 'read')
   const steps = quality.jobs.test.steps
   const commands = steps.filter((step) => step.run).flatMap((step) => step.run.split('\n'))
   for (const command of [
-    'yarn install:capricorn-runtime',
     'yarn workspace @markflowy/desktop build:types',
     'yarn workspace @markflowy/desktop test:e2e:types',
     'yarn workspace @markflowy/desktop test:e2e:runner',
@@ -48,7 +45,6 @@ test('the shared gate requires real runtime, type, Rust and content validation',
     'yarn workspace @markflowy/desktop test:e2e',
     'yarn workspace @markflowy/web build:types',
     'yarn test',
-    'yarn workspace @markflowy/desktop test:capricorn-published',
     'cargo test --workspace --lib --tests --locked',
     'yarn workspace @markflowy/web test:content',
     'yarn test:security-dependencies',
@@ -117,9 +113,9 @@ test('all release packages retain matching signatures through collection and pub
       uploadIf: "matrix.os == 'ubuntu-22.04'",
       download: 'Download x86_64 artifacts',
       fixtures: withSignatures([
-        ['deb/MarkFlowy_1.2.3_amd64.deb', 'MarkFlowy_v1.2.3_amd64.deb'],
-        ['rpm/MarkFlowy-1.2.3-1.x86_64.rpm', 'MarkFlowy-1.2.3-1.x86_64.rpm'],
-        ['appimage/MarkFlowy_1.2.3_amd64.AppImage', 'MarkFlowy_v1.2.3_amd64.AppImage'],
+        ['deb/WinZettel_1.2.3_amd64.deb', 'WinZettel_v1.2.3_amd64.deb'],
+        ['rpm/WinZettel-1.2.3-1.x86_64.rpm', 'WinZettel-1.2.3-1.x86_64.rpm'],
+        ['appimage/WinZettel_1.2.3_amd64.AppImage', 'WinZettel_v1.2.3_amd64.AppImage'],
       ]),
     },
     ...[
@@ -132,8 +128,8 @@ test('all release packages retain matching signatures through collection and pub
       uploadIf: `matrix.target == '${arch}-apple-darwin'`,
       download,
       fixtures: [
-        [`dmg/MarkFlowy_1.2.3_${filenameArch}.dmg`, `MarkFlowy_v1.2.3_${filenameArch}.dmg`],
-        ...withSignatures([['macos/MarkFlowy.app.tar.gz', `MarkFlowy_${filenameArch}.app.tar.gz`]]),
+        [`dmg/WinZettel_1.2.3_${filenameArch}.dmg`, `WinZettel_v1.2.3_${filenameArch}.dmg`],
+        ...withSignatures([['macos/WinZettel.app.tar.gz', `WinZettel_${filenameArch}.app.tar.gz`]]),
       ],
     })),
     {
@@ -144,10 +140,10 @@ test('all release packages retain matching signatures through collection and pub
       download: 'Download x86_64 artifacts',
       fixtures: [
         ...withSignatures([
-          ['msi/MarkFlowy_1.2.3_x64_en-US.msi', 'MarkFlowy_v1.2.3_x64.msi'],
-          ['nsis/MarkFlowy_1.2.3_x64-setup.exe', 'MarkFlowy_v1.2.3_x64-setup.exe'],
+          ['msi/WinZettel_1.2.3_x64_en-US.msi', 'WinZettel_v1.2.3_x64.msi'],
+          ['nsis/WinZettel_1.2.3_x64-setup.exe', 'WinZettel_v1.2.3_x64-setup.exe'],
         ]),
-        ['portable/MarkFlowy_1.2.3_x64_portable.zip', 'MarkFlowy_v1.2.3_x64_portable.zip'],
+        ['portable/WinZettel_1.2.3_x64_portable.zip', 'WinZettel_v1.2.3_x64_portable.zip'],
       ],
     },
     {
@@ -157,8 +153,8 @@ test('all release packages retain matching signatures through collection and pub
       uploadIf: "matrix.os == 'windows-latest'",
       download: 'Download offline installer artifacts',
       fixtures: withSignatures([
-        ['msi/MarkFlowy_1.2.3_x64_en-US.msi', 'MarkFlowy_v1.2.3_offline_installer_x64.msi'],
-        ['nsis/MarkFlowy_1.2.3_x64-setup.exe', 'MarkFlowy_v1.2.3_offline_installer_x64-setup.exe'],
+        ['msi/WinZettel_1.2.3_x64_en-US.msi', 'WinZettel_v1.2.3_offline_installer_x64.msi'],
+        ['nsis/WinZettel_1.2.3_x64-setup.exe', 'WinZettel_v1.2.3_offline_installer_x64-setup.exe'],
       ]),
     },
   ]

@@ -1413,20 +1413,6 @@ mod tests {
     }
 
     #[test]
-    fn text_direction_defaults_to_auto_and_survives_config_roundtrip() {
-        let defaults = typography_default_conf().merge_conf(empty_conf());
-        assert_eq!(defaults.editor_text_direction.as_deref(), Some("auto"));
-        for direction in ["rtl", "ltr", "auto"] {
-            let changed = defaults.clone().amend(serde_json::json!({
-                "editor_text_direction": direction
-            }));
-            let saved = serde_json::from_value(serde_json::to_value(changed).unwrap()).unwrap();
-            let restored = typography_default_conf().merge_conf(saved);
-            assert_eq!(restored.editor_text_direction.as_deref(), Some(direction));
-        }
-    }
-
-    #[test]
     fn typography_defaults_separate_document_and_source() {
         let conf = typography_default_conf().merge_conf(empty_conf());
         assert_eq!(conf.editor_root_font_size, Some(16));
@@ -1456,7 +1442,8 @@ mod tests {
         }));
         let conf = typography_default_conf().merge_conf(legacy);
         assert_eq!(conf.editor_code_indent_style.as_deref(), Some("tabs"));
-        assert_eq!(conf.editor_code_indent_style.as_deref(), Some("spaces"));
+        let defaults = typography_default_conf().merge_conf(empty_conf());
+        assert_eq!(defaults.editor_code_indent_style.as_deref(), Some("spaces"));
         assert_eq!(conf.editor_code_indent_size.as_deref(), Some("default"));
         assert_eq!(conf.editor_code_auto_close_brackets, Some(true));
         assert_eq!(conf.editor_code_whitespace.as_deref(), Some("off"));

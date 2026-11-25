@@ -31,6 +31,8 @@ jobs:
             arch: x86_64
             target: x86_64-pc-windows-msvc
     runs-on: ${{ matrix.os }}
+    env:
+      HAS_SIGNING_KEY: ${{ secrets.TAURI_PRIVATE_KEY != '' }}
 
     steps:
       - name: Checkout repository
@@ -67,6 +69,13 @@ jobs:
       - name: Install rust target
         run: rustup target add ${{ matrix.target }}
 
+      - name: Skip updater signatures when no signing key is configured
+        if: env.HAS_SIGNING_KEY != 'true'
+        shell: bash
+        run: |
+          echo "::warning::TAURI_PRIVATE_KEY is not set, so packages are built without updater signatures."
+          node -e "const fs=require('fs');const f='apps/desktop/src-tauri/tauri.conf.json';const c=JSON.parse(fs.readFileSync(f,'utf8'));c.bundle.createUpdaterArtifacts=false;fs.writeFileSync(f,JSON.stringify(c,null,2)+'\\n')"
+
       - name: Build the app
         run: yarn build:desktop --target ${{ matrix.target }}
         env:
@@ -74,4 +83,4 @@ jobs:
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
