@@ -83,6 +83,11 @@ jobs:
       - name: Install rust target
         run: rustup target add ${{ matrix.target }}
 
+      # The release is named after the tag, so the app and its installers take the tag's version.
+      - name: Use the tag's version
+        shell: bash
+        run: node -e "const fs=require('fs');const f='apps/desktop/src-tauri/tauri.conf.json';const c=JSON.parse(fs.readFileSync(f,'utf8'));c.version=process.env.GITHUB_REF_NAME.replace(/^v/,'');fs.writeFileSync(f,JSON.stringify(c,null,2)+'\\n')"
+
       - name: Skip updater signatures when no signing key is configured
         if: env.HAS_SIGNING_KEY != 'true'
         shell: bash
@@ -220,6 +225,11 @@ jobs:
 
       - name: Install rust target
         run: rustup target add ${{ matrix.target }}
+
+      # The release is named after the tag, so the app and its installers take the tag's version.
+      - name: Use the tag's version
+        shell: bash
+        run: node -e "const fs=require('fs');const f='apps/desktop/src-tauri/tauri.conf.json';const c=JSON.parse(fs.readFileSync(f,'utf8'));c.version=process.env.GITHUB_REF_NAME.replace(/^v/,'');fs.writeFileSync(f,JSON.stringify(c,null,2)+'\\n')"
 
       - name: Skip updater signatures when no signing key is configured
         if: env.HAS_SIGNING_KEY != 'true'
