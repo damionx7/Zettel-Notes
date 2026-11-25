@@ -98,6 +98,17 @@ test('native E2E is a required macOS gate and always retains diagnostics', () =>
   assert.ok(steps.indexOf(artifact) > execution)
 })
 
+test('installers are built only for tag releases or by hand', async () => {
+  assert.deepEqual(Object.keys(release.on), ['push'])
+  assert.deepEqual(Object.keys(release.on.push), ['tags'])
+  for (const name of ['nodejs', 'test-bundle']) {
+    const triggers = (await workflow(name)).on
+    assert.deepEqual(Object.keys(triggers), ['workflow_dispatch'], `${name} must not build on every commit`)
+  }
+  assert.deepEqual(quality.on.push.branches, ['**'], 'Test CI must keep checking every commit')
+  assert.ok('workflow_call' in quality.on)
+})
+
 test('Intel macOS packages build on Intel runners', async () => {
   for (const name of ['tauri-release', 'test-bundle', 'nodejs']) {
     const { build } = (await workflow(name)).jobs

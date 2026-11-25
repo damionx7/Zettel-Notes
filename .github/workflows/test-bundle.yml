@@ -1,9 +1,9 @@
-name: Release
+name: Test bundle
 
+# Debug installer build, run by hand from the Actions tab. Installers are otherwise built only
+# for tagged releases (tauri-release.yml).
 on:
-  push:
-    branches:
-      - ci/fix_webview_bundle
+  workflow_dispatch:
 
 jobs:
   build:

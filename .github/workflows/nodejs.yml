@@ -1,9 +1,10 @@
 name: CI
 
+# Full installer builds for every platform. Tagged releases build these in tauri-release.yml;
+# pull requests and branch pushes run the lighter Test CI checks instead. Run this by hand
+# from the Actions tab to try the installers before tagging.
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: write # to fetch code (actions/checkout)
