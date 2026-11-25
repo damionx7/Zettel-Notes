@@ -53,7 +53,10 @@ export async function waitState(path: string, expected: Partial<FileState>): Pro
     state = await status(path)
     if (state.error) throw new Error(state.error)
     return Object.entries(expected).every(([key, value]) => state![key as keyof FileState] === value)
-  }, { timeoutMsg: `File never reached ${JSON.stringify(expected)}: ${path}` })
+  }, { timeoutMsg: `File never reached ${JSON.stringify(expected)}: ${path}` }).catch((error) => {
+    // Name the fields that never matched, so a CI log alone explains the failure.
+    throw new Error(`${error instanceof Error ? error.message : String(error)}; last state: ${JSON.stringify(state)}`)
+  })
   return state!
 }
 
@@ -66,6 +69,10 @@ export async function fixture(name: string, content: string): Promise<string> {
 
 export async function openFile(path: string, content: string): Promise<FileState> {
   await cli('file', 'open', path, '--wait', 'applied', '--sha256', sha256(content))
+  const opened = await waitState(path, { open: true, active: true, ready: true,
+    dirty: false, contentSha256: sha256(content) })
+  // WinZettel opens existing notes in the reading pane; the scenarios edit in the source editor.
+  if (opened.mode !== 'sourceCode') await switchMode('sourceCode', path)
   const state = await waitState(path, { open: true, active: true, ready: true,
     dirty: false, contentSha256: sha256(content), mode: 'sourceCode' })
   await $(`${editor} .cm-content`).waitForDisplayed()
@@ -84,25 +91,24 @@ export async function shortcut(key: string) {
 
 export async function replaceDocument(path: string, content: string) {
   await writeFile(join(report, `${basename(path)}.expected-draft.md`), content)
-  // Actions include mouse down/up and real coordinates, which the editor uses for its caret.
-  await $(`${editor} [data-cap-leaf]`).click({ x: 1, y: 1 })
+  // Actions include mouse down/up and real coordinates, which CodeMirror uses for its caret.
+  await $(`${editor} .cm-content`).click({ x: 1, y: 1 })
   await browser.waitUntil(
     () =>
       browser.execute(() => {
-        const key = document
-          .querySelector('[data-editor-active="true"] [data-cap-editable][data-cap-key]')
-          ?.getAttribute('data-cap-key')
-        return !!key && document.activeElement?.getAttribute('data-cap-dockey') === key
+        const content = document.querySelector('[data-editor-active="true"] .cm-content')
+        return !!content && !!document.activeElement && content.contains(document.activeElement)
       }),
-    { timeoutMsg: 'The active Capricorn document did not receive keyboard focus' },
+    { timeoutMsg: 'The active source editor did not receive keyboard focus' },
   )
   await shortcut('a')
   await browser.keys(Key.Backspace)
-  // keys(string) holds every character down before releasing them. Send complete
-  // keystrokes so repeated letters and the editor's keyup/render cycle stay ordered.
-  const typing = browser.action('key')
-  for (const character of content) typing.down(character).up(character)
-  await typing.perform()
+  // The embedded driver's character keystrokes reach keydown handlers but never insert text
+  // into WKWebView's contenteditable, so CodeMirror sees nothing. Insert the text through the
+  // browser's own editing command instead: CodeMirror reads it from the DOM like typed input.
+  await browser.execute((text) => {
+    document.execCommand('insertText', false, text)
+  }, content)
   await waitState(path, { dirty: true, contentSha256: sha256(content) })
   await visibleContent(content)
 }
@@ -114,10 +120,11 @@ export async function save(path: string, content: string) {
 }
 
 export async function switchMode(mode: 'sourceCode' | 'preview', path: string) {
+  // The toolbar's viewer/editor toggle is labelled with the mode it switches to.
   const labels = { sourceCode: 'Source Code', preview: 'Preview' }
-  await $('button[aria-label="more"][aria-haspopup="menu"]').click()
-  await $("//*[@role='menuitem'][normalize-space(.)='View']").click()
-  await $(`//*[@role='menuitemcheckbox'][contains(., '${labels[mode]}')]`).click()
+  const toggle = $(`button[aria-pressed][aria-label="${labels[mode]}"]`)
+  await toggle.waitForClickable()
+  await toggle.click()
   await waitState(path, { mode, ready: true, active: true })
 }
 

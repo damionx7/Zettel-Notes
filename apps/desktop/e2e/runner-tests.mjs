@@ -109,7 +109,7 @@ test('profiles are unique and cleanup refuses a root whose ownership marker chan
     assert.notEqual(first.id, second.id)
     assert.notEqual(first.root, second.root)
     assert.notEqual(first.identifier, second.identifier)
-    await assert.rejects(removeEnvironment({ ...first, identifier: 'com.drl990114.markflowy' }))
+    await assert.rejects(removeEnvironment({ ...first, identifier: 'pt.zekabra.winzettel' }))
     for (const path of profilePaths(first, '/example/home')) {
       assert.ok(path.startsWith('/example/home/Library/'))
       assert.ok(path.endsWith(`/${first.identifier}`))

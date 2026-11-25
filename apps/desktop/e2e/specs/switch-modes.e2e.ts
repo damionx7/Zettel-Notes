@@ -10,7 +10,8 @@ describe('content across editor modes', () => {
     const draft = 'Unsaved content survives every mode'
     await openFile(path, 'Saved mode baseline')
     await replaceDocument(path, draft)
-    for (const mode of ['sourceCode', 'preview'] as const) {
+    // Leave source first: re-selecting the current mode is a no-op and saves nothing.
+    for (const mode of ['preview', 'sourceCode'] as const) {
       await switchMode(mode, path)
       // Markdown mode switches save before replacing the mounted document.
       await waitState(path, { dirty: false, contentSha256: sha256(draft) })
