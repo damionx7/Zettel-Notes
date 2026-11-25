@@ -62,6 +62,18 @@ test('the shared gate requires real runtime, type, Rust and content validation',
   assert.ok(generation >= 0 && verification > generation)
 })
 
+test('unit and Rust tests also run on Linux and Windows', () => {
+  const unit = quality.jobs.unit
+  assert.equal(unit['runs-on'], '${{ matrix.os }}')
+  assert.deepEqual(unit.strategy.matrix.os, ['ubuntu-22.04', 'windows-latest'])
+  assert.equal(unit.strategy['fail-fast'], false)
+  const commands = unit.steps.map((step) => step.run).filter(Boolean)
+  for (const command of ['yarn test', 'cargo test --workspace --lib --tests --locked']) {
+    assert.ok(commands.includes(command), `Missing cross-platform gate: ${command}`)
+  }
+  for (const step of unit.steps) assert.notEqual(step['continue-on-error'], true, step.name)
+})
+
 test('native E2E is a required macOS gate and always retains diagnostics', () => {
   assert.equal(quality.jobs.test['runs-on'], 'macos-latest')
   const steps = quality.jobs.test.steps
