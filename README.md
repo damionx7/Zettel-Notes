@@ -1,7 +1,7 @@
 # Zettel Notes for desktop
 
 A Markdown note editor for Windows, macOS and Linux that opens the notes written by the
-[Zettel Notes](https://zettelnotes.eu) Android app, including encrypted ones.
+[Zettel Notes](https://zettelnotes.com) Android app, including encrypted ones.
 
 It is a fork of [MarkFlowy](https://github.com/drl990114/MarkFlowy), by way of
 [WinZettel](https://github.com/zekabra/WinZettel). See [FORK.md](https://github.com/damionx7/Zettel-Notes/blob/main/FORK.md) for everything
