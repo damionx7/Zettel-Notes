@@ -401,3 +401,66 @@ test('workflows use only actions that run on Node 24', async () => {
     }
   }
 })
+
+test('CI reuses caches that only main saves, and releases never replay Turbo builds', async (t) => {
+  const index = (steps, name) => steps.findIndex((step) => step.name === name)
+  for (const id of ['unit', 'test']) {
+    const steps = quality.jobs[id].steps
+    const install = index(steps, 'Install dependencies')
+    for (const name of ['Restore the Yarn package cache', 'Restore the Turbo build cache']) {
+      assert.ok(index(steps, name) >= 0 && index(steps, name) < install, `${id}: ${name}`)
+    }
+    for (const name of [
+      'Keep the Turbo cache to recent builds',
+      'Save the Turbo build cache',
+      'Save the Yarn package cache',
+    ]) {
+      const step = steps[index(steps, name)]
+      assert.ok(step, `${id}: ${name}`)
+      assert.equal(step.if, "github.ref == 'refs/heads/main'", `${id}: ${name}`)
+      assert.ok(
+        index(steps, name) > index(steps, 'Run Test'),
+        `${id}: ${name} saves before the tests`,
+      )
+    }
+    const rust = steps.find((step) => step.uses?.startsWith('Swatinem/rust-cache'))
+    assert.equal(rust.with['save-if'], "${{ github.ref == 'refs/heads/main' }}", id)
+  }
+
+  // Release builds write the Sentry DSN to an ignored .env file that Turbo does not hash,
+  // so a Turbo cache from main would ship a frontend built without it.
+  for (const name of ['tauri-release', 'nodejs', 'test-bundle']) {
+    const jobs = Object.entries((await workflow(name)).jobs)
+    for (const [id, job] of jobs.filter(([, job]) => job.steps)) {
+      const steps = job.steps
+      assert.ok(!steps.some((step) => step.with?.path === '.turbo/cache'), `${name}.${id}`)
+      assert.ok(!steps.some((step) => step.uses?.startsWith('actions/cache/save')), `${name}.${id}`)
+      if (index(steps, 'Install dependencies') >= 0) {
+        const yarn = index(steps, 'Restore the Yarn package cache')
+        assert.ok(yarn >= 0 && yarn < index(steps, 'Install dependencies'), `${name}.${id}`)
+      }
+    }
+  }
+
+  const trim =
+    quality.jobs.unit.steps[index(quality.jobs.unit.steps, 'Keep the Turbo cache to recent builds')]
+      .run
+  const directory = await mkdtemp(path.join(tmpdir(), 'turbo-trim-'))
+  t.after(() => rm(directory, { recursive: true, force: true }))
+  await execFileAsync(
+    'bash',
+    [
+      '-e',
+      '-c',
+      'mkdir -p .turbo/cache && for i in $(seq 1 700); do touch -d "@$((1700000000 + i))" .turbo/cache/entry-$i; done',
+    ],
+    { cwd: directory },
+  )
+  await execFileAsync('bash', ['-e', '-c', trim], { cwd: directory })
+  const kept = await glob('.turbo/cache/*', { cwd: directory })
+  assert.equal(kept.length, 600)
+  assert.ok(kept.includes('.turbo/cache/entry-700') && !kept.includes('.turbo/cache/entry-100'))
+  await execFileAsync('bash', ['-e', '-c', trim], {
+    cwd: await mkdtemp(path.join(tmpdir(), 'turbo-none-')),
+  })
+})

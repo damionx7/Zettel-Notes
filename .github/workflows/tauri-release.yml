@@ -54,6 +54,14 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
+      # Reuse the Yarn packages that main's test runs cache, to skip their download.
+      - name: Restore the Yarn package cache
+        uses: actions/cache/restore@v5
+        with:
+          path: .yarn/cache
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: yarn-${{ runner.os }}-
+
       - name: Install dependencies (ubuntu only)
         if: matrix.os == 'ubuntu-22.04'
         run: |
@@ -228,6 +236,14 @@ jobs:
 
       - name: Enable Corepack
         run: corepack enable
+
+      # Reuse the Yarn packages that main's test runs cache, to skip their download.
+      - name: Restore the Yarn package cache
+        uses: actions/cache/restore@v5
+        with:
+          path: .yarn/cache
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: yarn-${{ runner.os }}-
 
       - name: Write env file
         run: |
@@ -438,6 +454,14 @@ jobs:
 
       - name: Enable Corepack
         run: corepack enable
+
+      # Reuse the Yarn packages that main's test runs cache, to skip their download.
+      - name: Restore the Yarn package cache
+        uses: actions/cache/restore@v5
+        with:
+          path: .yarn/cache
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: yarn-${{ runner.os }}-
 
       - name: Install dependencies
         run: yarn install --immutable
