@@ -32,6 +32,22 @@ fn id() -> String {
     uuid::Uuid::new_v4().to_string()
 }
 
+/// Appends `relative` to `base` with the separator `base` already uses, so a rebased path keeps
+/// one style. `Path::join` would insert `\` on Windows even into a `/`-separated path, and
+/// `path_identity` only folds separators for drive-letter and UNC paths.
+fn join_with_base_separator(base: &str, relative: &Path) -> String {
+    let separator = if base.contains('\\') && !base.contains('/') { "\\" } else { "/" };
+    let parts: Vec<_> = relative
+        .components()
+        .map(|component| component.as_os_str().to_string_lossy())
+        .collect();
+    if parts.is_empty() {
+        return base.to_string();
+    }
+    let trimmed = base.trim_end_matches(['/', '\\']);
+    format!("{trimmed}{separator}{}", parts.join(separator))
+}
+
 fn path_identity(path: &str) -> String {
     let windows = path.starts_with("\\\\") || path.as_bytes().get(1) == Some(&b':');
     let mut key = if windows {
@@ -253,7 +269,7 @@ impl Store {
                 continue;
             }
             if let Ok(relative) = Path::new(&workspace).strip_prefix(path_identity(old)) {
-                let next = path_identity(&Path::new(new).join(relative).to_string_lossy());
+                let next = path_identity(&join_with_base_separator(new, relative));
                 tx.execute("INSERT INTO scopes VALUES(?,?) ON CONFLICT(id) DO UPDATE SET generation=MAX(scopes.generation,excluded.generation)+1",params![next,generation+1])?;
                 tx.execute(
                     "UPDATE documents SET workspace=? WHERE workspace=?",
@@ -266,7 +282,7 @@ impl Store {
             let Ok(relative) = Path::new(&path).strip_prefix(old) else {
                 continue;
             };
-            let next = Path::new(new).join(relative).to_string_lossy().into_owned();
+            let next = join_with_base_separator(new, relative);
             let identity = path_identity(&next);
             tx.execute("UPDATE documents SET identity='archived:'||id,path=NULL WHERE identity=? AND id<>?",params![identity,doc])?;
             tx.execute(
@@ -1566,6 +1582,14 @@ mod tests {
             .unwrap();
         let entry = s.complete_write(&write, "overwrite").unwrap().unwrap();
         assert_eq!(s.read_entry(&entry, true).unwrap().1, "current disk");
+    }
+    #[test]
+    fn rebased_paths_keep_the_base_separator() {
+        let relative = Path::new("notes").join("a.md");
+        assert_eq!(super::join_with_base_separator("/w", &relative), "/w/notes/a.md");
+        assert_eq!(super::join_with_base_separator("C:/w/", &relative), "C:/w/notes/a.md");
+        assert_eq!(super::join_with_base_separator(r"C:\w", &relative), r"C:\w\notes\a.md");
+        assert_eq!(super::join_with_base_separator("/w", Path::new("")), "/w");
     }
     #[test]
     fn rename_rejects_a_late_observation_for_the_previous_path() {

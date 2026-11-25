@@ -86,6 +86,7 @@ mod tests {
 
         let relative_path = super::get_relative_path(path, base_path);
 
-        assert_eq!(relative_path.to_str().unwrap(), "c/d");
+        // Compare paths, not strings: the separator is `\` on Windows.
+        assert_eq!(relative_path, std::path::Path::new("c").join("d"));
     }
 }
