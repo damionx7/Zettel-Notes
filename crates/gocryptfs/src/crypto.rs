@@ -331,6 +331,93 @@ mod tests {
         assert_eq!(cipher.decrypt_blocks(&ciphertext).unwrap(), plain);
     }
 
+    // Known-answer tests. The round trips above would also pass if a backend produced wrong but
+    // self-consistent bytes, so these pin the exact output. CI runs them against Windows CNG and
+    // against the RustCrypto backend, so both must write the same on-disk bytes.
+
+    fn hex(text: &str) -> Vec<u8> {
+        let text: String = text.split_whitespace().collect();
+        (0..text.len())
+            .step_by(2)
+            .map(|index| u8::from_str_radix(&text[index..index + 2], 16).unwrap())
+            .collect()
+    }
+
+    fn counting(start: u8, len: usize) -> Vec<u8> {
+        (0..len).map(|offset| start + offset as u8).collect()
+    }
+
+    const SUNSCREEN: &[u8] = b"Ladies and Gentlemen of the class of '99: If I could offer you \
+only one tip for the future, sunscreen would be it.";
+
+    #[test]
+    fn ecb_matches_the_fips_197_aes_256_vector() {
+        let key: [u8; 32] = counting(0, 32).try_into().unwrap();
+        let cipher = EcbCipher::new(&key).unwrap();
+        let plain = hex("00112233445566778899aabbccddeeff");
+        let expected = hex("8ea2b7ca516745bfeafc49904b496089");
+        assert_eq!(cipher.encrypt_blocks(&plain).unwrap(), expected);
+        assert_eq!(cipher.decrypt_blocks(&expected).unwrap(), plain);
+    }
+
+    #[test]
+    fn aes_gcm_with_a_128_bit_nonce_matches_a_reference_vector() {
+        // Computed with OpenSSL (Python `cryptography`) for a gocryptfs-shaped block: 16-byte
+        // nonce, and the 8-byte block number plus the 16-byte file id as associated data.
+        let key: [u8; 32] = counting(0, 32).try_into().unwrap();
+        let nonce = counting(0xa0, 16);
+        let aad = counting(0x10, 24);
+        let expected = hex(
+            "70c657c87da1ed38acea7ac2cd71e3f3f03c330d1b5071ce917d09dd\
+             e014b05dc1efd3a55127076e4ea06133",
+        );
+        let sealed = aes_gcm_seal(&key, &nonce, &aad, b"Zettel Notes encrypted block").unwrap();
+        assert_eq!(sealed, expected);
+        assert_eq!(
+            aes_gcm_open(&key, &nonce, &aad, &expected).unwrap(),
+            b"Zettel Notes encrypted block"
+        );
+        assert_eq!(
+            aes_gcm_seal(&key, &nonce, &aad, b"").unwrap(),
+            hex("c633ecad6ceb9af8e880e112ff8edcd7")
+        );
+    }
+
+    #[test]
+    fn aes_gcm_rejects_a_changed_tag_or_associated_data() {
+        let key: [u8; 32] = counting(0, 32).try_into().unwrap();
+        let nonce = counting(0xa0, 16);
+        let aad = counting(0x10, 24);
+        let mut sealed = aes_gcm_seal(&key, &nonce, &aad, b"teste").unwrap();
+        assert!(aes_gcm_open(&key, &nonce, &counting(0x11, 24), &sealed).is_err());
+        *sealed.last_mut().unwrap() ^= 1;
+        assert!(aes_gcm_open(&key, &nonce, &aad, &sealed).is_err());
+    }
+
+    #[test]
+    fn xchacha20poly1305_matches_the_cfrg_draft_vector() {
+        // draft-irtf-cfrg-xchacha-03, appendix A.3.1.
+        let key: [u8; 32] = counting(0x80, 32).try_into().unwrap();
+        let nonce = counting(0x40, 24);
+        let aad = hex("50515253c0c1c2c3c4c5c6c7");
+        let expected = hex(
+            "bd6d179d3e83d43b9576579493c0e939572a1700252bfaccbed2902c21396cbb\
+             731c7f1b0b4aa6440bf3a82f4eda7e39ae64c6708c54c216cb96b72e1213b452\
+             2f8c9ba40db5d945b11b69b982c1bb9e3f3fac2bc369488f76b2383565d3fff9\
+             21f9664c97637da9768812f615c68b13b52e\
+             c0875924c1c7987947deafd8780acf49",
+        );
+        let sealed = xchacha20poly1305_seal(&key, &nonce, &aad, SUNSCREEN).unwrap();
+        assert_eq!(sealed, expected);
+        assert_eq!(
+            xchacha20poly1305_open(&key, &nonce, &aad, &expected).unwrap(),
+            SUNSCREEN
+        );
+        let mut tampered = expected.clone();
+        tampered[0] ^= 1;
+        assert!(xchacha20poly1305_open(&key, &nonce, &aad, &tampered).is_err());
+    }
+
     #[test]
     fn scrypt_is_deterministic_and_salt_dependent() {
         let first = scrypt(b"teste1000", b"salt", 10, 8, 1, 32).unwrap();

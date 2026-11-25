@@ -330,13 +330,70 @@ impl Volume {
     }
 
     pub fn remove_file(&self, relative: &str) -> Result<()> {
-        fs::remove_file(self.stored_path(relative)?)?;
+        let path = self.stored_path(relative)?;
+        fs::remove_file(&path)?;
+        remove_long_name_sidecar(&path)?;
+        self.forget(relative);
         Ok(())
     }
 
+    /// Delete a folder and everything in it, like deleting a folder outside a repository.
+    ///
+    /// An encrypted folder is never empty on disk, because it holds its own `diriv`.
     pub fn remove_dir(&self, relative: &str) -> Result<()> {
-        fs::remove_dir(self.cipher_path(relative)?)?;
+        let path = self.stored_path(relative)?;
+        fs::remove_dir_all(&path)?;
+        remove_long_name_sidecar(&path)?;
+        self.forget(relative);
         Ok(())
+    }
+
+    /// Move a note or a folder, with everything inside it, to a new path in this volume.
+    ///
+    /// Only the stored name changes. Note contents are bound to their file ID and folders keep
+    /// their own `diriv`, so nothing is re-encrypted and the phone reads the result as is.
+    /// Like a rename outside a repository, an existing note at `to` is replaced.
+    pub fn rename(&self, from: &str, to: &str) -> Result<()> {
+        if from == to {
+            return Ok(());
+        }
+        if to.starts_with(&format!("{from}/")) {
+            return Err(Error::Damaged(format!("cannot move {from:?} into itself")));
+        }
+        let source = self.stored_path(from)?;
+        if !source.exists() {
+            return Err(Error::Io(std::io::Error::new(
+                std::io::ErrorKind::NotFound,
+                format!("{from:?} does not exist"),
+            )));
+        }
+        self.ensure_parent_directories(to)?;
+        let target = self
+            .cipher_path(parent_relative(to))?
+            .join(self.stored_name_for_new(parent_relative(to), base_name(to)?)?);
+        if source.is_file() {
+            replace_file(&source, &target)?;
+        } else {
+            fs::rename(&source, &target)?;
+        }
+        remove_long_name_sidecar(&source)?;
+        self.forget(from);
+        self.forget(to);
+        Ok(())
+    }
+
+    /// Drop cached names and `diriv`s at and below `relative`, which no longer exist there.
+    fn forget(&self, relative: &str) {
+        let nested = format!("{relative}/");
+        let gone = |key: &String| key == relative || key.starts_with(&nested);
+        self.stored_names
+            .lock()
+            .expect("name cache poisoned")
+            .retain(|key, _| !gone(key));
+        self.diriv_cache
+            .lock()
+            .expect("diriv cache poisoned")
+            .retain(|key, _| !gone(key));
     }
 
     fn stored_path(&self, relative: &str) -> Result<PathBuf> {
@@ -490,6 +547,21 @@ fn replace_file(source: &Path, target: &Path) -> Result<()> {
     }
     fs::rename(source, target)?;
     Ok(())
+}
+
+/// A long-name entry `gocryptfs.longname.<hash>` keeps its encrypted name in a `.name` sidecar.
+/// Left behind, the sidecar would still list the entry after the data is gone.
+fn remove_long_name_sidecar(path: &Path) -> Result<()> {
+    let Some(name) = path.file_name().map(|name| name.to_string_lossy().to_string()) else {
+        return Ok(());
+    };
+    if !name.starts_with(LONG_NAME_PREFIX) || name.ends_with(LONG_NAME_SUFFIX) {
+        return Ok(());
+    }
+    match fs::remove_file(path.with_file_name(format!("{name}{LONG_NAME_SUFFIX}"))) {
+        Err(error) if error.kind() != std::io::ErrorKind::NotFound => Err(Error::Io(error)),
+        _ => Ok(()),
+    }
 }
 
 fn join_relative(parent: &str, name: &str) -> String {

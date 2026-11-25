@@ -1415,12 +1415,13 @@ pub fn rename_fs(old_path: &Path, new_path: &Path) -> AnyResult<MoveFileInfo> {
         crate::repo::relative_path(&old_path.to_string_lossy()),
         crate::repo::relative_path(&new_path.to_string_lossy()),
     ) {
+        let is_folder = crate::repo::is_dir(&from);
         crate::repo::rename(&from, &to).map_err(anyhow::Error::msg)?;
         return Ok(MoveFileInfo {
             old_path: old_path.to_string_lossy().to_string(),
             new_path: new_path.to_string_lossy().to_string(),
             children: None,
-            is_folder: false,
+            is_folder,
             is_replaced: Some(false),
         });
     }
