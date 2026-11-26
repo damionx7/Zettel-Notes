@@ -31,7 +31,7 @@ import {
   ToolbarWrapper,
   ToolbarDivider,
   createCommandMap,
-} from '@markflowy/interface'
+} from '@zettel-notes/interface'
 import {
   getOverflowToolbarActions,
   MenuList,

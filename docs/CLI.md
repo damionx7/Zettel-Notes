@@ -1,13 +1,13 @@
 # 可靠 CLI 与官方 Skill
 
-本仓库提供 [MarkFlowy 官方 Skill](../skills/markflowy/SKILL.md)。将 `skills/markflowy` 整个目录放入所用 AI Agent 的 Skill 目录即可安装；它通过本机 CLI 工作，不需要模型服务或网络端口。使用前先运行 `markflowy status`，确认安装的 CLI 返回 `cliProtocolVersion: 1`。此协议需要包含相应实现的 Desktop 版本，仓库中的修改不会自动更新已安装应用。
+本仓库提供 [Zettel Notes 官方 Skill](../skills/zettel-notes/SKILL.md)。将 `skills/zettel-notes` 整个目录放入所用 AI Agent 的 Skill 目录即可安装；它通过本机 CLI 工作，不需要模型服务或网络端口。使用前先运行 `zettel-notes status`，确认安装的 CLI 返回 `cliProtocolVersion: 1`。此协议需要包含相应实现的 Desktop 版本，仓库中的修改不会自动更新已安装应用。
 
 ```sh
-markflowy window list
-markflowy file open "/path/report.md" --preview --window-id main --wait applied
-markflowy file status "/path/report.md" --window-id main
-markflowy file wait "/path/report.md" --window-id main --sha256 <content-sha256>
-markflowy file export "/path/report.md" --window-id main --format html --output "/path/report.html"
+zettel-notes window list
+zettel-notes file open "/path/report.md" --preview --window-id main --wait applied
+zettel-notes file status "/path/report.md" --window-id main
+zettel-notes file wait "/path/report.md" --window-id main --sha256 <content-sha256>
+zettel-notes file export "/path/report.md" --window-id main --format html --output "/path/report.html"
 ```
 
 请将路径和窗口 ID 换成实际目标。`file open` 可以启动应用，其他操作要求应用已运行。指定的窗口不存在时直接失败；不会悄悄打开另一个窗口。
@@ -18,4 +18,4 @@ markflowy file export "/path/report.md" --window-id main --format html --output 
 
 回执包含 `requestId`、`ok`、`code`、`message` 和 `result`，失败返回非零退出码。确认文件已经显示，应检查 `ready`、`visible`、`applied`；确认导出完成，应检查 `code: "export_completed"` 及 `result.output`。`command execute` 仅能确认 GUI 命令已分发，不能证明异步保存或导出完成。
 
-默认超时 30 秒，可用 `--timeout` 指定 1–300000 毫秒。超时表示无法确认完成，不等同于操作已撤销；再次写入前先检查文件状态和输出文件。详细命令、摘要计算方式、回执字段和错误处理见 [CLI 协议参考](../skills/markflowy/references/cli.md)。
+默认超时 30 秒，可用 `--timeout` 指定 1–300000 毫秒。超时表示无法确认完成，不等同于操作已撤销；再次写入前先检查文件状态和输出文件。详细命令、摘要计算方式、回执字段和错误处理见 [CLI 协议参考](../skills/zettel-notes/references/cli.md)。

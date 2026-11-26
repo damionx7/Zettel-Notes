@@ -10,15 +10,15 @@ import {
 } from '@/startup/appearance'
 import { mergeRegisteredTheme, resolveStartupTheme } from '@/startup/appearanceTheme'
 import { discardStaleStartupTheme, runWithoutThemeTransitions } from '@/startup/staleThemeFallback'
-import { builtInThemes, darkTheme, lightTheme, type MfTheme } from '@markflowy/theme'
+import { builtInThemes, darkTheme, lightTheme, type MfTheme } from '@zettel-notes/theme'
 import { invoke } from '@tauri-apps/api/core'
 import { getCurrentWindow } from '@tauri-apps/api/window'
 import { create } from 'zustand'
 import appSettingService from '@/services/app-setting'
 import useAppSettingStore from '@/stores/useAppSettingStore'
 
-export const FALLBACK_LIGHT_THEME = 'MarkFlowy Light'
-export const FALLBACK_DARK_THEME = 'MarkFlowy Dark'
+export const FALLBACK_LIGHT_THEME = 'Zettel Notes Light'
+export const FALLBACK_DARK_THEME = 'Zettel Notes Dark'
 
 export type ThemeMode = 'light' | 'dark' | 'system'
 type SystemTheme = Exclude<ThemeMode, 'system'>
@@ -28,7 +28,7 @@ export type ThemePreviewSelection = {
   darkThemeName?: string
 }
 type ThemeSyncWindow = Window & {
-  __markflowyThemeSyncSetup?: boolean
+  __zettelNotesThemeSyncSetup?: boolean
 }
 
 export const isBuiltInTheme = (themeName: string) => {
@@ -534,10 +534,10 @@ const setupSystemThemeSync = () => {
   }
 
   const themeWindow = window as ThemeSyncWindow
-  if (themeWindow.__markflowyThemeSyncSetup) {
+  if (themeWindow.__zettelNotesThemeSyncSetup) {
     return
   }
-  themeWindow.__markflowyThemeSyncSetup = true
+  themeWindow.__zettelNotesThemeSyncSetup = true
 
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
   mediaQuery.addEventListener('change', (event) => {

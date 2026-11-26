@@ -23,7 +23,7 @@ const privacySections: PrivacySection[] = [
     content: [
       {
         type: 'paragraph',
-        text: 'MarkFlowy ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our MarkFlowy application and services.',
+        text: 'Zettel Notes ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our Zettel Notes application and services.',
       },
       {
         type: 'paragraph',
@@ -36,7 +36,7 @@ const privacySections: PrivacySection[] = [
     content: [
       {
         type: 'paragraph',
-        text: 'MarkFlowy is designed with privacy in mind. We do not collect or store:',
+        text: 'Zettel Notes is designed with privacy in mind. We do not collect or store:',
       },
       {
         type: 'list',
@@ -72,13 +72,13 @@ const privacySections: PrivacySection[] = [
     content: [
       {
         type: 'paragraph',
-        text: 'MarkFlowy offers optional AI-powered features that integrate with third-party AI providers:',
+        text: 'Zettel Notes offers optional AI-powered features that integrate with third-party AI providers:',
       },
       {
         type: 'list',
         items: [
           {
-            text: "<strong>OpenAI Integration:</strong> If you choose to use OpenAI features, your API key and requests are sent to the configured OpenAI-compatible endpoint. Your key is stored locally by the application, not on MarkFlowy servers.",
+            text: "<strong>OpenAI Integration:</strong> If you choose to use OpenAI features, your API key and requests are sent to the configured OpenAI-compatible endpoint. Your key is stored locally by the application, not on Zettel Notes servers.",
             isHtml: true,
           },
           {
@@ -140,13 +140,13 @@ const privacySections: PrivacySection[] = [
     content: [
       {
         type: 'paragraph',
-        text: 'MarkFlowy is an open-source application. You can inspect our source code at any time to verify our privacy claims:',
+        text: 'Zettel Notes is an open-source application. You can inspect our source code at any time to verify our privacy claims:',
       },
       {
         type: 'list',
         items: [
           {
-            text: 'Source code is available on <a href="https://github.com/drl990114/MarkFlowy" target="_blank" rel="noopener noreferrer">GitHub</a>',
+            text: 'Source code is available on <a href="https://github.com/damionx7/Zettel-Notes" target="_blank" rel="noopener noreferrer">GitHub</a>',
             isHtml: true,
           },
           'All data handling is transparent and auditable',
@@ -213,7 +213,7 @@ const privacySections: PrivacySection[] = [
         type: 'list',
         items: [
           {
-            text: 'By visiting our GitHub repository: <a href="https://github.com/drl990114/MarkFlowy" target="_blank" rel="noopener noreferrer">https://github.com/drl990114/MarkFlowy</a>',
+            text: 'By visiting our GitHub repository: <a href="https://github.com/damionx7/Zettel-Notes" target="_blank" rel="noopener noreferrer">https://github.com/damionx7/Zettel-Notes</a>',
             isHtml: true,
           },
           'By creating an issue on our GitHub issues page',
@@ -250,8 +250,8 @@ export default function PrivacyPage() {
   return (
     <>
       <SeoHead
-        title='Privacy Policy - MarkFlowy'
-        description='Read the MarkFlowy privacy policy, including local storage and optional AI services.'
+        title='Privacy Policy - Zettel Notes'
+        description='Read the Zettel Notes privacy policy, including local storage and optional AI services.'
         availableLocales={['en']}
       />
 

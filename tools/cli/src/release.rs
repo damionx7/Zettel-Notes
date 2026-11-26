@@ -125,7 +125,7 @@ pub fn create_git_tag(tag_name: String) {
 pub fn push_git_tag(tag_name: String) {
     Command::new("git")
         .arg("push")
-        .arg("markflowy")
+        .arg("origin")
         .arg(tag_name)
         .spawn()
         .expect("failed to execute process")

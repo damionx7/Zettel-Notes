@@ -1,7 +1,7 @@
 import { TooltipProvider } from '@/components/ui/tooltip'
 import useLayoutStore from '@/stores/useLayoutStore'
 import useEditorStore from '@/stores/useEditorStore'
-import { desktopDarkTheme } from '@markflowy/theme'
+import { desktopDarkTheme } from '@zettel-notes/theme'
 import { act, cleanup, createEvent, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'styled-components'
@@ -198,7 +198,7 @@ describe('Dock layout interactions', () => {
     expect(view.container.querySelector('[data-drop-edge]')).toBeNull()
   })
 
-  it.each(['Files', 'application/x-markflowy-editor-tab', 'application/x-react-arborist'])('does not intercept %s drops', (type) => {
+  it.each(['Files', 'application/x-zettel-notes-editor-tab', 'application/x-react-arborist'])('does not intercept %s drops', (type) => {
     renderMovableDocks()
     const before = useLayoutStore.getState().panelOrder
     const target = screen.getByRole('button', { name: 'Bookmarks' })

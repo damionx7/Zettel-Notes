@@ -1,5 +1,5 @@
-import type { ContextMenuItem, IFile, IHeadingData } from '@markflowy/interface'
-import { fileTreeHandler, showContextMenu } from '@markflowy/interface'
+import type { ContextMenuItem, IFile, IHeadingData } from '@zettel-notes/interface'
+import { fileTreeHandler, showContextMenu } from '@zettel-notes/interface'
 import {
   createWorkspaceAdapter,
   type WorkspaceAdapter,
@@ -86,7 +86,7 @@ export function useWorkspaceState(id: string) {
   const [error, setError] = useState('')
   const [refs, setRefs] = useState<RemoteWorkspaceRef[]>([])
   const [currentRef, setCurrentRef] = useState<string | null>(null)
-  const [commitMessage, setCommitMessage] = useState('Update via MarkFlowy')
+  const [commitMessage, setCommitMessage] = useState('Update via Zettel Notes')
   const treeLoadVersionRef = useRef(0)
   const fileLoadVersionRef = useRef(0)
   const saveVersionRef = useRef(0)
@@ -367,7 +367,7 @@ export function useWorkspaceState(id: string) {
       const result = await adapter.saveFiles(
         snapshots.map(({ file, content, version }) => ({ file, content, version })),
         {
-          message: commitMessage || 'Update via MarkFlowy',
+          message: commitMessage || 'Update via Zettel Notes',
           ref: adapter.type === 'remote' ? currentRef : null,
         },
       )

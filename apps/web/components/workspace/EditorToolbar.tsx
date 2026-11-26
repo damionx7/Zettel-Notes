@@ -1,4 +1,4 @@
-import { MfIconButton, ToolbarDivider, ToolbarWrapper } from '@markflowy/interface'
+import { MfIconButton, ToolbarDivider, ToolbarWrapper } from '@zettel-notes/interface'
 import type { ViewType } from 'hooks/useWorkspaceState'
 import rem from 'utils/rem'
 import styled from 'styled-components'

@@ -1,7 +1,7 @@
 import { useEditorStore } from '@/stores'
 import useAppSettingStore from '@/stores/useAppSettingStore'
-import type { IFile } from '@markflowy/interface'
-import { FileResultCode } from '@markflowy/interface'
+import type { IFile } from '@zettel-notes/interface'
+import { FileResultCode } from '@zettel-notes/interface'
 import { invoke } from '@tauri-apps/api/core'
 import { nanoid } from 'nanoid'
 import { touchDocument } from '@/services/pristine-document'
@@ -16,8 +16,8 @@ import {
   setFileObjectsByPath,
 } from './files'
 
-export { FileResultCode } from '@markflowy/interface'
-export type { FileEntry, FileSysResult, IFile } from '@markflowy/interface'
+export { FileResultCode } from '@zettel-notes/interface'
+export type { FileEntry, FileSysResult, IFile } from '@zettel-notes/interface'
 
 export interface DirectoryReadEntry {
   name: string

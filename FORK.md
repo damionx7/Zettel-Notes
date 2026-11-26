@@ -1,7 +1,8 @@
-# WinZettel — fork divergences
+# Zettel Notes — fork divergences
 
-WinZettel is a fork of [MarkFlowy](https://github.com/drl990114/MarkFlowy), a Tauri +
-React Markdown editor for Windows. The fork exists for one reason: making the app
+Zettel Notes (desktop) is a fork of [MarkFlowy](https://github.com/drl990114/MarkFlowy), a
+Tauri + React Markdown editor, by way of [WinZettel](https://github.com/zekabra/WinZettel).
+The fork exists for one reason: making the app
 partially compatible with notes written by [Zettel Notes](https://zettelnotes.eu) on
 Android.
 
@@ -12,10 +13,8 @@ answer is "keep our version".
 
 ## Repository model
 
-- `main` is a pure mirror of `upstream/main`. It carries no fork commits.
-- All work lives in a single long-lived branch, `feat/winzettel`, which is the default
-  branch on GitHub. It holds **one commit** on top of `main`.
-- Synchronisation is a rebase, never a merge. See `WORKFLOW.md` for the commands.
+- `main` is the default branch and carries the fork. Work lands through pull requests.
+- Upstream changes are ported by hand; see `WORKFLOW.md`.
 
 ## Added
 
@@ -99,15 +98,20 @@ answer is "keep our version".
 - Close-all-tabs button next to new-tab and split.
 
 **Identity**
-- Product name, window/app copy and the release binary are `WinZettel`
-  (`Cargo.toml` declares `[[bin]] name = "winzettel"`).
-- Version is `1.0.3`.
-- Bundle identifier is `pt.zekabra.winzettel`; configuration lives in the platform's
-  standard places (`%APPDATA%`/`%LOCALAPPDATA%` on Windows), never next to the executable,
-  so an installer can ship later.
-- The app's own data root is `~/.winzettel` (settings, workspace cache). It does not migrate
-  from the pre-fork `.markflowy` folder: move the files by hand if you want them.
-- The updater points at this fork's releases, not upstream's.
+- Product name, window/app copy and the release binary are `Zettel Notes` /
+  `zettel-notes` (`Cargo.toml`: package `zettel-notes`, library `zettel_notes`). The CLI
+  command is `zettel-notes`; workspace packages use the `@zettel-notes/` scope.
+- Bundle identifier is `org.eu.thedoc.zettelnotes.desktop`; configuration lives in the
+  platform's standard places, never next to the executable.
+- The app's own data root is `~/.zettel-notes` (settings, workspace cache). It is moved from
+  `~/.winzettel` once. Files that still carry a MarkFlowy name (`markflowy.conf.json`,
+  `markflowy_store.bin`, `.markflowy_workspaces.dat`, …) are renamed on the next start, and
+  on Linux `~/.config/markflowy` is copied to `~/.config/zettel-notes` once. Upstream
+  MarkFlowy's own folders are never touched, not even by "clear data".
+- The updater points at this fork's releases (`install.json` on GitHub Pages), signed with
+  the owner's key.
+- Upstream credit stays where the license asks for it: `LICENSE`, `NOTICE`, `README.md`,
+  Settings → About, and this file.
 
 ## Removed
 
@@ -152,9 +156,7 @@ conflict.
 
 ## After every sync
 
-```bash
-cd repo-workflow && ./run-winzettel-checks.sh all   # tsc + tests + lint
-```
+Run the checks in `AGENTS.md` (TypeScript, unit tests, lint on changed files).
 
 Then confirm by hand that the fork's own surface still behaves: encrypt and decrypt a
 note, insert a PDF from the editor, switch source/preview, and open Settings → Encryption.

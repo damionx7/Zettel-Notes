@@ -1,5 +1,5 @@
-import type { editorSpecificTokens } from '@markflowy/theme'
-import type { ResolvedTokens, ThemeTokenName } from '@markflowy/theme/semantic'
+import type { editorSpecificTokens } from '@zettel-notes/theme'
+import type { ResolvedTokens, ThemeTokenName } from '@zettel-notes/theme/semantic'
 
 /** RME's private styled names stay at this boundary, including its mode defaults. */
 const editorMap = {

@@ -1,5 +1,5 @@
 import { act, cleanup, render, screen } from '@testing-library/react'
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import { enableMapSet } from 'immer'
 import type { PropsWithChildren } from 'react'
 import { ThemeProvider } from 'styled-components'

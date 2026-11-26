@@ -1,5 +1,5 @@
 ---
-seoTitle: 'MarkFlowy 片段库'
+seoTitle: 'Zettel Notes 片段库'
 description: '管理本机全局的公式、Mermaid 和代码片段，并在编辑器中插入和复用。'
 updatedAt: "2026-09-27"
 ---

@@ -41,12 +41,12 @@ test('the configured Mocha engine rejects pending, exclusive and empty test runs
   const require = createRequire(import.meta.resolve('@wdio/mocha-framework'))
   const Mocha = require('mocha')
   const output = await mkdtemp(join(tmpdir(), 'mf-e2e-mocha-'))
-  const names = ['MARKFLOWY_E2E_BINARY', 'MARKFLOWY_E2E_PORT', 'MARKFLOWY_E2E_REPORT']
+  const names = ['ZETTEL_NOTES_E2E_BINARY', 'ZETTEL_NOTES_E2E_PORT', 'ZETTEL_NOTES_E2E_REPORT']
   const previous = names.map((name) => process.env[name])
   try {
-    process.env.MARKFLOWY_E2E_BINARY = join(output, 'unused-binary')
-    process.env.MARKFLOWY_E2E_PORT = '4445'
-    process.env.MARKFLOWY_E2E_REPORT = output
+    process.env.ZETTEL_NOTES_E2E_BINARY = join(output, 'unused-binary')
+    process.env.ZETTEL_NOTES_E2E_PORT = '4445'
+    process.env.ZETTEL_NOTES_E2E_REPORT = output
     const { config } = await import('./wdio.conf.ts')
     // The outer watchdog must let Mocha finish and retain failure diagnostics.
     assert.ok(phaseTimeout >= config.mochaOpts.timeout + 60_000 + 30_000)
@@ -114,11 +114,11 @@ test('profiles are unique and cleanup refuses a root whose ownership marker chan
       assert.ok(path.startsWith('/example/home/Library/'))
       assert.ok(path.endsWith(`/${first.identifier}`))
     }
-    await writeFile(join(first.root, '.markflowy-e2e'), second.id)
+    await writeFile(join(first.root, '.zettel-notes-e2e'), second.id)
     await assert.rejects(removeEnvironment(first))
     await assertOwner(second)
   } finally {
-    await writeFile(join(first.root, '.markflowy-e2e'), first.id)
+    await writeFile(join(first.root, '.zettel-notes-e2e'), first.id)
     await removeEnvironment(first)
     await removeEnvironment(second)
   }

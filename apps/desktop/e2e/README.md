@@ -20,21 +20,21 @@ where WebKit would otherwise fall back to the default data store.
 
 ```sh
 # Check the suite and runner without compiling or launching the app:
-yarn workspace @markflowy/desktop test:e2e:types
-yarn workspace @markflowy/desktop test:e2e:runner
+yarn workspace @zettel-notes/desktop test:e2e:types
+yarn workspace @zettel-notes/desktop test:e2e:runner
 
 # Explicit preparation (CI performs these; test:e2e never builds implicitly):
 yarn build
-yarn workspace @markflowy/desktop tauri:build:e2e
+yarn workspace @zettel-notes/desktop tauri:build:e2e
 
 # All eight scenarios, serially:
-yarn workspace @markflowy/desktop test:e2e
+yarn workspace @zettel-notes/desktop test:e2e
 # Or a named scenario:
-yarn workspace @markflowy/desktop test:e2e atomic-replace
+yarn workspace @zettel-notes/desktop test:e2e atomic-replace
 ```
 
-`MARKFLOWY_E2E_BINARY` optionally specifies a prebuilt test binary. The default is
-the Cargo workspace's `target/debug/markflowy`. An ordinary production binary
+`ZETTEL_NOTES_E2E_BINARY` optionally specifies a prebuilt test binary. The default is
+the Cargo workspace's `target/debug/zettel-notes`. An ordinary production binary
 cannot satisfy the native test marker/server checks.
 
 ## Coverage
@@ -71,7 +71,7 @@ exit and exactly one completed passing test record. Before cleanup the runner sa
 fixture files, SQLite/WAL, CLI receipts and profile state to `reports/`, alongside
 screenshots, page source, unhandled frontend errors and native/runner logs.
 Cleanup only targets the runner's marked root and exact UUID profile paths;
-it never changes HOME or uses the normal MarkFlowy profile. CI uploads reports
+it never changes HOME or uses the normal Zettel Notes profile. CI uploads reports
 even on failure and retains them for seven days. Reports contain fixture text
 and must not be populated using private documents.
 

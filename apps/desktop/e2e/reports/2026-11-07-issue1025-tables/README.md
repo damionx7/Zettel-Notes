@@ -1,7 +1,7 @@
 # #1025 table formatting acceptance
 
 Tested on 2026-11-07 with macOS 26.5.2, native Tauri DEV at `localhost:3000`,
-MarkFlowy `4d8446f1`, and the installed Capricorn runtime 0.5.13.
+Zettel Notes `4d8446f1`, and the installed Capricorn runtime 0.5.13.
 This is macOS DEV evidence; Windows, Linux and packaged releases were not tested.
 
 ## Native flow
@@ -23,7 +23,7 @@ differences between WebKit and Chromium did not affect table formatting.
 No product defect was found in this scope. The original dark theme was restored;
 existing user documents were not edited.
 
-Temporary artifacts are under `/tmp/markflowy-issue1025-closeout`:
+Temporary artifacts are under `/tmp/zettel-notes-issue1025-closeout`:
 
 - `table-acceptance.md`: document saved through the native app.
 - `table-native.pdf`: SHA-256 `481eb08b3f399fe1e7bc327ff7591c423252db6b5bc2adc7bf07917715d87a52`.
@@ -41,8 +41,8 @@ The DOM test stubs layout geometry; it does not replace the native visual checks
 Passed with Node 24:
 
 ```sh
-yarn workspace @markflowy/desktop test:capricorn-published tests/capricorn-table-formatting.integration.test.tsx
-yarn workspace @markflowy/desktop build:types
+yarn workspace @zettel-notes/desktop test:capricorn-published tests/capricorn-table-formatting.integration.test.tsx
+yarn workspace @zettel-notes/desktop build:types
 node node_modules/@umijs/fabric/node_modules/eslint/bin/eslint.js --resolve-plugins-relative-to node_modules/@umijs/fabric apps/desktop/tests/capricorn-table-formatting.integration.test.tsx
 ```
 

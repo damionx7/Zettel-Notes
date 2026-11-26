@@ -1,5 +1,5 @@
 import { useMemo, type ReactNode } from 'react'
-import type { MfTheme } from '@markflowy/theme'
+import type { MfTheme } from '@zettel-notes/theme'
 import { Check, Copy, Download, Ellipsis, Moon, Pencil, Sun, Trash2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'

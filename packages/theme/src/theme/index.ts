@@ -49,13 +49,13 @@ export type MfTheme = {
 export { common, tokyoNightTheme }
 
 export const lightTheme: MfTheme = {
-  name: 'MarkFlowy Light',
+  name: 'Zettel Notes Light',
   mode: 'light',
   styledConstants: styledLightTheme,
 }
 
 export const darkTheme: MfTheme = {
-  name: 'MarkFlowy Dark',
+  name: 'Zettel Notes Dark',
   mode: 'dark',
   styledConstants: styledDarkTheme,
 }

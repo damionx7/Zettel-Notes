@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="dark light" />
     <script>
       ;(() => {
-        const storageKey = 'markflowy:startup-appearance:v1'
-        const sessionStorageKey = 'markflowy:startup-appearance:session:v1'
+        const storageKey = 'zettel-notes:startup-appearance:v1'
+        const sessionStorageKey = 'zettel-notes:startup-appearance:session:v1'
         const fallbackPalettes = {
           light: {
             surfaceApp: '#FFFFFF',
@@ -39,8 +39,8 @@
         const safeColor = /^#(?:[0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i
         const safeOpaqueColor = /^#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{3}f|[0-9a-f]{6}ff)$/i
         const bootstrap =
-          window.__MARKFLOWY_BOOTSTRAP__ && typeof window.__MARKFLOWY_BOOTSTRAP__ === 'object'
-            ? window.__MARKFLOWY_BOOTSTRAP__
+          window.__ZETTEL_NOTES_BOOTSTRAP__ && typeof window.__ZETTEL_NOTES_BOOTSTRAP__ === 'object'
+            ? window.__ZETTEL_NOTES_BOOTSTRAP__
             : {}
         let rawAppearance
         try {
@@ -148,7 +148,7 @@
           palette,
         }
 
-        window.__MARKFLOWY_BOOTSTRAP__ = {
+        window.__ZETTEL_NOTES_BOOTSTRAP__ = {
           ...(typeof bootstrap.restoreSessionLabel === 'string' ||
           bootstrap.restoreSessionLabel === null
             ? { restoreSessionLabel: bootstrap.restoreSessionLabel }

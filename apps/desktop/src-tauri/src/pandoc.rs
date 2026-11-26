@@ -499,7 +499,7 @@ async fn export_with_timeout(
         .unwrap_or(output_parent);
 
     let temp_file = tempfile::Builder::new()
-        .prefix(".markflowy-pandoc-")
+        .prefix(".zettel-notes-pandoc-")
         .suffix(&format!(".{}", request.format.extension()))
         .tempfile_in(output_parent)
         .map_err(|error| {

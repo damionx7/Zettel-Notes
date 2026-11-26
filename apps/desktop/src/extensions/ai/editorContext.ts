@@ -1,6 +1,6 @@
 import { getFileObject } from '@/helper/files'
 import useEditorStore from '@/stores/useEditorStore'
-import type { IFile } from '@markflowy/interface'
+import type { IFile } from '@zettel-notes/interface'
 import { invoke } from '@tauri-apps/api/core'
 
 interface FileReadResult {

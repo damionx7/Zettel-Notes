@@ -1,4 +1,4 @@
-import { verifyFileName, type FileSystemContextValue, type IFile } from '@markflowy/interface'
+import { verifyFileName, type FileSystemContextValue, type IFile } from '@zettel-notes/interface'
 import { getFileObject } from '@/helper/files'
 import { updateFile } from '@/helper/filesys'
 import useEditorStateStore from '@/stores/useEditorStateStore'

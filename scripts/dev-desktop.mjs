@@ -367,7 +367,7 @@ export const runDevDesktop = async ({
       [
         'run',
         'dev',
-        '--filter=@markflowy/desktop^...',
+        '--filter=@zettel-notes/desktop^...',
         // Desktop Vite serves zens sources directly. Its dependency build still
         // prepares other workspaces without a second watcher writing the same outputs.
         '--filter=!zens',
@@ -376,7 +376,7 @@ export const runDevDesktop = async ({
         '--ui=stream',
       ],
       ROOT_DIR,
-      { ...devEnvironment, MARKFLOWY_EDITOR_WATCH_ONLY: '1' },
+      { ...devEnvironment, ZETTEL_NOTES_EDITOR_WATCH_ONLY: '1' },
     )
 
     turboProcess.once('error', (error) => {
@@ -406,7 +406,7 @@ export const runDevDesktop = async ({
           exitCodeFor(code, signal),
           processExitReason('Tauri', code, signal),
           code === 0
-            ? 'If no development window opened, quit any already running MarkFlowy instance ' +
+            ? 'If no development window opened, quit any already running Zettel Notes instance ' +
                 'and retry. The single-instance plugin exits normally when another instance is running.'
             : undefined,
         )

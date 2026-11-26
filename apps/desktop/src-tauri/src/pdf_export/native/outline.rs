@@ -424,7 +424,7 @@ mod tests {
     use super::*;
     use lopdf::{Dictionary, Stream};
 
-    const DOCUMENT_URL: &str = "file:///private/markflowy-native-pdf-unit/document.html";
+    const DOCUMENT_URL: &str = "file:///private/zettel-notes-native-pdf-unit/document.html";
 
     fn finish_pdf(
         bytes: &[u8],

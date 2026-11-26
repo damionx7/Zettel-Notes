@@ -5,7 +5,7 @@ import { EditorViewType } from '@/constants/editorViewType'
 import useFileTypeConfigStore from '@/stores/useFileTypeConfigStore'
 import { redoDepth, undoDepth } from '@codemirror/commands'
 import { Transaction } from '@codemirror/state'
-import { createCommandMap } from '@markflowy/interface'
+import { createCommandMap } from '@zettel-notes/interface'
 
 export {
   captureEditorCommandTarget,

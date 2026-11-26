@@ -14,7 +14,7 @@ function pressBackspace(element: HTMLElement): void {
   element.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'Backspace' }))
 }
 
-describe('standard list Enter behavior in the MarkFlowy editor', () => {
+describe('standard list Enter behavior in the Zettel Notes editor', () => {
   it('does not re-enter a list from the root paragraph after an empty task item exits', async () => {
     const delegate = createWysiwygDelegate()
     const { schema } = delegate.manager

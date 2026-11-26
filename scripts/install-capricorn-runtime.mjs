@@ -27,7 +27,7 @@ function runNpm(args) {
   })
 }
 
-const temporaryRoot = await mkdtemp(join(tmpdir(), 'markflowy-capricorn-'))
+const temporaryRoot = await mkdtemp(join(tmpdir(), 'zettel-notes-capricorn-'))
 
 try {
   const npmrcPath = join(temporaryRoot, 'npmrc')

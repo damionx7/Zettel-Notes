@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/select'
 import useAppSettingStore from '@/stores/useAppSettingStore'
 import useThemeStore, { type ThemeMode } from '@/stores/useThemeStore'
-import type { MfTheme } from '@markflowy/theme'
+import type { MfTheme } from '@zettel-notes/theme'
 import { Check, ChevronRight, Moon, Sun } from 'lucide-react'
 import { RadioGroupRoot, RadioGroupItem } from '@/components/ui/radio-group'
 import { ThemePalette } from '../ThemeStore/ThemeListItem'
@@ -205,8 +205,8 @@ export const ThemeSetting = memo(({ onBrowse }: ThemeSettingProps) => {
             size='sm'
             className='px-0'
             onClick={() => {
-              const locale = String(settingData.language).startsWith('zh') ? '/zh' : ''
-              void openUrl(`https://www.markflowy.cc${locale}/docs/Extension/CustomTheme`).catch(
+              const docsLocale = String(settingData.language).startsWith('zh') ? 'zh' : 'en'
+              void openUrl(`https://github.com/damionx7/Zettel-Notes/blob/main/docs/${docsLocale}/Extension/CustomTheme.md`).catch(
                 (error: unknown) => {
                   logger.error('Failed to open theme migration guide:', error)
                 },

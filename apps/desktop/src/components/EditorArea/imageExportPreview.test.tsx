@@ -1,11 +1,11 @@
 // @vitest-environment jsdom
 import { act, cleanup, render, waitFor } from '@testing-library/react'
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import * as rmeRuntime from 'rme'
 import { createImageExportSurface, type ImageExportSurface } from './imageExportSurface'
 import { exportHtmlDocument } from './exportHtmlDocument'
 import { buildPdfExportDocument } from './pdf-export/pdfExportDocument'
-import { i18nInit } from '@markflowy/i18n'
+import { i18nInit } from '@zettel-notes/i18n'
 import { Preview, ThemeProvider, type PreviewImageHydration } from 'rme'
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -25,8 +25,8 @@ vi.mock('mermaid', () => ({
 }))
 
 vi.mock('@/stores/useThemeStore', () => ({
-  FALLBACK_LIGHT_THEME: 'MarkFlowy Light',
-  FALLBACK_DARK_THEME: 'MarkFlowy Dark',
+  FALLBACK_LIGHT_THEME: 'Zettel Notes Light',
+  FALLBACK_DARK_THEME: 'Zettel Notes Dark',
 }))
 
 beforeAll(async () => {
@@ -216,12 +216,12 @@ describe('workspace RME static preview for JPG export', () => {
         root: surface!.element,
         html: preview.innerHTML,
         title: 'Portable PDF',
-        paperSize: process.env.MARKFLOWY_PDF_TEST_PAPER === 'letter' ? 'letter' : 'a4',
-        landscape: process.env.MARKFLOWY_PDF_TEST_LANDSCAPE === 'true',
+        paperSize: process.env.ZETTEL_NOTES_PDF_TEST_PAPER === 'letter' ? 'letter' : 'a4',
+        landscape: process.env.ZETTEL_NOTES_PDF_TEST_LANDSCAPE === 'true',
       })
-      if (process.env.MARKFLOWY_PDF_TEST_HTML_OUTPUT) {
+      if (process.env.ZETTEL_NOTES_PDF_TEST_HTML_OUTPUT) {
         const { writeFile } = await import('node:fs/promises')
-        await writeFile(process.env.MARKFLOWY_PDF_TEST_HTML_OUTPUT, pdf.html, 'utf8')
+        await writeFile(process.env.ZETTEL_NOTES_PDF_TEST_HTML_OUTPUT, pdf.html, 'utf8')
       }
       const pdfDocument = new DOMParser().parseFromString(pdf.html, 'text/html')
       const wrapperClasses = Array.from(preview.parentElement!.classList)

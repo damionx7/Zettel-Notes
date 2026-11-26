@@ -48,7 +48,7 @@ const AppRenderFailure = ({ error, reset }: { error: unknown; reset: () => void 
       <AsyncSurface
         state={{
           status: 'error',
-          title: 'Unable to render MarkFlowy',
+          title: 'Unable to render Zettel Notes',
           description: error instanceof Error ? error.message : undefined,
           retry: reset,
         }}

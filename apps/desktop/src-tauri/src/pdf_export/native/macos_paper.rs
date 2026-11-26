@@ -62,8 +62,8 @@ pub(super) fn configure(
     if !width.is_finite() || !height.is_finite() || width <= 0.0 || height <= 0.0 {
         return Err("The requested physical paper dimensions are invalid.".into());
     }
-    let identifier = CFString::new(&format!("org.markflowy.pdf.{width:.8}x{height:.8}"));
-    let name = CFString::new("MarkFlowy PDF");
+    let identifier = CFString::new(&format!("org.eu.thedoc.zettelnotes.pdf.{width:.8}x{height:.8}"));
+    let name = CFString::new("Zettel Notes PDF");
     let margins = PaperMargins {
         top: 0.0,
         left: 0.0,

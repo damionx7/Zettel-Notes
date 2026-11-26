@@ -1,4 +1,4 @@
-import type { AuthSession } from '@markflowy/types'
+import type { AuthSession } from '@zettel-notes/types'
 
 let accessToken: string | null = null
 

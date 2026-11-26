@@ -3,8 +3,8 @@ import {
   FileTreeContext,
   FileTreeContextValue,
   fileTreeHandler,
-} from '@markflowy/interface'
-import type { IFile } from '@markflowy/interface'
+} from '@zettel-notes/interface'
+import type { IFile } from '@zettel-notes/interface'
 
 interface FileTreeAdapterProps {
   children: ReactNode

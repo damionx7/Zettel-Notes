@@ -1,4 +1,4 @@
-import { common, webSpecificTokens, webDarkTheme as styledDarkTheme } from '@markflowy/theme'
+import { common, webSpecificTokens, webDarkTheme as styledDarkTheme } from '@zettel-notes/theme'
 
 export type ThemeColors = typeof darkTheme
 export type ScThemeProps = { theme: ThemeColors }

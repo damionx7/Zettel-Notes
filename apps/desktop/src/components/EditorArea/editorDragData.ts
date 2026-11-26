@@ -1,4 +1,4 @@
-export const EDITOR_TAB_DRAG_TYPE = 'application/x-markflowy-editor-tab'
+export const EDITOR_TAB_DRAG_TYPE = 'application/x-zettel-notes-editor-tab'
 
 export interface EditorTabDragData {
   sourceGroupId: string

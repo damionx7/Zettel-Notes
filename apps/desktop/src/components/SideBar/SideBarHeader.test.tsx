@@ -1,4 +1,4 @@
-import { desktopDarkTheme } from '@markflowy/theme'
+import { desktopDarkTheme } from '@zettel-notes/theme'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { PlusIcon } from 'lucide-react'
 import { renderToStaticMarkup } from 'react-dom/server'

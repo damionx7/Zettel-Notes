@@ -1,4 +1,4 @@
-import { FileResultCode, type FileSysResult } from '@markflowy/interface'
+import { FileResultCode, type FileSysResult } from '@zettel-notes/interface'
 import { getVersion } from '@tauri-apps/api/app'
 import { invoke } from '@tauri-apps/api/core'
 import { appDataDir, join } from '@tauri-apps/api/path'
@@ -11,7 +11,7 @@ export interface UpdateAttempt {
   startedAt: number
 }
 
-const STORE_PATH = '.markflowy_updater.dat'
+const STORE_PATH = '.zettel_notes_updater.dat'
 const store = new LazyStore(STORE_PATH, { defaults: {}, autoSave: false })
 const ATTEMPT_KEY = 'pending_install'
 

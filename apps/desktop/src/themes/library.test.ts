@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { builtInThemes, type MfTheme } from '@markflowy/theme'
+import { builtInThemes, type MfTheme } from '@zettel-notes/theme'
 const mocks = vi.hoisted(() => ({
   invoke: vi.fn(),
   applyTheme: vi.fn(),
@@ -10,8 +10,8 @@ const mocks = vi.hoisted(() => ({
   themeState: {
     themes: [] as MfTheme[],
     curTheme: undefined as MfTheme | undefined,
-    lightThemeName: 'MarkFlowy Light',
-    darkThemeName: 'MarkFlowy Dark',
+    lightThemeName: 'Zettel Notes Light',
+    darkThemeName: 'Zettel Notes Dark',
     themeMode: 'light',
     systemTheme: 'light',
   },
@@ -20,8 +20,8 @@ vi.mock('@tauri-apps/api/core', () => ({ invoke: mocks.invoke }))
 vi.mock('@tauri-apps/api/event', () => ({ listen: vi.fn() }))
 vi.mock('./snippetDirectory', () => ({ watchSnippetDirectory: mocks.watch }))
 vi.mock('@/stores/useThemeStore', () => ({
-  FALLBACK_LIGHT_THEME: 'MarkFlowy Light',
-  FALLBACK_DARK_THEME: 'MarkFlowy Dark',
+  FALLBACK_LIGHT_THEME: 'Zettel Notes Light',
+  FALLBACK_DARK_THEME: 'Zettel Notes Dark',
   default: {
     setState: mocks.setState,
     getState: () => ({
@@ -44,9 +44,9 @@ beforeEach(() => {
   mocks.watch.mockResolvedValue(vi.fn())
   Object.assign(mocks.themeState, {
     themes: [...builtInThemes],
-    curTheme: builtInThemes.find((theme) => theme.name === 'MarkFlowy Light'),
-    lightThemeName: 'MarkFlowy Light',
-    darkThemeName: 'MarkFlowy Dark',
+    curTheme: builtInThemes.find((theme) => theme.name === 'Zettel Notes Light'),
+    lightThemeName: 'Zettel Notes Light',
+    darkThemeName: 'Zettel Notes Dark',
     themeMode: 'light',
     systemTheme: 'light',
   })
@@ -58,7 +58,7 @@ beforeEach(() => {
     state.curTheme =
       state.themes.find((theme) => theme.name === name && theme.mode === mode) ??
       builtInThemes.find(
-        (theme) => theme.name === `MarkFlowy ${mode === 'dark' ? 'Dark' : 'Light'}`,
+        (theme) => theme.name === `Zettel Notes ${mode === 'dark' ? 'Dark' : 'Light'}`,
       )
   })
   mocks.applyThemeSelection.mockImplementation(async (selection) =>
@@ -222,8 +222,8 @@ describe('theme library', () => {
     await useThemeLibrary.getState().mutate({ type: 'remove', id: 'paper' })
     expect(mocks.applyThemeSelection).toHaveBeenCalledOnce()
     expect(mocks.applyThemeSelection).toHaveBeenCalledWith({
-      lightThemeName: 'MarkFlowy Light',
-      darkThemeName: 'MarkFlowy Dark',
+      lightThemeName: 'Zettel Notes Light',
+      darkThemeName: 'Zettel Notes Dark',
     })
     expect(useThemeLibrary.getState().error).toBeUndefined()
   })

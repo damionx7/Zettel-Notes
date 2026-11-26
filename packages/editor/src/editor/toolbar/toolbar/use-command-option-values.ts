@@ -3,7 +3,7 @@ import type { CoreIcon } from '@rme-sdk/sdk/icons'
 import { useHelpers } from '@rme-sdk/sdk/react'
 import { useMemo } from 'react'
 
-import { t } from '@markflowy/i18n'
+import { t } from '@zettel-notes/i18n'
 import { getCommandOptionValue, RmeCommandDecoratorMessageProps } from './react-component-utils'
 
 export interface UseCommandOptionValuesParams extends Omit<CommandDecoratorMessageProps, 't'> {

@@ -1,4 +1,4 @@
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { ServerStyleSheet, ThemeProvider } from 'styled-components'

@@ -104,7 +104,7 @@ export function verifyPdfProbe(inspection: PdfInspection): boolean {
   return (
     inspection.pages >= 2 &&
     inspection.outline.length === 3 &&
-    parent?.title === 'MarkFlowy PDF probe' &&
+    parent?.title === 'Zettel Notes PDF probe' &&
     parent.depth === 0 &&
     parent.page === 1 &&
     child?.title === 'Nested heading' &&

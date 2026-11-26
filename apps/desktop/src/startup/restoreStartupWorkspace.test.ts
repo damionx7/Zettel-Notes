@@ -1,7 +1,7 @@
 import { enableMapSet } from 'immer'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { invoke } from '@tauri-apps/api/core'
-import type * as MarkflowyInterface from '@markflowy/interface'
+import type * as ZettelNotesInterface from '@zettel-notes/interface'
 import type * as FileSystem from '@/helper/filesys'
 import useFileCacheStore, { getFileObject } from '@/helper/files'
 import { readDirectory, type IFile } from '@/helper/filesys'
@@ -14,8 +14,8 @@ vi.mock('@/helper/filesys', async (original) => ({
   ...await original<typeof FileSystem>(),
   readDirectory: vi.fn(),
 }))
-vi.mock('@markflowy/interface', async (original) => ({
-  ...await original<typeof MarkflowyInterface>(),
+vi.mock('@zettel-notes/interface', async (original) => ({
+  ...await original<typeof ZettelNotesInterface>(),
   fileTreeHandler: { clearLoadedDirsCache: vi.fn() },
 }))
 vi.mock('@/helper/logger', () => ({ logger: { error: vi.fn() } }))

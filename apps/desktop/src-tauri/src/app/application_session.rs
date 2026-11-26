@@ -6,7 +6,7 @@ use std::{
 use tauri::{AppHandle, Manager, WebviewWindow};
 use tauri_plugin_store::{Store, StoreBuilder};
 
-const STORE_PATH: &str = ".markflowy_workspaces.dat";
+const STORE_PATH: &str = ".zettel_notes_workspaces.dat";
 const SESSION_KEY: &str = "window-session:application:v1";
 static QUIT_STATE: LazyLock<Mutex<QuitState>> = LazyLock::new(|| Mutex::new(QuitState::default()));
 

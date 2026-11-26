@@ -1,4 +1,4 @@
-export const SITE_ORIGIN = 'https://www.markflowy.cc'
+export const SITE_ORIGIN = 'https://damionx7.github.io/Zettel-Notes'
 export const SITE_LOCALES = ['en', 'zh', 'ru'] as const
 export type SiteLocale = (typeof SITE_LOCALES)[number]
 export const OPEN_GRAPH_LOCALES: Record<SiteLocale, string> = {
@@ -8,9 +8,9 @@ export const OPEN_GRAPH_LOCALES: Record<SiteLocale, string> = {
 }
 
 export const SITE_DESCRIPTION: Record<SiteLocale, string> = {
-  en: 'Find your writing flow with MarkFlowy, a local-first Markdown editor for macOS, Windows, and Linux. Visual and source editing, with optional AI assistance.',
-  zh: '让想法流动，专注每一次写作。MarkFlowy 是适用于 macOS、Windows 和 Linux 的本地优先 Markdown 编辑器，支持所见即所得与源码编辑，可选接入云端 AI 或本地 Ollama 模型。',
-  ru: 'MarkFlowy — редактор Markdown для macOS, Windows и Linux с хранением файлов на вашем устройстве. Визуальное редактирование и исходный текст, ИИ-помощник по желанию.',
+  en: 'Find your writing flow with Zettel Notes, a local-first Markdown editor for macOS, Windows, and Linux. Visual and source editing, with optional AI assistance.',
+  zh: '让想法流动，专注每一次写作。Zettel Notes 是适用于 macOS、Windows 和 Linux 的本地优先 Markdown 编辑器，支持所见即所得与源码编辑，可选接入云端 AI 或本地 Ollama 模型。',
+  ru: 'Zettel Notes — редактор Markdown для macOS, Windows и Linux с хранением файлов на вашем устройстве. Визуальное редактирование и исходный текст, ИИ-помощник по желанию.',
 }
 
 export interface SocialImage {
@@ -24,14 +24,14 @@ export interface SocialImage {
 export function getSocialImage(locale: SiteLocale): SocialImage {
   const imageLocale = locale === 'zh' ? 'zh' : 'en'
   return {
-    url: `${SITE_ORIGIN}/social/markflowy-${imageLocale}.png`,
+    url: `${SITE_ORIGIN}/social/zettel-notes-${imageLocale}.png`,
     width: 1200,
     height: 630,
     type: 'image/png',
     alt:
       locale === 'zh'
-        ? 'MarkFlowy：让想法流动，专注每一次写作。白色背景上的蓝紫色丝带与本地优先 Markdown 编辑器标语。'
-        : 'MarkFlowy: Your ideas, in full flow. Blue and violet ribbons on white, with the local-first Markdown editor tagline.',
+        ? 'Zettel Notes：让想法流动，专注每一次写作。白色背景上的蓝紫色丝带与本地优先 Markdown 编辑器标语。'
+        : 'Zettel Notes: Your ideas, in full flow. Blue and violet ribbons on white, with the local-first Markdown editor tagline.',
   }
 }
 
@@ -44,21 +44,21 @@ export function getHomeStructuredData(locale: SiteLocale, description: string) {
       {
         '@type': 'WebSite',
         '@id': `${SITE_ORIGIN}/#website`,
-        name: 'MarkFlowy',
+        name: 'Zettel Notes',
         url: `${SITE_ORIGIN}/`,
         inLanguage: SITE_LOCALES.map((language) => language === 'zh' ? 'zh-CN' : language),
       },
       {
         '@type': 'SoftwareApplication',
         '@id': `${SITE_ORIGIN}/#application`,
-        name: 'MarkFlowy',
+        name: 'Zettel Notes',
         url,
         description,
         applicationCategory: 'ProductivityApplication',
         operatingSystem: 'macOS, Windows, Linux',
         image: getSocialImage(locale).url,
-        downloadUrl: 'https://github.com/drl990114/MarkFlowy/releases',
-        sameAs: ['https://github.com/drl990114/MarkFlowy'],
+        downloadUrl: 'https://github.com/damionx7/Zettel-Notes/releases',
+        sameAs: ['https://github.com/damionx7/Zettel-Notes'],
       },
     ],
   }
@@ -209,7 +209,7 @@ export function renderSitemap(documents: readonly PublicDocument[]): string {
 
 export function renderLlmsIndex(documents: readonly PublicDocument[]): string {
   return [
-    '# MarkFlowy',
+    '# Zettel Notes',
     '',
     `> ${SITE_DESCRIPTION.en}`,
     '',
@@ -218,8 +218,8 @@ export function renderLlmsIndex(documents: readonly PublicDocument[]): string {
     '## Product',
     '',
     `- [Website](${SITE_ORIGIN}/): Product overview.`,
-    '- [GitHub](https://github.com/drl990114/MarkFlowy): Source, issues, and contribution information.',
-    '- [Download](https://github.com/drl990114/MarkFlowy/releases/latest): Current desktop release and platform assets.',
+    '- [GitHub](https://github.com/damionx7/Zettel-Notes): Source, issues, and contribution information.',
+    '- [Download](https://github.com/damionx7/Zettel-Notes/releases/latest): Current desktop release and platform assets.',
     `- [Release notes](${SITE_ORIGIN}/releases): Version-specific changes.`,
     '',
     ...SITE_LOCALES.filter((locale) => documents.some((document) => document.locale === locale)).flatMap((locale) => [

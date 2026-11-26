@@ -57,7 +57,7 @@ export default function DocsLayout({
 
   return (
     <Container>
-      <Head title={`MarkFlowy${title ? `: ${title}` : ''}`} description={description} {...seo} />
+      <Head title={`Zettel Notes${title ? `: ${title}` : ''}`} description={description} {...seo} />
 
       <Nav
         useDocsSidebarMenu={useDocsSidebarMenu}

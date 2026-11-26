@@ -10,7 +10,7 @@ const profile = (id: number, login: string): Contributor => ({
 
 // Public GitHub contributors snapshot, verified 2026-09-21. Keep the community
 // visible when GitHub is unavailable or rate-limited; ISR refreshes the live list.
-// Source: https://api.github.com/repos/drl990114/MarkFlowy/contributors?per_page=100
+// Source: https://api.github.com/repos/damionx7/Zettel-Notes/contributors?per_page=100
 export const contributorSnapshot: Contributor[] = [
   profile(48054715, 'drl990114'),
   profile(99468824, 'KiraKiraAyu'),
@@ -55,7 +55,7 @@ export function normalizeContributors(data: unknown): Contributor[] {
 export async function loadContributors(fetcher: typeof fetch = fetch): Promise<Contributor[]> {
   try {
     const response = await fetcher(
-      'https://api.github.com/repos/drl990114/MarkFlowy/contributors?per_page=100',
+      'https://api.github.com/repos/damionx7/Zettel-Notes/contributors?per_page=100',
       {
         headers: { Accept: 'application/vnd.github+json' },
         signal: AbortSignal.timeout(3000),

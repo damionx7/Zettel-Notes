@@ -1,4 +1,4 @@
-import { useTranslation } from '@markflowy/i18n'
+import { useTranslation } from '@zettel-notes/i18n'
 import type { AnyExtension, CommandsFromExtensions } from '@rme-sdk/sdk'
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'

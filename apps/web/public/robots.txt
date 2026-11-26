@@ -3,4 +3,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.markflowy.cc/sitemap.xml
+Sitemap: https://damionx7.github.io/Zettel-Notes/sitemap.xml

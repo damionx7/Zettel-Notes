@@ -1,4 +1,4 @@
-import { fileTreeHandler } from '@markflowy/interface'
+import { fileTreeHandler } from '@zettel-notes/interface'
 import { readDirectory, type IFile } from '@/helper/filesys'
 import useEditorStore from '@/stores/useEditorStore'
 import { create } from 'zustand'

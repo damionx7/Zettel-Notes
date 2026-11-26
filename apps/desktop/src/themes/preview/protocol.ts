@@ -1,4 +1,4 @@
-import type { ResolvedTheme, ThemeTokenName } from '@markflowy/theme/semantic'
+import type { ResolvedTheme, ThemeTokenName } from '@zettel-notes/theme/semantic'
 
 export const PREVIEW_CHANNEL = 'mf-theme-preview-v1'
 export interface ThemePreviewLabels {

@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { getExportableImageSrc } from '@/helper/image'
-import { FileResultCode } from '@markflowy/interface'
+import { FileResultCode } from '@zettel-notes/interface'
 import { invoke } from '@tauri-apps/api/core'
 import { buildPdfExportDocument, PDF_EXPORT_CSP } from './pdfExportDocument'
 

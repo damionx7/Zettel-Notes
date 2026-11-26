@@ -1,6 +1,6 @@
 import { useThemeAccentPreview } from '@/themes/context'
 import useThemeStore from '@/stores/useThemeStore'
-import { darken, lighten } from '@markflowy/theme'
+import { darken, lighten } from '@zettel-notes/theme'
 import Color from 'color'
 
 export const THEME_ACCENT_COLOR_SETTING_KEY = 'theme_accent_color'

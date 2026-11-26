@@ -40,7 +40,7 @@ export function GitHubSettingsPanel({ isAuthenticated, authLoading }: GitHubSett
         <PanelTitle>GitHub Integration</PanelTitle>
         <PanelDesc>
           Link your GitHub identity, then authorize the GitHub App for the repositories you want to
-          use in MarkFlowy. Personal access tokens are not required.
+          use in Zettel Notes. Personal access tokens are not required.
         </PanelDesc>
       </PanelHeader>
 
@@ -108,7 +108,7 @@ export function GitHubSettingsPanel({ isAuthenticated, authLoading }: GitHubSett
           <RepositoryHeader>
             <RepositoryTitle>Repository Access</RepositoryTitle>
             <RepositoryDesc>
-              Install the MarkFlowy GitHub App for a personal account or organization, and choose
+              Install the Zettel Notes GitHub App for a personal account or organization, and choose
               which repositories it can access.
             </RepositoryDesc>
           </RepositoryHeader>
@@ -136,8 +136,8 @@ export function GitHubSettingsPanel({ isAuthenticated, authLoading }: GitHubSett
                     disabled={busy}
                   >
                     {deletingInstallationId === installation.installationId
-                      ? 'Removing from MarkFlowy...'
-                      : 'Remove from MarkFlowy'}
+                      ? 'Removing from Zettel Notes...'
+                      : 'Remove from Zettel Notes'}
                   </DeleteButton>
                 </InstallationItem>
               ))}
@@ -205,11 +205,11 @@ export function GitHubSettingsPanel({ isAuthenticated, authLoading }: GitHubSett
         <HelpGrid>
           <HelpItem>
             <HelpNumber>1</HelpNumber>
-            <HelpText>Link your GitHub identity to your MarkFlowy account.</HelpText>
+            <HelpText>Link your GitHub identity to your Zettel Notes account.</HelpText>
           </HelpItem>
           <HelpItem>
             <HelpNumber>2</HelpNumber>
-            <HelpText>Install the MarkFlowy GitHub App and select repository access.</HelpText>
+            <HelpText>Install the Zettel Notes GitHub App and select repository access.</HelpText>
           </HelpItem>
           <HelpItem>
             <HelpNumber>3</HelpNumber>

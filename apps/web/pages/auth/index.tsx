@@ -15,7 +15,7 @@ export default function AuthPage() {
   if (checkingAuth) {
     return (
       <>
-        <SeoHead title='Sign In - MarkFlowy' />
+        <SeoHead title='Sign In - Zettel Notes' />
         <AuthLayout aria-busy='true'>
           <LoadingSpinner role='status' aria-label='Checking login status' />
         </AuthLayout>
@@ -55,15 +55,15 @@ function AuthForm() {
 
   return (
     <>
-      <SeoHead title={isRegister ? 'Sign Up - MarkFlowy' : 'Sign In - MarkFlowy'} />
+      <SeoHead title={isRegister ? 'Sign Up - Zettel Notes' : 'Sign In - Zettel Notes'} />
 
       <AuthLayout>
         <AuthContainer>
           <LogoSection>
             <Link href='/' passHref legacyBehavior>
               <LogoLink>
-                <LogoImage src='/logo.svg' alt='MarkFlowy' />
-                <LogoText>MarkFlowy</LogoText>
+                <LogoImage src='/logo.svg' alt='Zettel Notes' />
+                <LogoText>Zettel Notes</LogoText>
               </LogoLink>
             </Link>
             <ThemeSwitcher />

@@ -1,4 +1,4 @@
-import { builtInThemes, darkTheme, lightTheme, type MfTheme } from '@markflowy/theme'
+import { builtInThemes, darkTheme, lightTheme, type MfTheme } from '@zettel-notes/theme'
 import type { StartupAppearance } from './appearance'
 
 export type StartupThemeResolution = {

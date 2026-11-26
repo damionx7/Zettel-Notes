@@ -1,6 +1,6 @@
 import { act, cleanup, fireEvent, render, waitFor } from '@testing-library/react'
 import { createRef, useState } from 'react'
-import { TableOfContents as BuiltTableOfContents } from '@markflowy/interface'
+import { TableOfContents as BuiltTableOfContents } from '@zettel-notes/interface'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import TableOfContents, {
   type TableOfContentsRef,

@@ -1,4 +1,4 @@
-# MarkFlowy Collaboration Guide
+# Zettel Notes Collaboration Guide
 
 This file applies to the entire repository. If a subdirectory contains a more specific `AGENTS.md`, follow the more specific rules for that subtree.
 
@@ -60,7 +60,7 @@ Keep migrations scoped to the code being touched. A component currently being re
 ## Validation
 
 - Follow the user's validation limit: run TypeScript checks, relevant unit tests, and lint only; do not run builds unless the user explicitly changes that instruction. Report the commands and keep generated-output or native-runtime behavior unverified when those checks do not cover it.
-- For Desktop changes, also run `yarn workspace @markflowy/desktop build:types`, which executes `tsc --noEmit`.
+- For Desktop changes, also run `yarn workspace @zettel-notes/desktop build:types`, which executes `tsc --noEmit`.
 - Lint only the `.ts` and `.tsx` files changed in the current task, without `--fix`. Until the root ESLint 9 setup and legacy `.eslintrc`/parser configuration are migrated to flat config, use the installed and verified ESLint 8 runner:
   `node node_modules/@umijs/fabric/node_modules/eslint/bin/eslint.js --resolve-plugins-relative-to node_modules/@umijs/fabric <changed-files...>`
 - Do not use the root `yarn lint` command for validation because it runs with `--fix` and scans too broadly.

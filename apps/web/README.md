@@ -1,4 +1,4 @@
-# MarkFlowy website
+# Zettel Notes website
 
 The site uses Next.js Pages Router and Contentlayer2. Public English and Chinese documents live in `docs/en` and `docs/zh` at the repository root.
 
@@ -6,7 +6,7 @@ The site uses Next.js Pages Router and Contentlayer2. Public English and Chinese
 
 Every public Markdown document requires `seoTitle` and `description` in YAML front matter. Keep the existing filename-based `title` for navigation translations. `updatedAt` is optional: set an ISO calendar date when the content actually changes, rather than stamping every deployment with today's date.
 
-The same Contentlayer collection supplies HTML pages, `/sitemap.xml`, `/llms.txt`, and the `.md` versions of documentation pages. Only configured English/Chinese documents enter this collection. Language alternates point only to existing translations. English uses unprefixed paths, Chinese uses `/zh`, and all canonical URLs use `https://www.markflowy.cc`.
+The same Contentlayer collection supplies HTML pages, `/sitemap.xml`, `/llms.txt`, and the `.md` versions of documentation pages. Only configured English/Chinese documents enter this collection. Language alternates point only to existing translations. English uses unprefixed paths, Chinese uses `/zh`, and all canonical URLs use `https://damionx7.github.io/Zettel-Notes`.
 
 Examples:
 
@@ -20,7 +20,7 @@ Markdown responses are served through a server-side page rewrite, with the HTML 
 
 ## Search and social previews
 
-`components/SeoHead.tsx` renders search descriptions, [Open Graph](https://ogp.me/), and [Twitter large-image card tags](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#twitter) through the existing Pages Router `next/head`. Titles and descriptions remain page-specific; the shared English and Chinese images use the website's white, navy, and blue/violet ribbon design. The PNGs at `/social/markflowy-en.png` and `/social/markflowy-zh.png` are 1200 × 630 and do not need JavaScript or image generation at request time.
+`components/SeoHead.tsx` renders search descriptions, [Open Graph](https://ogp.me/), and [Twitter large-image card tags](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#twitter) through the existing Pages Router `next/head`. Titles and descriptions remain page-specific; the shared English and Chinese images use the website's white, navy, and blue/violet ribbon design. The PNGs at `/social/zettel-notes-en.png` and `/social/zettel-notes-zh.png` are 1200 × 630 and do not need JavaScript or image generation at request time.
 
 For a custom image, pass `{ url, alt, width, height, type }` to `SeoHead`. A string URL remains supported, but unknown dimensions and MIME type are omitted. Do not add a `twitter:site` or `twitter:creator` handle unless its ownership is confirmed.
 
@@ -30,26 +30,26 @@ After deployment, check the actual HTML and image responses before using platfor
 
 ## Local validation
 
-Run `yarn workspace @markflowy/web dev` to generate Contentlayer types/data and watch document changes while developing. The entire `.contentlayer/` directory is ignored by Git; commit the source documents in `docs/` and `contentlayer.config.js` changes instead. On a fresh checkout, generate content before running the type or generated-content checks below. Alternatively run `yarn exec contentlayer2 dev --clearCache` from this directory for content generation without starting Next.js; wait for the generated-document message before running checks in another terminal.
+Run `yarn workspace @zettel-notes/web dev` to generate Contentlayer types/data and watch document changes while developing. The entire `.contentlayer/` directory is ignored by Git; commit the source documents in `docs/` and `contentlayer.config.js` changes instead. On a fresh checkout, generate content before running the type or generated-content checks below. Alternatively run `yarn exec contentlayer2 dev --clearCache` from this directory for content generation without starting Next.js; wait for the generated-document message before running checks in another terminal.
 
 From the repository root:
 
 ```sh
-yarn workspace @markflowy/web build:types
-yarn workspace @markflowy/web test
-yarn workspace @markflowy/web test:content
+yarn workspace @zettel-notes/web build:types
+yarn workspace @zettel-notes/web test
+yarn workspace @zettel-notes/web test:content
 yarn translate:check
 ```
 
 `build:types` runs `tsc --noEmit`; it does not build the website. The GEO unit tests read source documents and check language links and sitemap entries. `test:content` compares the generated corpus with those sources to detect stale bodies/metadata, added or deleted documents, and missing table rendering. Use the repository's ESLint 8 runner on the TypeScript files changed by the task, without `--fix`.
 
-With the development server running, `yarn workspace @markflowy/web test:geo:http` checks actual HTML metadata, all Markdown links advertised by `llms.txt`, HEAD/405/404 behavior, and indexing controls. Set `GEO_BASE_URL` when using a port other than 3100. These checks caught the need to run Markdown rewrites in `beforeFiles`, before the static documentation catch-all.
+With the development server running, `yarn workspace @zettel-notes/web test:geo:http` checks actual HTML metadata, all Markdown links advertised by `llms.txt`, HEAD/405/404 behavior, and indexing controls. Set `GEO_BASE_URL` when using a port other than 3100. These checks caught the need to run Markdown rewrites in `beforeFiles`, before the static documentation catch-all.
 
 README changes belong in `README.src.md`; regenerate all three language outputs with NRG 1.1 and run its drift check.
 
 ## Product screenshots
 
-README and website screenshots use the same [public sample workspace](../../public/screenshot-workspace). Capture a separate `MarkFlowy Studio` window in native macOS full-screen mode, using English and the built-in light/dark themes. The five views are visual editing, Markdown source, dark mode, Chat AI with an unsent prompt, and a single document with the folder closed, sidebars hidden, and full-width writing disabled. Restore the original preferences after capture.
+README and website screenshots use the same [public sample workspace](../../public/screenshot-workspace). Capture a separate `Zettel Notes Studio` window in native macOS full-screen mode, using English and the built-in light/dark themes. The five views are visual editing, Markdown source, dark mode, Chat AI with an unsent prompt, and a single document with the folder closed, sidebars hidden, and full-width writing disabled. Restore the original preferences after capture.
 
 Retain the 3024 × 1898 native images in `public/screenshot-frames/originals/`. Check for the pointer and spotlight before framing; the [cleanup record](../../public/screenshot-frames/capture-patches/README.md) describes the existing captures. Regenerate all presentation images and duplicate README assets from the repository root:
 
@@ -67,15 +67,15 @@ After the normal website deployment:
 
 1. Fetch the production HTML, Markdown, sitemap, and robots endpoints. Check status, content type, page-specific metadata, language alternates, and the text returned without JavaScript.
 2. Check the actual CDN response for robots rules and any crawl challenges. CDN-managed content can differ from the repository file.
-3. Verify the domain in Google Search Console and Bing Webmaster Tools, inspect the key URLs, and submit `https://www.markflowy.cc/sitemap.xml`. These account actions are not performed by this code change.
+3. Verify the domain in Google Search Console and Bing Webmaster Tools, inspect the key URLs, and submit `https://damionx7.github.io/Zettel-Notes/sitemap.xml`. These account actions are not performed by this code change.
 4. Save answers to the fixed questions below before deployment, then repeat after two and four weeks. Use a new conversation, the same product/search mode, language, and region; repeat each question twice on each selected platform.
 
 | ID | Group | Question |
 | --- | --- | --- |
-| B1 | Brand | What is MarkFlowy, and which operating systems does it support? |
-| B2 | Brand | Does MarkFlowy require cloud AI, or can it use a local model? |
-| B3 | Brand | MarkFlowy 的大文档性能有什么公开测试依据？ |
-| B4 | Brand | MarkFlowy 的桌面版和 Web App 有什么区别？ |
+| B1 | Brand | What is Zettel Notes, and which operating systems does it support? |
+| B2 | Brand | Does Zettel Notes require cloud AI, or can it use a local model? |
+| B3 | Brand | Zettel Notes 的大文档性能有什么公开测试依据？ |
+| B4 | Brand | Zettel Notes 的桌面版和 Web App 有什么区别？ |
 | S1 | Scenario | Which Markdown editors should I evaluate for large technical documents? |
 | S2 | Scenario | Which desktop Markdown editors work with local Ollama models? |
 | S3 | Scenario | I keep Markdown files in local folders. Which editors offer optional AI assistance? |

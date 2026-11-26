@@ -2,7 +2,7 @@ import { useActive, useCommands } from '@rme-sdk/sdk/react'
 import { FC, useCallback } from 'react'
 
 import { CodeMirrorExtensionAttributes } from '@/editor/extensions/CodeMirror/codemirror-types'
-import { t } from '@markflowy/i18n'
+import { t } from '@zettel-notes/i18n'
 import { CommandButton, CommandButtonProps } from './command-button'
 
 export interface ToggleCodeBlockButtonProps

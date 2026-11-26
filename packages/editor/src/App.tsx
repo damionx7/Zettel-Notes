@@ -419,7 +419,7 @@ function App() {
           <div className="playground-header-left">
             <h1 className="playground-title">
               <span className="playground-logo">◈</span>
-              MARKFLOWY
+              ZETTEL_NOTES
             </h1>
             <span className="playground-subtitle">WYSIWYG Markdown Editor</span>
           </div>

@@ -1,5 +1,5 @@
 import type { CSSProp } from 'styled-components'
-import type { webDarkTheme } from '@markflowy/theme'
+import type { webDarkTheme } from '@zettel-notes/theme'
 
 type ThemeType = typeof webDarkTheme
 

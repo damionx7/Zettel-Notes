@@ -30,16 +30,16 @@ fn attachments_inside_a_repository_are_encrypted() {
     let root = temporary.path().join("repo");
     copy_dir(&fixture(), &root);
 
-    let status = markflowy::repo::unlock(&root.to_string_lossy(), "teste1000").expect("unlock");
+    let status = zettel_notes::repo::unlock(&root.to_string_lossy(), "teste1000").expect("unlock");
     assert!(status.is_unlocked);
 
     // 1. Bytes that come from a paste or a screenshot.
     let pasted = root.join("assets").join("image_1.png");
     let result =
-        markflowy::fc::cmd::write_u8_array_to_file(&pasted.to_string_lossy(), vec![1, 2, 3, 4]);
-    assert_eq!(result.code, markflowy::fc::FileResultCode::Success);
+        zettel_notes::fc::cmd::write_u8_array_to_file(&pasted.to_string_lossy(), vec![1, 2, 3, 4]);
+    assert_eq!(result.code, zettel_notes::fc::FileResultCode::Success);
     assert_eq!(
-        markflowy::repo::read("assets/image_1.png").expect("read through the volume"),
+        zettel_notes::repo::read("assets/image_1.png").expect("read through the volume"),
         vec![1, 2, 3, 4]
     );
 
@@ -48,15 +48,15 @@ fn attachments_inside_a_repository_are_encrypted() {
     fs::write(&outside, [9u8, 8, 7, 6]).expect("write source");
     let copied = root.join("assets").join("image_2.png");
     let result =
-        markflowy::fc::cmd::copy_file(&outside.to_string_lossy(), &copied.to_string_lossy());
+        zettel_notes::fc::cmd::copy_file(&outside.to_string_lossy(), &copied.to_string_lossy());
     assert_eq!(
         result.code,
-        markflowy::fc::FileResultCode::Success,
+        zettel_notes::fc::FileResultCode::Success,
         "copy failed: {}",
         result.content
     );
     assert_eq!(
-        markflowy::repo::read("assets/image_2.png").expect("read through the volume"),
+        zettel_notes::repo::read("assets/image_2.png").expect("read through the volume"),
         vec![9, 8, 7, 6]
     );
 
@@ -68,12 +68,12 @@ fn attachments_inside_a_repository_are_encrypted() {
     );
 
     // The folder is visible in the decrypted tree.
-    let listed: Vec<String> = markflowy::repo::list("")
+    let listed: Vec<String> = zettel_notes::repo::list("")
         .expect("list root")
         .into_iter()
         .map(|entry| entry.name)
         .collect();
     assert!(listed.contains(&"assets".to_string()), "root listing: {listed:?}");
 
-    markflowy::repo::lock_volume();
+    zettel_notes::repo::lock_volume();
 }

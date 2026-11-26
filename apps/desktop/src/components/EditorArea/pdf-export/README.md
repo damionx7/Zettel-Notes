@@ -48,9 +48,9 @@ not start or build an app. Supply the matching owned profile and its running
 binary, then run one case:
 
 ```sh
-MARKFLOWY_E2E_ROOT=/absolute/path/to/owned-profile \
-MARKFLOWY_E2E_ID=matching-profile-uuid \
-MARKFLOWY_E2E_BINARY=/absolute/path/to/debug/markflowy \
+ZETTEL_NOTES_E2E_ROOT=/absolute/path/to/owned-profile \
+ZETTEL_NOTES_E2E_ID=matching-profile-uuid \
+ZETTEL_NOTES_E2E_BINARY=/absolute/path/to/debug/zettel-notes \
 TAURI_WEBDRIVER_PORT=53801 \
 node apps/desktop/e2e/pdf-export-dev.mjs \
   --case a4-outline --report-dir /absolute/path/to/report --timeout-ms 600000
@@ -145,7 +145,7 @@ includes the A4 export with bookmarks disabled. External URL fragments stayed
 unchanged, and no temporary HTML URI remained. These reader checks supplement
 the native export flow; they do not substitute for it.
 
-The same A4 PDF also passed four real pointer clicks in MarkFlowy's native DEV
+The same A4 PDF also passed four real pointer clicks in Zettel Notes' native DEV
 PDF preview: the Chinese heading link, the encoded heading link, the named
 footnote target and its backlink. Viewport mouse down/up events changed the
 preview's page and scroll position, and the expected target text was visible.

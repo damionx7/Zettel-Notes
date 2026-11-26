@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { themeTokens, type ResolvedTheme, type ThemeTokenName } from '@markflowy/theme/semantic'
+import { themeTokens, type ResolvedTheme, type ThemeTokenName } from '@zettel-notes/theme/semantic'
 import {
   PREVIEW_CHANNEL,
   isPreviewMessage,

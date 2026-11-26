@@ -38,7 +38,7 @@ import {
   type ThemeVariant,
   type ThemeTokenName,
   type TokenValue,
-} from '@markflowy/theme/semantic'
+} from '@zettel-notes/theme/semantic'
 import { createThemeHistory, changeTheme, undoTheme, redoTheme } from '@/themes/editorHistory'
 import { useThemeLibrary } from '@/themes/library'
 import { ThemePreview } from './ThemePreview'

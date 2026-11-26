@@ -4809,326 +4809,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@markflowy/api-client@workspace:*, @markflowy/api-client@workspace:packages/api-client":
-  version: 0.0.0-use.local
-  resolution: "@markflowy/api-client@workspace:packages/api-client"
-  dependencies:
-    esbuild: "npm:^0.28.2"
-    rimraf: "npm:^6.1.0"
-    typescript: "npm:^5.7.3"
-  languageName: unknown
-  linkType: soft
-
-"@markflowy/desktop@workspace:apps/desktop":
-  version: 0.0.0-use.local
-  resolution: "@markflowy/desktop@workspace:apps/desktop"
-  dependencies:
-    "@ai-sdk/deepseek": "npm:^1.0.28"
-    "@ai-sdk/google": "npm:^2.0.32"
-    "@ai-sdk/openai": "npm:^2.0.67"
-    "@assistant-ui/react": "npm:0.14.26"
-    "@assistant-ui/react-markdown": "npm:0.14.5"
-    "@babel/plugin-proposal-class-properties": "npm:^7.18.6"
-    "@babel/plugin-proposal-decorators": "npm:^7.25.9"
-    "@codemirror/merge": "npm:6.12.1"
-    "@codemirror/state": "npm:^6.5.2"
-    "@codemirror/view": "npm:^6.38.6"
-    "@ebay/nice-modal-react": "npm:^1.2.13"
-    "@emotion/css": "npm:^11.13.5"
-    "@emotion/is-prop-valid": "npm:^1.3.1"
-    "@emotion/react": "npm:^11.13.3"
-    "@emotion/styled": "npm:^11.13.0"
-    "@markflowy/api-client": "workspace:*"
-    "@markflowy/github-api": "workspace:*"
-    "@markflowy/i18n": "workspace:*"
-    "@markflowy/interface": "workspace:*"
-    "@markflowy/theme": "workspace:*"
-    "@markflowy/types": "workspace:*"
-    "@popperjs/core": "npm:^2.11.8"
-    "@sentry/react": "npm:^9.2.0"
-    "@tailwindcss/vite": "npm:4.3.2"
-    "@tanstack/react-query": "npm:^5.79.2"
-    "@tanstack/react-virtual": "npm:^3.13.18"
-    "@tauri-apps/api": "npm:2.12.4"
-    "@tauri-apps/cli": "npm:2.12.3"
-    "@tauri-apps/plugin-cli": "npm:^2.5.0"
-    "@tauri-apps/plugin-clipboard-manager": "npm:^2.5.0"
-    "@tauri-apps/plugin-dialog": "npm:2.8.3"
-    "@tauri-apps/plugin-fs": "npm:2.7.1"
-    "@tauri-apps/plugin-http": "npm:2.8.3"
-    "@tauri-apps/plugin-opener": "npm:^2.7.2"
-    "@tauri-apps/plugin-os": "npm:2.4.0"
-    "@tauri-apps/plugin-shell": "npm:2.5.0"
-    "@tauri-apps/plugin-store": "npm:2.5.0"
-    "@tauri-apps/plugin-updater": "npm:2.14.0"
-    "@tauri-release/cli": "npm:^0.2.5"
-    "@types/color": "npm:^4.2.0"
-    "@types/lodash": "npm:^4.17.13"
-    "@types/markdown-it": "npm:^14.1.2"
-    "@types/node": "npm:^22.8.6"
-    "@types/react": "npm:^19.2.2"
-    "@types/react-dom": "npm:^19.2.2"
-    "@types/react-test-renderer": "npm:^19.1.0"
-    "@vitejs/plugin-react": "npm:^6.0.3"
-    "@vitest/ui": "npm:^4.1.11"
-    "@wdio/cli": "npm:9.32.0"
-    "@wdio/globals": "npm:9.31.3"
-    "@wdio/local-runner": "npm:9.32.0"
-    "@wdio/logger": "npm:9.29.1"
-    "@wdio/mocha-framework": "npm:9.32.0"
-    "@wdio/spec-reporter": "npm:9.32.0"
-    "@wdio/tauri-service": "npm:1.5.0"
-    ai: "npm:^5.0.93"
-    babel-plugin-react-compiler: "npm:^1.0.0"
-    class-variance-authority: "npm:^0.7.1"
-    classnames: "npm:^2.5.1"
-    clsx: "npm:^2.1.1"
-    cmdk: "npm:^1.1.1"
-    color: "npm:^4.2.3"
-    dayjs: "npm:^1.11.13"
-    esbuild: "npm:^0.28.2"
-    eslint: "npm:9.39.5"
-    expect-webdriverio: "npm:6.0.9"
-    happy-dom: "npm:^20.14.5"
-    hox: "npm:^2.1.1"
-    html2canvas: "npm:^1.4.1"
-    immer: "npm:^10.1.1"
-    is-promise: "npm:^4.0.0"
-    js-event-bus: "npm:^1.1.1"
-    jsx-dom-cjs: "npm:^8.1.6"
-    lodash: "npm:^4.18.1"
-    lucide-react: "npm:^1.24.0"
-    markdown-it: "npm:^14.2.0"
-    nanoid: "npm:^5.1.5"
-    ollama-ai-provider-v2: "npm:^1.5.4"
-    overlayscrollbars: "npm:^2.16.0"
-    overlayscrollbars-react: "npm:^0.5.6"
-    pagedjs: "npm:0.4.3"
-    parse5: "npm:7.3.0"
-    pdfjs-dist: "npm:6.3.289"
-    postcss: "npm:^8.5.28"
-    postcss-selector-parser: "npm:6.1.4"
-    postcss-value-parser: "npm:^4.2.0"
-    radix-ui: "npm:^1.6.0"
-    react: "npm:^19.2.0"
-    react-arborist: "npm:^3.4.3"
-    react-colorful: "npm:^5.7.0"
-    react-dom: "npm:^19.2.0"
-    react-markdown: "npm:^10.1.0"
-    react-resizable-panels: "npm:^4.4.1"
-    react-router: "npm:^7.18.2"
-    react-test-renderer: "npm:^19.2.0"
-    react-use: "npm:^17.6.1"
-    remark-gfm: "npm:^4.0.1"
-    remixicon: "npm:^4.5.0"
-    rimraf: "npm:^6.0.1"
-    rme: "workspace:*"
-    rollup-plugin-visualizer: "npm:^7.0.1"
-    styled-components: "npm:^6.3.12"
-    stylis: "npm:^4.3.4"
-    tailwind-merge: "npm:^3.6.0"
-    tailwindcss: "npm:4.3.2"
-    ts-node: "npm:^10.9.2"
-    tsx: "npm:4.23.15"
-    typescript: "npm:^5.7.3"
-    url: "npm:^0.11.4"
-    use-resize-observer: "npm:^9.1.0"
-    vite: "npm:8.1.6"
-    vite-plugin-svgr: "npm:^5.2.0"
-    vitest: "npm:^4.1.11"
-    webdriverio: "npm:9.32.0"
-    yaml: "npm:2.9.0"
-    zens: "workspace:*"
-    zod: "npm:^4.1.12"
-    zustand: "npm:^5.0.6"
-  languageName: unknown
-  linkType: soft
-
-"@markflowy/github-api@workspace:*, @markflowy/github-api@workspace:packages/github-api":
-  version: 0.0.0-use.local
-  resolution: "@markflowy/github-api@workspace:packages/github-api"
-  dependencies:
-    esbuild: "npm:^0.28.2"
-    rimraf: "npm:^6.1.0"
-    typescript: "npm:^5.7.3"
-  languageName: unknown
-  linkType: soft
-
-"@markflowy/i18n@workspace:*, @markflowy/i18n@workspace:packages/i18n":
-  version: 0.0.0-use.local
-  resolution: "@markflowy/i18n@workspace:packages/i18n"
-  dependencies:
-    "@types/node": "npm:^22.19.0"
-    esbuild: "npm:^0.28.2"
-    i18next: "npm:23.16.8"
-    react: "npm:^19.2.0"
-    react-i18next: "npm:15.7.4"
-    rimraf: "npm:^6.1.0"
-    typescript: "npm:^5.7.3"
-  peerDependencies:
-    react: ">=18.0.0"
-  languageName: unknown
-  linkType: soft
-
-"@markflowy/interface@workspace:*, @markflowy/interface@workspace:packages/interface":
-  version: 0.0.0-use.local
-  resolution: "@markflowy/interface@workspace:packages/interface"
-  dependencies:
-    "@codemirror/commands": "npm:^6.3.0"
-    "@codemirror/state": "npm:^6.3.0"
-    "@codemirror/view": "npm:^6.22.0"
-    "@markflowy/i18n": "workspace:*"
-    "@markflowy/theme": "workspace:*"
-    "@markflowy/types": "workspace:*"
-    "@popperjs/core": "npm:^2.11.8"
-    "@rollup/plugin-node-resolve": "npm:15.3.0"
-    "@rollup/plugin-typescript": "npm:11.1.6"
-    "@tanstack/react-virtual": "npm:^3.13.18"
-    "@types/react": "npm:^19.2.2"
-    "@types/react-dom": "npm:^19.2.2"
-    classnames: "npm:^2.5.1"
-    eslint: "npm:9.39.5"
-    postcss: "npm:^8.5.28"
-    react: "npm:^19.2.4"
-    react-arborist: "npm:^3.4.3"
-    react-dom: "npm:^19.2.4"
-    rimraf: "npm:^6.0.1"
-    rme: "workspace:*"
-    rollup: "npm:4.63.4"
-    rollup-plugin-postcss: "npm:^4.0.2"
-    styled-components: "npm:^6.3.12"
-    typescript: "npm:^5.7.3"
-    url: "npm:^0.11.4"
-    zens: "workspace:*"
-    zustand: "npm:^4.5.0"
-  peerDependencies:
-    "@codemirror/commands": ">=6.0.0"
-    "@codemirror/state": ">=6.0.0"
-    "@codemirror/view": ">=6.0.0"
-    eslint: ">=7.4.0"
-    rme: ">=0.3.0"
-  languageName: unknown
-  linkType: soft
-
-"@markflowy/runtime-api@workspace:packages/runtime-api":
-  version: 0.0.0-use.local
-  resolution: "@markflowy/runtime-api@workspace:packages/runtime-api"
-  dependencies:
-    "@markflowy/theme": "workspace:*"
-    "@markflowy/types": "workspace:*"
-    "@rollup/plugin-node-resolve": "npm:15.3.0"
-    "@rollup/plugin-typescript": "npm:11.1.6"
-    eslint: "npm:9.39.5"
-    rimraf: "npm:^6.0.1"
-    rollup: "npm:4.63.4"
-    rollup-plugin-postcss: "npm:^4.0.2"
-    typescript: "npm:^5.7.3"
-    url: "npm:^0.11.4"
-  peerDependencies:
-    eslint: ">=7.4.0"
-  languageName: unknown
-  linkType: soft
-
-"@markflowy/theme@workspace:*, @markflowy/theme@workspace:packages/theme":
-  version: 0.0.0-use.local
-  resolution: "@markflowy/theme@workspace:packages/theme"
-  dependencies:
-    "@drl990114/codemirror-themes": "npm:^0.0.1"
-    "@lezer/highlight": "npm:^1.0.0"
-    "@rollup/plugin-url": "npm:^8.0.2"
-    "@types/codemirror": "npm:^5.60.15"
-    "@types/color": "npm:^4.2.0"
-    color: "npm:^4.2.3"
-    eslint: "npm:9.39.5"
-    postcss: "npm:^8.5.28"
-    postcss-import: "npm:^16.1.1"
-    postcss-nested: "npm:^7.0.2"
-    react: "npm:^19.2.4"
-    rimraf: "npm:^6.0.1"
-    rollup: "npm:4.63.4"
-    rollup-plugin-postcss: "npm:^4.0.2"
-    styled-components: "npm:^6.3.12"
-    typescript: "npm:^5.7.3"
-    url: "npm:^0.11.4"
-  peerDependencies:
-    eslint: ">=7.4.0"
-  languageName: unknown
-  linkType: soft
-
-"@markflowy/types@workspace:*, @markflowy/types@workspace:packages/types":
-  version: 0.0.0-use.local
-  resolution: "@markflowy/types@workspace:packages/types"
-  dependencies:
-    "@markflowy/theme": "workspace:*"
-    rimraf: "npm:^6.0.1"
-    typescript: "npm:^5.7.3"
-  languageName: unknown
-  linkType: soft
-
-"@markflowy/web@workspace:apps/web":
-  version: 0.0.0-use.local
-  resolution: "@markflowy/web@workspace:apps/web"
-  dependencies:
-    "@markflowy/api-client": "workspace:*"
-    "@markflowy/i18n": "workspace:*"
-    "@markflowy/interface": "workspace:*"
-    "@markflowy/theme": "workspace:*"
-    "@markflowy/types": "workspace:*"
-    "@mdx-js/mdx": "npm:^3.1.0"
-    "@mdx-js/react": "npm:^3.1.0"
-    "@newhighsco/next-plugin-svgr": "npm:^3.0.144"
-    "@next/mdx": "npm:^15.5.5"
-    "@octokit/types": "npm:^13.6.1"
-    "@popperjs/core": "npm:^2.11.8"
-    "@styled-icons/fa-brands": "npm:^10.47.0"
-    "@styled-icons/material": "npm:^10.47.0"
-    "@swc/helpers": "npm:^0.5.17"
-    "@types/enzyme": "npm:^3.10.18"
-    "@types/lodash": "npm:^4.17.20"
-    "@types/mdx": "npm:^2.0.13"
-    "@types/node": "npm:^22.8.6"
-    "@types/react": "npm:^19.2.2"
-    "@types/react-dom": "npm:^19.2.2"
-    "@types/react-test-renderer": "npm:^19.1.0"
-    "@types/react-transition-group": "npm:^4.4.11"
-    "@types/styled-theming": "npm:^2.2.8"
-    "@types/webpack-bundle-analyzer": "npm:^4.7.0"
-    "@types/zeit__next-source-maps": "npm:^0.0.5"
-    "@vercel/analytics": "npm:^1.5.0"
-    contentlayer2: "npm:0.5.8"
-    csstype: "npm:^3.1.3"
-    enzyme: "npm:^3.11.0"
-    enzyme-to-json: "npm:^3.6.2"
-    i18next: "npm:23.16.8"
-    isomorphic-fetch: "npm:^3.0.0"
-    lodash: "npm:^4.18.1"
-    markdown-to-jsx: "npm:^7.7.10"
-    motion: "npm:^12.28.2"
-    next: "npm:^16.4.1"
-    next-contentlayer2: "npm:0.5.8"
-    next-i18next: "npm:^15.3.0"
-    next-themes: "npm:^0.4.6"
-    polished: "npm:^4.3.1"
-    prettier: "npm:^3.3.3"
-    react: "npm:^19.2.4"
-    react-dom: "npm:^19.2.4"
-    react-i18next: "npm:15.7.4"
-    react-is: "npm:^19.2.4"
-    react-resizable-panels: "npm:^4.11.0"
-    react-test-renderer: "npm:^19.2.0"
-    rehype-slug: "npm:^6.0.0"
-    remark-gfm: "npm:^4.0.0"
-    remixicon: "npm:^4.9.1"
-    rimraf: "npm:^6.0.1"
-    rme: "workspace:*"
-    styled-components: "npm:^6.1.13"
-    stylis: "npm:^4.3.4"
-    typescript: "npm:^5.7.3"
-    webpack-bundle-analyzer: "npm:^4.10.2"
-    zens: "workspace:*"
-  languageName: unknown
-  linkType: soft
-
 "@mdx-js/esbuild@npm:^3.0.0":
   version: 3.1.0
   resolution: "@mdx-js/esbuild@npm:3.1.0"
@@ -11386,6 +11066,326 @@ __metadata:
   checksum: 10/cd19e1114aaf10a05126aeea8833ef4ca8af8a46e88e12884f8359d19333fd19711036dbc2698dbe937f81f037070cf9a8da45c2e8c6ca19cafd7d15659094ed
   languageName: node
   linkType: hard
+
+"@zettel-notes/api-client@workspace:*, @zettel-notes/api-client@workspace:packages/api-client":
+  version: 0.0.0-use.local
+  resolution: "@zettel-notes/api-client@workspace:packages/api-client"
+  dependencies:
+    esbuild: "npm:^0.28.2"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.7.3"
+  languageName: unknown
+  linkType: soft
+
+"@zettel-notes/desktop@workspace:apps/desktop":
+  version: 0.0.0-use.local
+  resolution: "@zettel-notes/desktop@workspace:apps/desktop"
+  dependencies:
+    "@ai-sdk/deepseek": "npm:^1.0.28"
+    "@ai-sdk/google": "npm:^2.0.32"
+    "@ai-sdk/openai": "npm:^2.0.67"
+    "@assistant-ui/react": "npm:0.14.26"
+    "@assistant-ui/react-markdown": "npm:0.14.5"
+    "@babel/plugin-proposal-class-properties": "npm:^7.18.6"
+    "@babel/plugin-proposal-decorators": "npm:^7.25.9"
+    "@codemirror/merge": "npm:6.12.1"
+    "@codemirror/state": "npm:^6.5.2"
+    "@codemirror/view": "npm:^6.38.6"
+    "@ebay/nice-modal-react": "npm:^1.2.13"
+    "@emotion/css": "npm:^11.13.5"
+    "@emotion/is-prop-valid": "npm:^1.3.1"
+    "@emotion/react": "npm:^11.13.3"
+    "@emotion/styled": "npm:^11.13.0"
+    "@popperjs/core": "npm:^2.11.8"
+    "@sentry/react": "npm:^9.2.0"
+    "@tailwindcss/vite": "npm:4.3.2"
+    "@tanstack/react-query": "npm:^5.79.2"
+    "@tanstack/react-virtual": "npm:^3.13.18"
+    "@tauri-apps/api": "npm:2.12.4"
+    "@tauri-apps/cli": "npm:2.12.3"
+    "@tauri-apps/plugin-cli": "npm:^2.5.0"
+    "@tauri-apps/plugin-clipboard-manager": "npm:^2.5.0"
+    "@tauri-apps/plugin-dialog": "npm:2.8.3"
+    "@tauri-apps/plugin-fs": "npm:2.7.1"
+    "@tauri-apps/plugin-http": "npm:2.8.3"
+    "@tauri-apps/plugin-opener": "npm:^2.7.2"
+    "@tauri-apps/plugin-os": "npm:2.4.0"
+    "@tauri-apps/plugin-shell": "npm:2.5.0"
+    "@tauri-apps/plugin-store": "npm:2.5.0"
+    "@tauri-apps/plugin-updater": "npm:2.14.0"
+    "@tauri-release/cli": "npm:^0.2.5"
+    "@types/color": "npm:^4.2.0"
+    "@types/lodash": "npm:^4.17.13"
+    "@types/markdown-it": "npm:^14.1.2"
+    "@types/node": "npm:^22.8.6"
+    "@types/react": "npm:^19.2.2"
+    "@types/react-dom": "npm:^19.2.2"
+    "@types/react-test-renderer": "npm:^19.1.0"
+    "@vitejs/plugin-react": "npm:^6.0.3"
+    "@vitest/ui": "npm:^4.1.11"
+    "@wdio/cli": "npm:9.32.0"
+    "@wdio/globals": "npm:9.31.3"
+    "@wdio/local-runner": "npm:9.32.0"
+    "@wdio/logger": "npm:9.29.1"
+    "@wdio/mocha-framework": "npm:9.32.0"
+    "@wdio/spec-reporter": "npm:9.32.0"
+    "@wdio/tauri-service": "npm:1.5.0"
+    "@zettel-notes/api-client": "workspace:*"
+    "@zettel-notes/github-api": "workspace:*"
+    "@zettel-notes/i18n": "workspace:*"
+    "@zettel-notes/interface": "workspace:*"
+    "@zettel-notes/theme": "workspace:*"
+    "@zettel-notes/types": "workspace:*"
+    ai: "npm:^5.0.93"
+    babel-plugin-react-compiler: "npm:^1.0.0"
+    class-variance-authority: "npm:^0.7.1"
+    classnames: "npm:^2.5.1"
+    clsx: "npm:^2.1.1"
+    cmdk: "npm:^1.1.1"
+    color: "npm:^4.2.3"
+    dayjs: "npm:^1.11.13"
+    esbuild: "npm:^0.28.2"
+    eslint: "npm:9.39.5"
+    expect-webdriverio: "npm:6.0.9"
+    happy-dom: "npm:^20.14.5"
+    hox: "npm:^2.1.1"
+    html2canvas: "npm:^1.4.1"
+    immer: "npm:^10.1.1"
+    is-promise: "npm:^4.0.0"
+    js-event-bus: "npm:^1.1.1"
+    jsx-dom-cjs: "npm:^8.1.6"
+    lodash: "npm:^4.18.1"
+    lucide-react: "npm:^1.24.0"
+    markdown-it: "npm:^14.2.0"
+    nanoid: "npm:^5.1.5"
+    ollama-ai-provider-v2: "npm:^1.5.4"
+    overlayscrollbars: "npm:^2.16.0"
+    overlayscrollbars-react: "npm:^0.5.6"
+    pagedjs: "npm:0.4.3"
+    parse5: "npm:7.3.0"
+    pdfjs-dist: "npm:6.3.289"
+    postcss: "npm:^8.5.28"
+    postcss-selector-parser: "npm:6.1.4"
+    postcss-value-parser: "npm:^4.2.0"
+    radix-ui: "npm:^1.6.0"
+    react: "npm:^19.2.0"
+    react-arborist: "npm:^3.4.3"
+    react-colorful: "npm:^5.7.0"
+    react-dom: "npm:^19.2.0"
+    react-markdown: "npm:^10.1.0"
+    react-resizable-panels: "npm:^4.4.1"
+    react-router: "npm:^7.18.2"
+    react-test-renderer: "npm:^19.2.0"
+    react-use: "npm:^17.6.1"
+    remark-gfm: "npm:^4.0.1"
+    remixicon: "npm:^4.5.0"
+    rimraf: "npm:^6.0.1"
+    rme: "workspace:*"
+    rollup-plugin-visualizer: "npm:^7.0.1"
+    styled-components: "npm:^6.3.12"
+    stylis: "npm:^4.3.4"
+    tailwind-merge: "npm:^3.6.0"
+    tailwindcss: "npm:4.3.2"
+    ts-node: "npm:^10.9.2"
+    tsx: "npm:4.23.15"
+    typescript: "npm:^5.7.3"
+    url: "npm:^0.11.4"
+    use-resize-observer: "npm:^9.1.0"
+    vite: "npm:8.1.6"
+    vite-plugin-svgr: "npm:^5.2.0"
+    vitest: "npm:^4.1.11"
+    webdriverio: "npm:9.32.0"
+    yaml: "npm:2.9.0"
+    zens: "workspace:*"
+    zod: "npm:^4.1.12"
+    zustand: "npm:^5.0.6"
+  languageName: unknown
+  linkType: soft
+
+"@zettel-notes/github-api@workspace:*, @zettel-notes/github-api@workspace:packages/github-api":
+  version: 0.0.0-use.local
+  resolution: "@zettel-notes/github-api@workspace:packages/github-api"
+  dependencies:
+    esbuild: "npm:^0.28.2"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.7.3"
+  languageName: unknown
+  linkType: soft
+
+"@zettel-notes/i18n@workspace:*, @zettel-notes/i18n@workspace:packages/i18n":
+  version: 0.0.0-use.local
+  resolution: "@zettel-notes/i18n@workspace:packages/i18n"
+  dependencies:
+    "@types/node": "npm:^22.19.0"
+    esbuild: "npm:^0.28.2"
+    i18next: "npm:23.16.8"
+    react: "npm:^19.2.0"
+    react-i18next: "npm:15.7.4"
+    rimraf: "npm:^6.1.0"
+    typescript: "npm:^5.7.3"
+  peerDependencies:
+    react: ">=18.0.0"
+  languageName: unknown
+  linkType: soft
+
+"@zettel-notes/interface@workspace:*, @zettel-notes/interface@workspace:packages/interface":
+  version: 0.0.0-use.local
+  resolution: "@zettel-notes/interface@workspace:packages/interface"
+  dependencies:
+    "@codemirror/commands": "npm:^6.3.0"
+    "@codemirror/state": "npm:^6.3.0"
+    "@codemirror/view": "npm:^6.22.0"
+    "@popperjs/core": "npm:^2.11.8"
+    "@rollup/plugin-node-resolve": "npm:15.3.0"
+    "@rollup/plugin-typescript": "npm:11.1.6"
+    "@tanstack/react-virtual": "npm:^3.13.18"
+    "@types/react": "npm:^19.2.2"
+    "@types/react-dom": "npm:^19.2.2"
+    "@zettel-notes/i18n": "workspace:*"
+    "@zettel-notes/theme": "workspace:*"
+    "@zettel-notes/types": "workspace:*"
+    classnames: "npm:^2.5.1"
+    eslint: "npm:9.39.5"
+    postcss: "npm:^8.5.28"
+    react: "npm:^19.2.4"
+    react-arborist: "npm:^3.4.3"
+    react-dom: "npm:^19.2.4"
+    rimraf: "npm:^6.0.1"
+    rme: "workspace:*"
+    rollup: "npm:4.63.4"
+    rollup-plugin-postcss: "npm:^4.0.2"
+    styled-components: "npm:^6.3.12"
+    typescript: "npm:^5.7.3"
+    url: "npm:^0.11.4"
+    zens: "workspace:*"
+    zustand: "npm:^4.5.0"
+  peerDependencies:
+    "@codemirror/commands": ">=6.0.0"
+    "@codemirror/state": ">=6.0.0"
+    "@codemirror/view": ">=6.0.0"
+    eslint: ">=7.4.0"
+    rme: ">=0.3.0"
+  languageName: unknown
+  linkType: soft
+
+"@zettel-notes/runtime-api@workspace:packages/runtime-api":
+  version: 0.0.0-use.local
+  resolution: "@zettel-notes/runtime-api@workspace:packages/runtime-api"
+  dependencies:
+    "@rollup/plugin-node-resolve": "npm:15.3.0"
+    "@rollup/plugin-typescript": "npm:11.1.6"
+    "@zettel-notes/theme": "workspace:*"
+    "@zettel-notes/types": "workspace:*"
+    eslint: "npm:9.39.5"
+    rimraf: "npm:^6.0.1"
+    rollup: "npm:4.63.4"
+    rollup-plugin-postcss: "npm:^4.0.2"
+    typescript: "npm:^5.7.3"
+    url: "npm:^0.11.4"
+  peerDependencies:
+    eslint: ">=7.4.0"
+  languageName: unknown
+  linkType: soft
+
+"@zettel-notes/theme@workspace:*, @zettel-notes/theme@workspace:packages/theme":
+  version: 0.0.0-use.local
+  resolution: "@zettel-notes/theme@workspace:packages/theme"
+  dependencies:
+    "@drl990114/codemirror-themes": "npm:^0.0.1"
+    "@lezer/highlight": "npm:^1.0.0"
+    "@rollup/plugin-url": "npm:^8.0.2"
+    "@types/codemirror": "npm:^5.60.15"
+    "@types/color": "npm:^4.2.0"
+    color: "npm:^4.2.3"
+    eslint: "npm:9.39.5"
+    postcss: "npm:^8.5.28"
+    postcss-import: "npm:^16.1.1"
+    postcss-nested: "npm:^7.0.2"
+    react: "npm:^19.2.4"
+    rimraf: "npm:^6.0.1"
+    rollup: "npm:4.63.4"
+    rollup-plugin-postcss: "npm:^4.0.2"
+    styled-components: "npm:^6.3.12"
+    typescript: "npm:^5.7.3"
+    url: "npm:^0.11.4"
+  peerDependencies:
+    eslint: ">=7.4.0"
+  languageName: unknown
+  linkType: soft
+
+"@zettel-notes/types@workspace:*, @zettel-notes/types@workspace:packages/types":
+  version: 0.0.0-use.local
+  resolution: "@zettel-notes/types@workspace:packages/types"
+  dependencies:
+    "@zettel-notes/theme": "workspace:*"
+    rimraf: "npm:^6.0.1"
+    typescript: "npm:^5.7.3"
+  languageName: unknown
+  linkType: soft
+
+"@zettel-notes/web@workspace:apps/web":
+  version: 0.0.0-use.local
+  resolution: "@zettel-notes/web@workspace:apps/web"
+  dependencies:
+    "@mdx-js/mdx": "npm:^3.1.0"
+    "@mdx-js/react": "npm:^3.1.0"
+    "@newhighsco/next-plugin-svgr": "npm:^3.0.144"
+    "@next/mdx": "npm:^15.5.5"
+    "@octokit/types": "npm:^13.6.1"
+    "@popperjs/core": "npm:^2.11.8"
+    "@styled-icons/fa-brands": "npm:^10.47.0"
+    "@styled-icons/material": "npm:^10.47.0"
+    "@swc/helpers": "npm:^0.5.17"
+    "@types/enzyme": "npm:^3.10.18"
+    "@types/lodash": "npm:^4.17.20"
+    "@types/mdx": "npm:^2.0.13"
+    "@types/node": "npm:^22.8.6"
+    "@types/react": "npm:^19.2.2"
+    "@types/react-dom": "npm:^19.2.2"
+    "@types/react-test-renderer": "npm:^19.1.0"
+    "@types/react-transition-group": "npm:^4.4.11"
+    "@types/styled-theming": "npm:^2.2.8"
+    "@types/webpack-bundle-analyzer": "npm:^4.7.0"
+    "@types/zeit__next-source-maps": "npm:^0.0.5"
+    "@vercel/analytics": "npm:^1.5.0"
+    "@zettel-notes/api-client": "workspace:*"
+    "@zettel-notes/i18n": "workspace:*"
+    "@zettel-notes/interface": "workspace:*"
+    "@zettel-notes/theme": "workspace:*"
+    "@zettel-notes/types": "workspace:*"
+    contentlayer2: "npm:0.5.8"
+    csstype: "npm:^3.1.3"
+    enzyme: "npm:^3.11.0"
+    enzyme-to-json: "npm:^3.6.2"
+    i18next: "npm:23.16.8"
+    isomorphic-fetch: "npm:^3.0.0"
+    lodash: "npm:^4.18.1"
+    markdown-to-jsx: "npm:^7.7.10"
+    motion: "npm:^12.28.2"
+    next: "npm:^16.4.1"
+    next-contentlayer2: "npm:0.5.8"
+    next-i18next: "npm:^15.3.0"
+    next-themes: "npm:^0.4.6"
+    polished: "npm:^4.3.1"
+    prettier: "npm:^3.3.3"
+    react: "npm:^19.2.4"
+    react-dom: "npm:^19.2.4"
+    react-i18next: "npm:15.7.4"
+    react-is: "npm:^19.2.4"
+    react-resizable-panels: "npm:^4.11.0"
+    react-test-renderer: "npm:^19.2.0"
+    rehype-slug: "npm:^6.0.0"
+    remark-gfm: "npm:^4.0.0"
+    remixicon: "npm:^4.9.1"
+    rimraf: "npm:^6.0.1"
+    rme: "workspace:*"
+    styled-components: "npm:^6.1.13"
+    stylis: "npm:^4.3.4"
+    typescript: "npm:^5.7.3"
+    webpack-bundle-analyzer: "npm:^4.10.2"
+    zens: "workspace:*"
+  languageName: unknown
+  linkType: soft
 
 "@zip.js/zip.js@npm:^2.8.11":
   version: 2.18.2
@@ -21379,46 +21379,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"markflowy-monorepo@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "markflowy-monorepo@workspace:."
-  dependencies:
-    "@alicloud/alimt20181012": "npm:^1.3.0"
-    "@alicloud/openapi-client": "npm:^0.4.13"
-    "@alicloud/tea-util": "npm:^1.4.10"
-    "@babel/core": "npm:^7.26.0"
-    "@babel/eslint-parser": "npm:^7.25.9"
-    "@babel/eslint-plugin": "npm:^7.25.9"
-    "@babel/plugin-proposal-class-properties": "npm:^7.18.6"
-    "@babel/plugin-proposal-decorators": "npm:^7.25.9"
-    "@babel/preset-env": "npm:^7.26.0"
-    "@babel/preset-react": "npm:^7.25.9"
-    "@babel/preset-typescript": "npm:^7.26.0"
-    "@codemirror/legacy-modes": "npm:^6.5.2"
-    "@halodong/eslint-config-react": "npm:^0.38.24"
-    "@rollup/plugin-node-resolve": "npm:15.3.0"
-    "@rollup/plugin-typescript": "npm:11.1.6"
-    "@rollup/plugin-url": "npm:^8.0.2"
-    "@umijs/fabric": "npm:^4"
-    babel: "npm:^6.23.0"
-    child_process: "npm:^1.0.2"
-    eslint: "npm:9.39.5"
-    fast-glob: "npm:^3.3.2"
-    gray-matter: "npm:4.0.3"
-    patch-package: "npm:^8.0.1"
-    postcss: "npm:^8.5.28"
-    postcss-import: "npm:^16.1.1"
-    postcss-nested: "npm:^7.0.2"
-    prettier: "npm:^3.3.3"
-    rimraf: "npm:^6.0.1"
-    rollup: "npm:4.63.4"
-    rollup-plugin-postcss: "npm:^4.0.2"
-    turbo: "npm:^2.9.14"
-    typescript: "npm:^5.7.3"
-    yaml: "npm:2.9.0"
-  languageName: unknown
-  linkType: soft
-
 "match-sorter@npm:^6.2.0":
   version: 6.3.4
   resolution: "match-sorter@npm:6.3.4"
@@ -26636,8 +26596,6 @@ __metadata:
     "@lezer/common": "npm:^1.3.0"
     "@lezer/highlight": "npm:^1.2.3"
     "@lezer/javascript": "npm:^1.5.4"
-    "@markflowy/i18n": "workspace:*"
-    "@markflowy/theme": "workspace:*"
     "@mermaid-js/layout-elk": "npm:^0.2.2"
     "@mermaid-js/layout-tidy-tree": "npm:^0.2.2"
     "@ocavue/utils": "npm:^0.7.1"
@@ -26668,6 +26626,8 @@ __metadata:
     "@vitest/browser": "npm:^4.1.11"
     "@vitest/coverage-v8": "npm:^4.1.11"
     "@vitest/ui": "npm:^4.1.11"
+    "@zettel-notes/i18n": "workspace:*"
+    "@zettel-notes/theme": "workspace:*"
     codemirror-lang-latex: "npm:^0.2.0"
     color: "npm:^4.2.3"
     css-loader: "npm:7.1.2"
@@ -31255,6 +31215,46 @@ __metadata:
     tailwindcss: "npm:4.3.2"
     ts-jest: "npm:29.3.2"
     typescript: "npm:^5.7.3"
+  languageName: unknown
+  linkType: soft
+
+"zettel-notes-monorepo@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "zettel-notes-monorepo@workspace:."
+  dependencies:
+    "@alicloud/alimt20181012": "npm:^1.3.0"
+    "@alicloud/openapi-client": "npm:^0.4.13"
+    "@alicloud/tea-util": "npm:^1.4.10"
+    "@babel/core": "npm:^7.26.0"
+    "@babel/eslint-parser": "npm:^7.25.9"
+    "@babel/eslint-plugin": "npm:^7.25.9"
+    "@babel/plugin-proposal-class-properties": "npm:^7.18.6"
+    "@babel/plugin-proposal-decorators": "npm:^7.25.9"
+    "@babel/preset-env": "npm:^7.26.0"
+    "@babel/preset-react": "npm:^7.25.9"
+    "@babel/preset-typescript": "npm:^7.26.0"
+    "@codemirror/legacy-modes": "npm:^6.5.2"
+    "@halodong/eslint-config-react": "npm:^0.38.24"
+    "@rollup/plugin-node-resolve": "npm:15.3.0"
+    "@rollup/plugin-typescript": "npm:11.1.6"
+    "@rollup/plugin-url": "npm:^8.0.2"
+    "@umijs/fabric": "npm:^4"
+    babel: "npm:^6.23.0"
+    child_process: "npm:^1.0.2"
+    eslint: "npm:9.39.5"
+    fast-glob: "npm:^3.3.2"
+    gray-matter: "npm:4.0.3"
+    patch-package: "npm:^8.0.1"
+    postcss: "npm:^8.5.28"
+    postcss-import: "npm:^16.1.1"
+    postcss-nested: "npm:^7.0.2"
+    prettier: "npm:^3.3.3"
+    rimraf: "npm:^6.0.1"
+    rollup: "npm:4.63.4"
+    rollup-plugin-postcss: "npm:^4.0.2"
+    turbo: "npm:^2.9.14"
+    typescript: "npm:^5.7.3"
+    yaml: "npm:2.9.0"
   languageName: unknown
   linkType: soft
 

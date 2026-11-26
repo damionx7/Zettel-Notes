@@ -43,19 +43,19 @@ const port = Number(values.port)
 assert.ok(Number.isInteger(port) && port > 0 && port < 65536, 'Supply the existing embedded WebDriver port')
 assert.ok(Number.isSafeInteger(timeout) && timeout >= 10000 && timeout <= 600000)
 
-const environmentRoot = await realpath(required('MARKFLOWY_E2E_ROOT'))
-const id = required('MARKFLOWY_E2E_ID')
+const environmentRoot = await realpath(required('ZETTEL_NOTES_E2E_ROOT'))
+const id = required('ZETTEL_NOTES_E2E_ID')
 assert.match(id, /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/)
-assert.equal((await readFile(join(environmentRoot, '.markflowy-e2e'), 'utf8')).trim(), id)
+assert.equal((await readFile(join(environmentRoot, '.zettel-notes-e2e'), 'utf8')).trim(), id)
 const profile = JSON.parse(await readFile(join(environmentRoot, 'native-profile.json'), 'utf8'))
 assert.equal(profile.identifier, `org.eu.thedoc.zettelnotes.desktop.e2e.${id.replaceAll('-', '')}`)
 assert.ok(Number.isSafeInteger(profile.pid) && profile.pid > 1)
 process.kill(profile.pid, 0)
-const binary = await realpath(required('MARKFLOWY_E2E_BINARY'))
+const binary = await realpath(required('ZETTEL_NOTES_E2E_BINARY'))
 const { stdout: ownedProcess } = await promisify(execFile)('ps', [
   'eww', '-p', String(profile.pid), '-o', 'command=',
 ])
-assert.ok(ownedProcess.includes(binary) && ownedProcess.includes(`MARKFLOWY_E2E_ID=${id}`),
+assert.ok(ownedProcess.includes(binary) && ownedProcess.includes(`ZETTEL_NOTES_E2E_ID=${id}`),
   'The running app does not belong to this isolated E2E profile')
 await mkdir(reportDirectory, { recursive: true })
 
@@ -109,7 +109,7 @@ try {
     connectionRetryTimeout: 20000,
   })
   await browser.switchToWindow('main')
-  assert.equal(await browser.execute(() => Boolean(window.__MARKFLOWY_E2E__)), true,
+  assert.equal(await browser.execute(() => Boolean(window.__ZETTEL_NOTES_E2E__)), true,
     'Refusing to automate a non-isolated application')
   const tauriConfig = JSON.parse(
     await readFile(new URL('../src-tauri/tauri.conf.json', import.meta.url), 'utf8'),
@@ -120,7 +120,7 @@ try {
   // Each scenario starts with fresh frontend listeners after DEV HMR, while
   // retaining the same isolated native process and profile.
   await browser.refresh()
-  await browser.waitUntil(async () => await browser.execute(() => Boolean(window.__MARKFLOWY_E2E__)), {
+  await browser.waitUntil(async () => await browser.execute(() => Boolean(window.__ZETTEL_NOTES_E2E__)), {
     timeout: 20000, timeoutMsg: 'The isolated frontend did not reload',
   })
   // Match the normal native E2E startup contract in helpers.ts. The frontend
@@ -140,10 +140,10 @@ try {
   await writeFile(join(reportDirectory, `${testCase}.open-receipt.json`), `${JSON.stringify(receipt, null, 2)}\n`)
   await browser.waitUntil(async () => {
     const editor = await browser.$('[data-editor-active="true"] [data-mf-editor-mode]')
-    return await editor.isDisplayed() && (await editor.getText()).includes('MarkFlowy PDF Prototype')
+    return await editor.isDisplayed() && (await editor.getText()).includes('Zettel Notes PDF Prototype')
   }, { timeout: 60000, timeoutMsg: 'The actual editor did not display the rich fixture' })
 
-  result.frontendErrorsBeforeExport = await browser.execute(() => window.__MARKFLOWY_E2E__?.errors.slice())
+  result.frontendErrorsBeforeExport = await browser.execute(() => window.__ZETTEL_NOTES_E2E__?.errors.slice())
   await openExportDialog()
   const dialog = await exportDialog()
   await dialog.$('[role="radio"][value="native"]').click()
@@ -208,7 +208,7 @@ try {
   result.pickerLifecycle = await pickerLifecycle()
   assert.equal(result.pickerLifecycle?.busyObserved, true, 'The actual export button never entered its busy state')
   assert.equal(await readFile(sourcePath, 'utf8'), source, 'Export must preserve source bytes')
-  const errors = await browser.execute(() => window.__MARKFLOWY_E2E__?.errors)
+  const errors = await browser.execute(() => window.__ZETTEL_NOTES_E2E__?.errors)
   result.frontendErrorsAfterExport = errors
   assert.deepEqual(errors, result.frontendErrorsBeforeExport, 'New unhandled frontend exceptions during export')
   await capture('after')
@@ -221,8 +221,8 @@ try {
   await writeFile(join(reportDirectory, `${testCase}.result.json`), `${JSON.stringify(result, null, 2)}\n`)
   await writeFile(join(reportDirectory, 'pending-picker.json'), `${JSON.stringify({ ...pending, completed: true, passed: result.passed }, null, 2)}\n`)
   await browser?.execute(() => {
-    window.__markflowyPdfPickerObservation?.observer.disconnect()
-    delete window.__markflowyPdfPickerObservation
+    window.__zettelNotesPdfPickerObservation?.observer.disconnect()
+    delete window.__zettelNotesPdfPickerObservation
   }).catch(() => undefined)
   // Deleting an embedded session leaves the owned DEV app and its window alive.
   await browser?.deleteSession()
@@ -290,7 +290,7 @@ async function openExportDialog() {
 
 async function observePickerLifecycle() {
   await browser.execute(() => {
-    window.__markflowyPdfPickerObservation?.observer.disconnect()
+    window.__zettelNotesPdfPickerObservation?.observer.disconnect()
     const dialog = [...document.querySelectorAll('[role="dialog"]')]
       .find((element) => element.textContent?.includes('Export PDF'))
     const button = [...dialog?.querySelectorAll('button') ?? []]
@@ -305,12 +305,12 @@ async function observePickerLifecycle() {
       else if (state.busyObserved) state.recovered = true
     })
     observer.observe(button, { attributes: true, attributeFilter: ['disabled'] })
-    window.__markflowyPdfPickerObservation = { state, observer }
+    window.__zettelNotesPdfPickerObservation = { state, observer }
   })
 }
 
 async function pickerLifecycle() {
-  return browser.execute(() => window.__markflowyPdfPickerObservation?.state)
+  return browser.execute(() => window.__zettelNotesPdfPickerObservation?.state)
 }
 
 async function capture(stage) {
@@ -318,7 +318,7 @@ async function capture(stage) {
   const captures = await Promise.allSettled([
     browser.saveScreenshot(join(reportDirectory, `${testCase}.${stage}.png`)),
     browser.getPageSource().then((html) => writeFile(join(reportDirectory, `${testCase}.${stage}.html`), html)),
-    browser.execute(() => window.__MARKFLOWY_E2E__?.errors)
+    browser.execute(() => window.__ZETTEL_NOTES_E2E__?.errors)
       .then((errors) => writeFile(join(reportDirectory, `${testCase}.${stage}.errors.json`), JSON.stringify(errors))),
   ])
   result.captures ??= {}

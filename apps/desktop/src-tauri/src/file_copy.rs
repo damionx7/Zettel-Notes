@@ -25,7 +25,7 @@ fn copy_name(name: &OsStr, index: u64) -> OsString {
 
 fn stage_copy(reader: &mut impl Read, directory: &Path) -> io::Result<NamedTempFile> {
     let mut temporary = tempfile::Builder::new()
-        .prefix(".markflowy-copy-")
+        .prefix(".zettel-notes-copy-")
         .suffix(".tmp")
         .tempfile_in(directory)?;
     io::copy(reader, temporary.as_file_mut())?;

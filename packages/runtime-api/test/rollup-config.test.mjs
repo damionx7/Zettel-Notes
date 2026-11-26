@@ -20,8 +20,8 @@ for (const config of interfaceConfigs) {
       'react/jsx-dev-runtime',
       'react-dom/client',
       'zens/esm/components/button',
-      '@markflowy/i18n',
-      '@markflowy/i18n/locales/en',
+      '@zettel-notes/i18n',
+      '@zettel-notes/i18n/locales/en',
       '@codemirror/view',
       '@codemirror/view/subpath',
     ]) {
@@ -37,8 +37,8 @@ for (const config of interfaceConfigs) {
       'react-extra',
       'react-dom-extra/client',
       'zens-extra/esm/components/button',
-      '@markflowy/i18n-extra/locales/en',
-      '@markflowy/unknown',
+      '@zettel-notes/i18n-extra/locales/en',
+      '@zettel-notes/unknown',
     ]) {
       assert.equal(isExternal(config, id), false, id)
     }

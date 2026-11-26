@@ -1,5 +1,5 @@
 ---
-seoTitle: 'Custom MarkFlowy themes'
+seoTitle: 'Custom Zettel Notes themes'
 description: 'Create JSON themes and scoped CSS snippets with templates, selector guidance and live previews.'
 updatedAt: '2026-11-06'
 ---
@@ -10,11 +10,11 @@ Themes are JSON data. Creating one requires no Node installation, npm package, o
 
 ## Develop with an AI agent
 
-The repository provides [MarkFlowy Dev](https://github.com/drl990114/MarkFlowy/tree/main/skills/markflowy-dev), a developer Skill currently covering custom themes and CSS, with a light/dark starter and guidance for validation, import, and sharing. Copy the entire `skills/markflowy-dev` directory into your agent's skills directory (for example, `~/.agents/skills/markflowy-dev` for Codex).
+The repository provides [Zettel Notes Dev](https://github.com/damionx7/Zettel-Notes/tree/main/skills/zettel-notes-dev), a developer Skill currently covering custom themes and CSS, with a light/dark starter and guidance for validation, import, and sharing. Copy the entire `skills/zettel-notes-dev` directory into your agent's skills directory (for example, `~/.agents/skills/zettel-notes-dev` for Codex).
 
-Example prompt: `Use $markflowy-dev to create a warm paper-style MarkFlowy theme with light and dark variants, and explain how to import and validate it.` The Skill also works without a source checkout through the app's theme editor.
+Example prompt: `Use $zettel-notes-dev to create a warm paper-style Zettel Notes theme with light and dark variants, and explain how to import and validate it.` The Skill also works without a source checkout through the app's theme editor.
 
-For a local style change, ask for a personal snippet: `Use $markflowy-dev to give completed tasks a strikethrough in MarkFlowy. Deliver a separate CSS snippet and keep my current theme.` The Skill distinguishes overall themes, independent snippets, and CSS that explicitly belongs to a theme variant. Asking how a selector works does not require generating a theme; completing a task or formatting document content is an ordinary document edit.
+For a local style change, ask for a personal snippet: `Use $zettel-notes-dev to give completed tasks a strikethrough in Zettel Notes. Deliver a separate CSS snippet and keep my current theme.` The Skill distinguishes overall themes, independent snippets, and CSS that explicitly belongs to a theme variant. Asking how a selector works does not require generating a theme; completing a task or formatting document content is an ordinary document edit.
 
 ## Visual editor
 

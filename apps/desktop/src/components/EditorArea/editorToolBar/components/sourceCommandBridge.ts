@@ -1,4 +1,4 @@
-import { createCommandMap } from '@markflowy/interface'
+import { createCommandMap } from '@zettel-notes/interface'
 import { getSourceCodeEditor } from '../../sourceCodeEditorRegistry'
 
 const commands = createCommandMap()

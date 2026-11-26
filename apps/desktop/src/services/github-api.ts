@@ -5,11 +5,11 @@ import type {
   GitHubBranch,
   GitHubRepository,
   GitHubPullRequest,
-} from '@markflowy/github-api'
-import type { GitHubConfig } from '@markflowy/types'
+} from '@zettel-notes/github-api'
+import type { GitHubConfig } from '@zettel-notes/types'
 
-export type { GitHubConfig } from '@markflowy/types'
-export type { GitHubRepository, GitHubPullRequest } from '@markflowy/github-api'
+export type { GitHubConfig } from '@zettel-notes/types'
+export type { GitHubRepository, GitHubPullRequest } from '@zettel-notes/github-api'
 
 export interface SaveGithubConfigParams {
   token: string
@@ -72,7 +72,7 @@ export const githubApi = {
     owner: string,
     repo: string,
     path: string,
-    params: import('@markflowy/github-api').CreateOrUpdateFileParams,
+    params: import('@zettel-notes/github-api').CreateOrUpdateFileParams,
   ) => {
     return apiClient.put<{ content: GitHubFileContent; commit: any }>(
       `/github/repos/${owner}/${repo}/contents/${path}`,
@@ -80,7 +80,7 @@ export const githubApi = {
     )
   },
 
-  deleteFile: async (owner: string, repo: string, path: string, params: import('@markflowy/github-api').DeleteFileParams) => {
+  deleteFile: async (owner: string, repo: string, path: string, params: import('@zettel-notes/github-api').DeleteFileParams) => {
     const queryParams: Record<string, string> = {
       sha: params.sha,
       message: params.message,

@@ -1,10 +1,10 @@
 [package]
-name = "markflowy"
+name = "zettel-notes"
 version = "1.0.4"
 description = "A Markdown Editor App"
-authors = ["zekabra"]
-license = " AGPL-3.0"
-repository = "https://github.com/drl990114/MarkFlowy"
+authors = ["drl990114", "zekabra", "damionx7"]
+license = "AGPL-3.0"
+repository = "https://github.com/damionx7/Zettel-Notes"
 edition = "2021"
 
 [[bin]]
@@ -12,7 +12,7 @@ name = "zettel-notes"
 path = "src/main.rs"
 
 [lib]
-name = "markflowy"
+name = "zettel_notes"
 crate-type = [
     "staticlib",
     "cdylib",

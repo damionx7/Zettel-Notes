@@ -1,12 +1,12 @@
 export { apiClient } from './api-client'
-export type { ApiResponse, RequestConfig } from '@markflowy/api-client'
+export type { ApiResponse, RequestConfig } from '@zettel-notes/api-client'
 
 export { authApi } from './auth-api'
 export type {
   SendEmailCodeParams,
   VerifyEmailCodeParams,
 } from './auth-api'
-export type { AuthTokens, User } from '@markflowy/types'
+export type { AuthTokens, User } from '@zettel-notes/types'
 
 export { workspacesApi, WorkspaceType, WorkspaceRole } from './workspaces-api'
 export type {
@@ -34,4 +34,4 @@ export type {
   CreatePullRequestParams,
   GitHubPullRequest,
 } from './github-api'
-export type { CreateOrUpdateFileParams, DeleteFileParams } from '@markflowy/github-api'
+export type { CreateOrUpdateFileParams, DeleteFileParams } from '@zettel-notes/github-api'

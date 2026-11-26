@@ -30,7 +30,7 @@ import {
 import type { EditorState } from '@rme-sdk/sdk'
 import { TextSelection } from '@rme-sdk/sdk/pm/state'
 import { Decoration, DecorationSet } from '@rme-sdk/sdk/pm/view'
-import { t } from '@markflowy/i18n'
+import { t } from '@zettel-notes/i18n'
 import type { NodeSerializerOptions } from '../../transform'
 import { ParserRuleType } from '../../transform'
 import createCodeMirrorMenuDecorations from './codemirror-lang-menu'

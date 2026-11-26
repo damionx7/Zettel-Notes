@@ -23,10 +23,10 @@ No automatic numbering behavior was added to source mode.
 
 The PDF was rendered with Poppler and visually inspected. Temporary evidence:
 
-- `/tmp/markflowy-issue1025-closeout/numbering-acceptance.md`
-- `/tmp/markflowy-issue1025-closeout/numbering-native.pdf`
+- `/tmp/zettel-notes-issue1025-closeout/numbering-acceptance.md`
+- `/tmp/zettel-notes-issue1025-closeout/numbering-native.pdf`
 - PDF SHA-256: `e1521fbce9fb8a3fb9b343029c075c38ceeb5ffcefa388d5cbc7125ac57774e8`
-- `/tmp/markflowy-issue1025-closeout/numbering-native.png`
+- `/tmp/zettel-notes-issue1025-closeout/numbering-native.png`
 
 ## Defects found during acceptance
 
@@ -68,9 +68,9 @@ Windows or Linux acceptance.
 Passed with Node 24:
 
 ```sh
-yarn workspace @markflowy/desktop test src/components/TableOfContent/HeadingNumberingButton.test.tsx src/extensions/command-palette/editorCommands.test.ts src/extensions/command-palette/CommandPaletteDialog.test.tsx src/extensions/command-palette/commandPaletteSearch.test.ts src/extensions/command-palette/dockCommands.test.ts
-yarn workspace @markflowy/desktop test src/extensions/command-palette/usePaletteUpdates.test.tsx
-yarn workspace @markflowy/desktop build:types
+yarn workspace @zettel-notes/desktop test src/components/TableOfContent/HeadingNumberingButton.test.tsx src/extensions/command-palette/editorCommands.test.ts src/extensions/command-palette/CommandPaletteDialog.test.tsx src/extensions/command-palette/commandPaletteSearch.test.ts src/extensions/command-palette/dockCommands.test.ts
+yarn workspace @zettel-notes/desktop test src/extensions/command-palette/usePaletteUpdates.test.tsx
+yarn workspace @zettel-notes/desktop build:types
 yarn translate:check
 ```
 

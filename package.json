@@ -1,5 +1,5 @@
 {
-  "name": "markflowy-monorepo",
+  "name": "zettel-notes-monorepo",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
@@ -18,8 +18,8 @@
     "test:release-workflows": "node --test scripts/release-workflows.test.mjs scripts/tauri-updater.test.mjs",
     "install:capricorn-runtime": "node --env-file-if-exists=.env scripts/install-capricorn-runtime.mjs",
     "build": "turbo build --concurrency=2",
-    "build:web": "yarn turbo build --filter=!@markflowy/desktop",
-    "build:desktop": "yarn turbo build --filter=!@markflowy/web && yarn workspace @markflowy/desktop tauri:build",
+    "build:web": "yarn turbo build --filter=!@zettel-notes/desktop",
+    "build:desktop": "yarn turbo build --filter=!@zettel-notes/web && yarn workspace @zettel-notes/desktop tauri:build",
     "use-offline-bundle": "node scripts/use-offline-bundle.js",
     "delete": "turbo delete",
     "release": "node scripts/release.js",
@@ -27,7 +27,7 @@
     "release:minor": "yarn release --minor",
     "release:major": "yarn release --major",
     "test": "turbo test",
-    "updater": "yarn workspace @markflowy/desktop updater",
+    "updater": "yarn workspace @zettel-notes/desktop updater",
     "lint": "eslint --fix --ext .tsx ./",
     "translate:locals": "node --env-file=.env scripts/translate-locals.js",
     "translate:check": "node scripts/translate-check.js"

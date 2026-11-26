@@ -90,7 +90,7 @@ pub(crate) fn window_initialization_script(
 
     Ok((
         format!(
-            "window.__MARKFLOWY_BOOTSTRAP__ = {serialized_bootstrap};window.openedUrls = window.__MARKFLOWY_BOOTSTRAP__.openedUrls;"
+            "window.__ZETTEL_NOTES_BOOTSTRAP__ = {serialized_bootstrap};window.openedUrls = window.__ZETTEL_NOTES_BOOTSTRAP__.openedUrls;"
         ),
         appearance,
     ))
@@ -542,7 +542,7 @@ mod tests {
     fn test_appearance() -> StartupAppearance {
         StartupAppearance {
             schema_version: STARTUP_APPEARANCE_SCHEMA_VERSION,
-            theme_id: "MarkFlowy Dark".to_string(),
+            theme_id: "Zettel Notes Dark".to_string(),
             preference: ThemePreference::Dark,
             resolved_mode: ResolvedThemeMode::Dark,
             palette: StartupPalette {

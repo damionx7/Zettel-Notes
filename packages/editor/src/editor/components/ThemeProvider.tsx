@@ -1,5 +1,5 @@
-import type { Langs } from '@markflowy/i18n'
-import { changeLng, i18nInit, isInitialized, locales } from '@markflowy/i18n'
+import type { Langs } from '@zettel-notes/i18n'
+import { changeLng, i18nInit, isInitialized, locales } from '@zettel-notes/i18n'
 import { memo, useEffect, useMemo, useRef } from 'react'
 import { ComponentsThemeProvider, legacyThemeVariables } from 'zens'
 import { ThemeProvider as ScThemeProvider } from 'styled-components'

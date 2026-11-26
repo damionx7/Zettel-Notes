@@ -1,4 +1,4 @@
-import type { ThemeDocument } from '@markflowy/theme/semantic'
+import type { ThemeDocument } from '@zettel-notes/theme/semantic'
 export interface ThemeHistory {
   past: ThemeDocument[]
   present: ThemeDocument

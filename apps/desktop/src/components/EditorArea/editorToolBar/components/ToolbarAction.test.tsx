@@ -1,5 +1,5 @@
 import { TooltipProvider } from '@/components/ui/tooltip'
-import { desktopDarkTheme } from '@markflowy/theme'
+import { desktopDarkTheme } from '@zettel-notes/theme'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { BoldIcon, XIcon } from 'lucide-react'
 import { ThemeProvider } from 'styled-components'

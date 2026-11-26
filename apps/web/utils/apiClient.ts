@@ -133,7 +133,7 @@ class ApiClient {
 
   private async refreshWithLock(force = false): Promise<RefreshTokenResponse | null> {
     if (typeof navigator !== 'undefined' && navigator.locks) {
-      return navigator.locks.request('markflowy-auth-refresh', () =>
+      return navigator.locks.request('zettel-notes-auth-refresh', () =>
         this.refreshWithinTabLock(force),
       )
     }
@@ -162,7 +162,7 @@ class ApiClient {
     }
 
     if (typeof navigator !== 'undefined' && navigator.locks) {
-      return navigator.locks.request('markflowy-auth-refresh', logout)
+      return navigator.locks.request('zettel-notes-auth-refresh', logout)
     }
 
     return logout()

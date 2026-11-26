@@ -1,5 +1,5 @@
 import React, { type FC } from 'react'
-import { useTranslation } from '@markflowy/i18n'
+import { useTranslation } from '@zettel-notes/i18n'
 import type { NodeRendererProps } from 'react-arborist'
 import { toast } from 'zens'
 import { AppContext } from '../../contexts/AppContext'

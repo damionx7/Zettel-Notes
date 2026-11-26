@@ -1,4 +1,4 @@
-import type { IFile } from '@markflowy/interface'
+import type { IFile } from '@zettel-notes/interface'
 import {
   type RemoteWorkspaceDescriptor,
   type RemoteWorkspaceRef,
@@ -82,7 +82,7 @@ const demoFolderData: IFile[] = [
 ]
 
 const defaultContents: Record<string, string> = {
-  [DEMO_FILE_ID]: `# MarkFlowy Demo
+  [DEMO_FILE_ID]: `# Zettel Notes Demo
 
 Edit this file and click Save.
 
@@ -214,7 +214,7 @@ export function createRemoteAdapter(
     adapter.saveFileContent = async (file, content, options) => {
       if (!file.path) throw new Error('File path is required')
       return remoteWorkspaceService.saveFileContent(workspaceId, file.path, {
-        message: options?.message || 'Update via MarkFlowy',
+        message: options?.message || 'Update via Zettel Notes',
         content,
         version: options?.version,
         ref: options?.ref ?? descriptor.defaultRef,
@@ -223,7 +223,7 @@ export function createRemoteAdapter(
 
     adapter.saveFiles = async (files, options) => {
       return remoteWorkspaceService.saveFileContents(workspaceId, {
-        message: options?.message || 'Update via MarkFlowy',
+        message: options?.message || 'Update via Zettel Notes',
         files: files.map(({ file, content, version }) => {
           if (!file.path) throw new Error('File path is required')
 

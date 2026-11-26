@@ -10,11 +10,11 @@ function required(name: string): string {
   return value
 }
 
-const outputDir = required('MARKFLOWY_E2E_REPORT')
+const outputDir = required('ZETTEL_NOTES_E2E_REPORT')
 const serviceOptions: TauriServiceOptions = {
-  appBinaryPath: required('MARKFLOWY_E2E_BINARY'),
+  appBinaryPath: required('ZETTEL_NOTES_E2E_BINARY'),
   driverProvider: 'embedded',
-  embeddedPort: Number(required('MARKFLOWY_E2E_PORT')),
+  embeddedPort: Number(required('ZETTEL_NOTES_E2E_PORT')),
   startTimeout: startupTimeout,
   commandTimeout: 15_000,
   captureBackendLogs: true,
@@ -54,7 +54,7 @@ export const config: WebdriverIO.Config = {
     const captures = await Promise.allSettled([
       browser.saveScreenshot(join(outputDir, `${name}.png`)),
       browser.getPageSource().then((source) => writeFile(join(outputDir, `${name}.html`), source)),
-      browser.execute(() => window.__MARKFLOWY_E2E__?.errors ?? ['E2E diagnostics missing'])
+      browser.execute(() => window.__ZETTEL_NOTES_E2E__?.errors ?? ['E2E diagnostics missing'])
         .then((errors) => writeFile(join(outputDir, `${name}.errors.json`), JSON.stringify(errors))),
     ])
     await writeFile(join(outputDir, `${name}.result.json`), JSON.stringify({

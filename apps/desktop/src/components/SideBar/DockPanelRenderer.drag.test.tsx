@@ -1,6 +1,6 @@
 import { TooltipProvider } from '@/components/ui/tooltip'
 import useLayoutStore from '@/stores/useLayoutStore'
-import { desktopDarkTheme } from '@markflowy/theme'
+import { desktopDarkTheme } from '@zettel-notes/theme'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { ThemeProvider } from 'styled-components'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -99,7 +99,7 @@ describe('Dock panel drop ownership', () => {
     expect(screen.getByTestId('native-file-tree')).toBe(fileTree)
   })
 
-  it.each(['Files', 'application/x-react-arborist', 'application/x-markflowy-editor-tab'])(
+  it.each(['Files', 'application/x-react-arborist', 'application/x-zettel-notes-editor-tab'])(
     'leaves %s drags available to native file-tree listeners',
     (type) => {
       const fileTree = renderExplorerDock()

@@ -2,7 +2,7 @@
 
 ## Current screenshots — 2026-10-05
 
-The five originals were captured in **native macOS full-screen mode** from the installed `/Applications/MarkFlowy.app`, version **0.103.0**, at **3024 × 1898**. The demo uses ordinary Markdown files in a separate `MarkFlowy Studio` workspace. `single-file.png` shows the same document with the folder closed, the sidebars hidden, and full-width writing disabled. It is the application's single-document layout, not Zen mode. The AI screenshot shows an unsent draft prompt, not a generated response.
+The five originals were captured in **native macOS full-screen mode** from the installed `/Applications/Zettel-Notes.app`, version **0.103.0**, at **3024 × 1898**. The demo uses ordinary Markdown files in a separate `Zettel Notes Studio` workspace. `single-file.png` shows the same document with the folder closed, the sidebars hidden, and full-width writing disabled. It is the application's single-document layout, not Zen mode. The AI screenshot shows an unsent draft prompt, not a generated response.
 
 An earlier windowed capture was replaced because removing the sharing badge left the application's reserved window-control space visible. All five views were recaptured in native full-screen mode, which uses the application's compact title-bar layout. The purple system-sharing badge is absent from these raw captures, and no region at the left edge was erased or patched.
 
@@ -18,7 +18,7 @@ Every pixel outside this cleanup rectangle was compared with the original captur
 
 The following crops are retained as the record of the earlier capture and are **not applied to the current screenshots**.
 
-Captured from the same MarkFlowy 0.102.0 demo window on 2026-09-27, with the pointer away from the repaired region. These are native screenshot crops, not generated UI.
+Captured from the same Zettel Notes 0.102.0 demo window on 2026-09-27, with the pointer away from the repaired region. These are native screenshot crops, not generated UI.
 
 | Crop | Applied to | Rectangle in the 3024 × 1898 source |
 | --- | --- | --- |

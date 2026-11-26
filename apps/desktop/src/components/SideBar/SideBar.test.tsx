@@ -1,5 +1,5 @@
 import useLayoutStore, { DEFAULT_DOCK_PANEL_ORDER, type DockPanelId, type DockSide } from '@/stores/useLayoutStore'
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import { act, cleanup, render, screen } from '@testing-library/react'
 import { ThemeProvider } from 'styled-components'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'

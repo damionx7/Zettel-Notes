@@ -6,21 +6,21 @@ import { runInNewContext } from 'node:vm'
 
 const releaseUrl = 'https://example.test/releases/download/v1.2.0/'
 const packages = {
-  appimage: 'MarkFlowy_v1.2.0_amd64.AppImage',
-  deb: 'MarkFlowy_v1.2.0_amd64.deb',
-  rpm: 'MarkFlowy-1.2.0-1.x86_64.rpm',
-  macIntel: 'MarkFlowy_x64.app.tar.gz',
-  macArm: 'MarkFlowy_aarch64.app.tar.gz',
-  windows: 'MarkFlowy_v1.2.0_x64.msi',
-  nsis: 'MarkFlowy_v1.2.0_x64-setup.exe',
+  appimage: 'Zettel-Notes_v1.2.0_amd64.AppImage',
+  deb: 'Zettel-Notes_v1.2.0_amd64.deb',
+  rpm: 'Zettel Notes-1.2.0-1.x86_64.rpm',
+  macIntel: 'Zettel Notes_x64.app.tar.gz',
+  macArm: 'Zettel Notes_aarch64.app.tar.gz',
+  windows: 'Zettel-Notes_v1.2.0_x64.msi',
+  nsis: 'Zettel-Notes_v1.2.0_x64-setup.exe',
 }
 const asset = (name) => ({ name, browser_download_url: releaseUrl + name })
 const ignoredPackages = [
-  'MarkFlowy_v1.2.0_offline_installer_x64.msi',
-  'MarkFlowy_v1.2.0_offline_installer_x64-setup.exe',
-  'MarkFlowy_v1.2.0_x64.dmg',
-  'MarkFlowy_v1.2.0_aarch64.dmg',
-  'MarkFlowy_v1.2.0_x64_portable.zip',
+  'Zettel-Notes_v1.2.0_offline_installer_x64.msi',
+  'Zettel-Notes_v1.2.0_offline_installer_x64-setup.exe',
+  'Zettel-Notes_v1.2.0_x64.dmg',
+  'Zettel-Notes_v1.2.0_aarch64.dmg',
+  'Zettel-Notes_v1.2.0_x64_portable.zip',
 ]
 const assets = [
   ...Object.values(packages).flatMap((name) => [asset(name), asset(`${name}.sig`)]),
@@ -57,7 +57,7 @@ async function updaterHarness(format, releaseAssets = assets, fetchSignature) {
     writeFileSync: (filename, content) => writes.push({ filename, data: JSON.parse(content) }),
   }
   const github = {
-    context: { repo: { owner: 'fixture', repo: 'MarkFlowy' } },
+    context: { repo: { owner: 'fixture', repo: 'Zettel Notes' } },
     getOctokit: () => ({
       rest: {
         repos: {
@@ -150,13 +150,13 @@ for (const format of ['mjs', 'cjs']) {
 
   test(`${format}: unrelated architectures and sidecar files cannot replace update assets`, async () => {
     const unrelated = [
-      'MarkFlowy_v1.2.0_arm64.msi',
-      'MarkFlowy_v1.2.0_arm64-setup.exe',
-      'MarkFlowy_v1.2.0_i686.msi',
-      'MarkFlowy_v1.2.0_arm64.deb',
-      'MarkFlowy_v1.2.0_arm64.AppImage',
-      'MarkFlowy-1.2.0-1.aarch64.rpm',
-      'MarkFlowy_universal.app.tar.gz',
+      'Zettel-Notes_v1.2.0_arm64.msi',
+      'Zettel-Notes_v1.2.0_arm64-setup.exe',
+      'Zettel-Notes_v1.2.0_i686.msi',
+      'Zettel-Notes_v1.2.0_arm64.deb',
+      'Zettel-Notes_v1.2.0_arm64.AppImage',
+      'Zettel Notes-1.2.0-1.aarch64.rpm',
+      'Zettel Notes_universal.app.tar.gz',
       ...Object.values(packages).map((name) => `${name}.sha256`),
     ].flatMap((name) => [asset(name), asset(`${name}.sig`)])
     const { run, writes } = await updaterHarness(format, [...assets, ...unrelated])

@@ -1,4 +1,4 @@
-import { parseThemeDocument, type ThemeDocument } from '@markflowy/theme/semantic'
+import { parseThemeDocument, type ThemeDocument } from '@zettel-notes/theme/semantic'
 
 const DRAFT_PREFIX = 'mf-theme-editor-draft-v2:'
 export interface ThemeEditorSession {

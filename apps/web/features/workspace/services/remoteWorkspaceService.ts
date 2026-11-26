@@ -1,4 +1,4 @@
-import type { IFile } from '@markflowy/interface'
+import type { IFile } from '@zettel-notes/interface'
 import { apiClient, ApiClientError } from 'utils/apiClient'
 
 export interface WorkspaceCapabilities {

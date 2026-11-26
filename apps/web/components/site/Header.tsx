@@ -440,7 +440,7 @@ export default function SiteHeader({
           <Link
             href='/'
             className='mf-site-brand'
-            aria-label='MarkFlowy'
+            aria-label='Zettel Notes'
             onPointerEnter={() => {
               cancelHover()
               setActiveMenu(null)

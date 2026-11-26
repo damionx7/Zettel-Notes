@@ -1,6 +1,6 @@
 ---
-seoTitle: "Reusable code, math, and Mermaid snippets in MarkFlowy"
-description: "Create reusable snippets, preview them, and insert them from the slash menu or a block toolbar in MarkFlowy Desktop."
+seoTitle: "Reusable code, math, and Mermaid snippets in Zettel Notes"
+description: "Create reusable snippets, preview them, and insert them from the slash menu or a block toolbar in Zettel Notes Desktop."
 updatedAt: "2026-09-27"
 ---
 

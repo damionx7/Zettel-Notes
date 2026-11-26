@@ -32,7 +32,7 @@ const PROBE_TIMEOUT: Duration = Duration::from_secs(30);
 const JOB_TTL: Duration = Duration::from_secs(300);
 const MAX_HTML_BYTES: usize = 32 * 1024 * 1024;
 const MAX_PDF_BYTES: usize = 100 * 1024 * 1024;
-const PROBE_HTML: &str = "<!doctype html><html><head><meta charset='utf-8'><style>@page{margin:16mm} .next-page{break-before:page}</style></head><body><h1>MarkFlowy PDF probe</h1><h2>Nested heading</h2><p>Page one.</p><h1 class='next-page'>Next page</h1><p>Page two.</p></body></html>";
+const PROBE_HTML: &str = "<!doctype html><html><head><meta charset='utf-8'><style>@page{margin:16mm} .next-page{break-before:page}</style></head><body><h1>Zettel Notes PDF probe</h1><h2>Nested heading</h2><p>Page one.</p><h1 class='next-page'>Next page</h1><p>Page two.</p></body></html>";
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -622,7 +622,7 @@ fn prepare_output(
 ) -> Result<PreparedOutput, PdfExportError> {
     validate_pdf(bytes)?;
     let mut temporary = tempfile::Builder::new()
-        .prefix(".markflowy-pdf-")
+        .prefix(".zettel-notes-pdf-")
         .suffix(".pdf")
         .tempfile_in(output.parent().unwrap())
         .map_err(|e| {
@@ -716,7 +716,7 @@ async fn render_pdf(
     deadline: Duration,
 ) -> Result<(Vec<u8>, String, usize), PdfExportError> {
     let profile = tempfile::Builder::new()
-        .prefix("markflowy-pdf-profile-")
+        .prefix("zettel-notes-pdf-profile-")
         .tempdir()
         .map_err(browser_error)?;
     // Never call no_sandbox(), enable fetcher or reuse a user's browser profile.
@@ -1453,8 +1453,8 @@ mod tests {
     }
     fn test_browser() -> PathBuf {
         normalize_executable(Path::new(
-            &std::env::var("MARKFLOWY_PDF_TEST_BROWSER")
-                .expect("Set MARKFLOWY_PDF_TEST_BROWSER to a local Chrome/Edge executable"),
+            &std::env::var("ZETTEL_NOTES_PDF_TEST_BROWSER")
+                .expect("Set ZETTEL_NOTES_PDF_TEST_BROWSER to a local Chrome/Edge executable"),
         ))
         .unwrap()
     }
@@ -1531,21 +1531,21 @@ mod tests {
     #[ignore = "requires an explicitly selected local browser"]
     async fn renders_outline_probe_with_local_browser() {
         let executable = normalize_executable(Path::new(
-            &std::env::var("MARKFLOWY_PDF_TEST_BROWSER")
-                .expect("Set MARKFLOWY_PDF_TEST_BROWSER to a local Chrome/Edge executable"),
+            &std::env::var("ZETTEL_NOTES_PDF_TEST_BROWSER")
+                .expect("Set ZETTEL_NOTES_PDF_TEST_BROWSER to a local Chrome/Edge executable"),
         ))
         .unwrap();
         let job = ExportJob::new("main".into());
-        let html = std::env::var_os("MARKFLOWY_PDF_TEST_HTML")
+        let html = std::env::var_os("ZETTEL_NOTES_PDF_TEST_HTML")
             .map(|path| fs::read_to_string(path).unwrap())
             .unwrap_or_else(|| PROBE_HTML.into());
-        let outline = std::env::var("MARKFLOWY_PDF_TEST_OUTLINE").as_deref() != Ok("false");
-        let paper = if std::env::var("MARKFLOWY_PDF_TEST_PAPER").as_deref() == Ok("letter") {
+        let outline = std::env::var("ZETTEL_NOTES_PDF_TEST_OUTLINE").as_deref() != Ok("false");
+        let paper = if std::env::var("ZETTEL_NOTES_PDF_TEST_PAPER").as_deref() == Ok("letter") {
             PaperSize::Letter
         } else {
             PaperSize::A4
         };
-        let landscape = std::env::var("MARKFLOWY_PDF_TEST_LANDSCAPE").as_deref() == Ok("true");
+        let landscape = std::env::var("ZETTEL_NOTES_PDF_TEST_LANDSCAPE").as_deref() == Ok("true");
         let (bytes, version, heading_count) = render_pdf(
             &executable,
             &html,
@@ -1559,10 +1559,10 @@ mod tests {
         .unwrap();
         validate_pdf(&bytes).unwrap();
         assert!(!version.is_empty());
-        if let Some(output) = std::env::var_os("MARKFLOWY_PDF_TEST_OUTPUT") {
+        if let Some(output) = std::env::var_os("ZETTEL_NOTES_PDF_TEST_OUTPUT") {
             fs::write(output, &bytes).unwrap();
         }
-        if let Some(output) = std::env::var_os("MARKFLOWY_PDF_TEST_METADATA_OUT") {
+        if let Some(output) = std::env::var_os("ZETTEL_NOTES_PDF_TEST_METADATA_OUT") {
             fs::write(
                 output,
                 serde_json::to_vec_pretty(

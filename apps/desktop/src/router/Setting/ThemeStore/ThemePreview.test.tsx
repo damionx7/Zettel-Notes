@@ -1,7 +1,7 @@
 // @vitest-environment-options {"settings":{"navigation":{"disableChildFrameNavigation":true}}}
 import { cleanup, fireEvent, render } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { resolveThemeTokens, type ResolvedTheme } from '@markflowy/theme/semantic'
+import { resolveThemeTokens, type ResolvedTheme } from '@zettel-notes/theme/semantic'
 import { PREVIEW_CHANNEL } from '@/themes/preview/protocol'
 import { ThemePreview } from './ThemePreview'
 

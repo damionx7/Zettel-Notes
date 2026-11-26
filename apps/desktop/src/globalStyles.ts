@@ -133,4 +133,4 @@ export const DesktopSpecificStyles = createGlobalStyle<{
   }
 `
 
-export { GlobalStyles } from '@markflowy/interface'
+export { GlobalStyles } from '@zettel-notes/interface'

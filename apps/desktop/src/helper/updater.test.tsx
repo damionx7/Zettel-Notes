@@ -414,7 +414,7 @@ describe('checkUpdate', () => {
     await vi.waitFor(() => expect(mocks.confirm).toHaveBeenCalledOnce())
     const [options] = mocks.confirm.mock.calls[0]
     const notes = within(render(options.content).container)
-    expect(notes.getByText('MarkFlowy 1.0.0')).toBeTruthy()
+    expect(notes.getByText('Zettel Notes 1.0.0')).toBeTruthy()
     expect(notes.getByText('about.release').nextElementSibling?.getAttribute('datetime')).toBe(update.date)
     expect(notes.getByRole('heading', { name: 'Improvements' })).toBeTruthy()
     expect(notes.getByText('Improved update notifications')).toBeTruthy()

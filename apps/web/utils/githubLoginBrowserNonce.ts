@@ -1,4 +1,4 @@
-const GITHUB_LOGIN_BROWSER_NONCE_STORAGE_KEY = 'markflowy:auth:github:browser-nonce'
+const GITHUB_LOGIN_BROWSER_NONCE_STORAGE_KEY = 'zettel-notes:auth:github:browser-nonce'
 const GITHUB_LOGIN_BROWSER_NONCE_BYTE_LENGTH = 32
 const GITHUB_LOGIN_BROWSER_NONCE_PATTERN = /^[A-Za-z0-9_-]{43}$/
 

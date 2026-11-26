@@ -1,5 +1,5 @@
 import type { NodeViewComponentProps } from '@rme-sdk/sdk/react'
-import { t } from '@markflowy/i18n'
+import { t } from '@zettel-notes/i18n'
 import { useId, useMemo, useRef, useState, type FC } from 'react'
 import styled from 'styled-components'
 import { Button, Input } from 'zens'

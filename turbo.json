@@ -27,7 +27,7 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "passThroughEnv": ["MARKFLOWY_EDITOR_WATCH_ONLY"],
+      "passThroughEnv": ["ZETTEL_NOTES_EDITOR_WATCH_ONLY"],
       "dependsOn": ["^build"]
     }
   }

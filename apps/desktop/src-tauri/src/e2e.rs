@@ -18,16 +18,16 @@ pub fn initialize() {
         "E2E requires macOS 14+; older WebKit would use the default data store"
     );
 
-    let raw = std::env::var_os("MARKFLOWY_E2E_ROOT")
-        .expect("E2E binary requires a runner-owned MARKFLOWY_E2E_ROOT");
+    let raw = std::env::var_os("ZETTEL_NOTES_E2E_ROOT")
+        .expect("E2E binary requires a runner-owned ZETTEL_NOTES_E2E_ROOT");
     let root = PathBuf::from(raw);
     assert!(root.is_absolute(), "E2E root must be absolute");
     let root = root.canonicalize().expect("E2E root must already exist");
-    let marker = std::fs::read_to_string(root.join(".markflowy-e2e"))
+    let marker = std::fs::read_to_string(root.join(".zettel-notes-e2e"))
         .expect("E2E root must contain the runner ownership marker");
     let id = uuid::Uuid::parse_str(marker.trim()).expect("E2E marker must contain a UUID");
     assert_eq!(
-        std::env::var("MARKFLOWY_E2E_ID").ok().as_deref(),
+        std::env::var("ZETTEL_NOTES_E2E_ID").ok().as_deref(),
         Some(id.to_string().as_str()),
         "E2E root does not belong to this run"
     );
@@ -78,7 +78,7 @@ pub fn record_profile(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::
 pub const INITIALIZATION_SCRIPT: &str = r#"
 (() => {
   const errors = [];
-  Object.defineProperty(window, '__MARKFLOWY_E2E__', { value: { errors } });
+  Object.defineProperty(window, '__ZETTEL_NOTES_E2E__', { value: { errors } });
   window.addEventListener('error', (event) => errors.push(String(event.error?.stack || event.message)));
   window.addEventListener('unhandledrejection', (event) => errors.push(String(event.reason?.stack || event.reason)));
 })();

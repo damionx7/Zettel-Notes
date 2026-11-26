@@ -2,7 +2,7 @@
   <img align="center" src="./public/logo.png" width="120" height="120" />
 </div>
 
-<h2 align="center"/>MarkFlowy <sup><em>beta</em></sup></h2>
+<h2 align="center"/>Zettel Notes <sup><em>beta</em></sup></h2>
 <div align='center'>
 <br>
 <em>Modern and intelligent Markdown editor.</em>
@@ -19,31 +19,31 @@
 [![PRs Welcome][prs-welcome-badge]][prs-welcome]
 [![MIT License][license-badge]][license]
 [![Code of Conduct][coc-badge]][coc]
-[![codefactor]](https://www.codefactor.io/repository/github/drl990114/markflowy)
+[![codefactor]](https://www.codefactor.io/repository/github/damionx7/Zettel-Notes)
 <br/>
 [![TypeScript-version-icon]](https://www.typescriptlang.org/)
 [![Rust-version-icon]](https://www.rust-lang.org/)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdrl990114%2FMarkFlowy.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdrl990114%2FMarkFlowy?ref=badge_shield)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdamionx7%2FZettel-Notes.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdamionx7%2FZettel-Notes?ref=badge_shield)
 <br/>
 [![Commit Activity][commit-badge]][commit]
-[![issues-closed]](https://github.com/drl990114/MarkFlowy/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aclosed)
+[![issues-closed]](https://github.com/damionx7/Zettel-Notes/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aclosed)
 </div>
 
 <h4 align="center"><strong>English</strong> | <a href="./README_CN.md">简体中文</a> | <a href="./README_JA.md">日本語</a></h4>
 
 <img src="./public/home.png" alt="screenshot" />
 
-## MarkFlowy is in Beta Stage ⚠️
+## Zettel Notes is in Beta Stage ⚠️
 
-Currently, MarkFlowy is in the beta stage, and it is recommended to use it with data backups.
+Currently, Zettel Notes is in the beta stage, and it is recommended to use it with data backups.
 
 ## Features
 
 - **Built-in AI:** Currently supports one-click export of dialogues, translation of articles to any language, and article summaries. It supports large models like `DeepSeek` and `Chatgpt`, making them your intelligent assistant.
 
-- **lightweight:** MarkFlowy is based on Tauri, boasting a size of less than 20MB and improved performance.
+- **lightweight:** Zettel Notes is based on Tauri, boasting a size of less than 20MB and improved performance.
 
-- **Multiple Editing Modes:** MarkFlowy uses Prosemirror as its core editor, offering high extensibility and a superior editing experience. It supports multiple editing modes, such as source code and wysiwyg.
+- **Multiple Editing Modes:** Zettel Notes uses Prosemirror as its core editor, offering high extensibility and a superior editing experience. It supports multiple editing modes, such as source code and wysiwyg.
 
 - **Editing Multiple File Types:** In addition to Markdown, it supports editing `JSON`, `TXT`, and other file types.
 
@@ -51,7 +51,7 @@ Currently, MarkFlowy is in the beta stage, and it is recommended to use it with 
 
 - **Custom Keyboard Shortcuts:** Supports custom keyboard shortcuts to meet individual needs.
 
-- **Image Processing:** When pasting images into MarkFlowy, you can choose to paste them to a specified path or convert them to `base64`.
+- **Image Processing:** When pasting images into Zettel Notes, you can choose to paste them to a specified path or convert them to `base64`.
 
 - **File Management**: A powerful file tree that supports drag-and-drop movement, global search, and other common functions.
 
@@ -67,22 +67,22 @@ Available for Linux, macOS and Windows.
 > Because of Apple’s security policy restrictions on software without developer certification, the **macOS aarch64** version cannot be downloaded and used directly. You can ignore the limit by doing the following:
 > - Open your terminal
 > - Go to the `Applications` directory. .e.g `/Applications`.
-> - Run `xattr -cr MarkFlowy.app` and open the app again
+> - Run `xattr -cr Zettel-Notes.app` and open the app again
 > - Please make sure you download from `github releases`.
 
-You can download it from [GitHub Releases](https://github.com/drl990114/MarkFlowy/releases).
+You can download it from [GitHub Releases](https://github.com/damionx7/Zettel-Notes/releases).
 
 ## Why
 
-**Actually, the initial inspiration for MarkFlowy stemmed from a casual conversation with a friend a few years ago**. As developers, we shared many expectations for an ideal Markdown editor. After trying many existing applications, I felt they couldn't fully meet our comprehensive needs in terms of efficiency, aesthetics, lightweight design, and workflow integration. We envisioned our ideal editor together. Although we later went our separate ways and lost touch, that seed of desire to create something beautiful has always remained in my heart.
+**Actually, the initial inspiration for Zettel Notes stemmed from a casual conversation with a friend a few years ago**. As developers, we shared many expectations for an ideal Markdown editor. After trying many existing applications, I felt they couldn't fully meet our comprehensive needs in terms of efficiency, aesthetics, lightweight design, and workflow integration. We envisioned our ideal editor together. Although we later went our separate ways and lost touch, that seed of desire to create something beautiful has always remained in my heart.
 
-It was this initial aspiration that propelled me step by step to transform MarkFlowy from a concept into reality. I hope to create a lightweight, intelligent editor that not only handles content securely and reliably but also improves editing efficiency through AI.
+It was this initial aspiration that propelled me step by step to transform Zettel Notes from a concept into reality. I hope to create a lightweight, intelligent editor that not only handles content securely and reliably but also improves editing efficiency through AI.
 
-MarkFlowy is a product, and also a testament to a life journey. Through continuous learning and development, it has grown into my response to the concepts of **efficiency, intelligence, and lightweight**. I hope MarkFlowy will become a tool that everyone finds convenient and enjoyable, and I welcome everyone to experience it and provide valuable feedback.
+Zettel Notes is a product, and also a testament to a life journey. Through continuous learning and development, it has grown into my response to the concepts of **efficiency, intelligence, and lightweight**. I hope Zettel Notes will become a tool that everyone finds convenient and enjoyable, and I welcome everyone to experience it and provide valuable feedback.
 
 ## Contribute
 
-The current MarkFlowy is still in its infancy, and there may be some bad experiences or bugs, for which I am sorry. All partners who are interested or encounter usage problems are welcome to submit [issues](https://github.com/drl990114/MarkFlowy/issues/new) or [PR](https://github.com/drl990114/MarkFlowy/compare) to participate in this project.
+The current Zettel Notes is still in its infancy, and there may be some bad experiences or bugs, for which I am sorry. All partners who are interested or encounter usage problems are welcome to submit [issues](https://github.com/damionx7/Zettel-Notes/issues/new) or [PR](https://github.com/damionx7/Zettel-Notes/compare) to participate in this project.
 
 ### How to Contribute
 
@@ -90,7 +90,7 @@ You can read [CONTRIBUTING](./docs/en/Community/CONTRIBUTING.md) to know how to 
 
 ## Support
 
-MarkFlowy is completely and permanently open source, if you want to support MarkFlowy, you can `star` this project. For special support, please contact me via [email](mailto:drl990114@gmail.com).
+Zettel Notes is completely and permanently open source, if you want to support Zettel Notes, you can `star` this project. For special support, please contact me via [email](mailto:drl990114@gmail.com).
 
 In addition, you can sponsor me through WeChat or Alipay, which will greatly encourage me. And it will also be used for the subsequent development of the project, such as expenses for servers, domains, etc
 
@@ -102,7 +102,7 @@ In addition, you can sponsor me through WeChat or Alipay, which will greatly enc
 
 ## Contributors
 
-The development of **MarkFlowy** cannot be separated from these contributors. They have contributed a lot of abilities to **MarkFlowy**. Meanwhile, welcome to follow them! ❤️
+The development of **Zettel Notes** cannot be separated from these contributors. They have contributed a lot of abilities to **Zettel Notes**. Meanwhile, welcome to follow them! ❤️
 
 <!-- readme: contributors -start -->
 <table>
@@ -189,24 +189,24 @@ The development of **MarkFlowy** cannot be separated from these contributors. Th
 <!-- readme: contributors -end -->
 
 <!-- badges -->
-[build-badge]: https://img.shields.io/github/actions/workflow/status/drl990114/MarkFlowy/nodejs.yml.svg?style=flat-square
-[build]: https://github.com/drl990114/MarkFlowy/actions/workflows/nodejs.yml
-[downloads-badge]:  https://img.shields.io/github/downloads/drl990114/MarkFlowy/total?label=downloads&style=flat-square
+[build-badge]: https://img.shields.io/github/actions/workflow/status/damionx7/Zettel-Notes/nodejs.yml.svg?style=flat-square
+[build]: https://github.com/damionx7/Zettel-Notes/actions/workflows/nodejs.yml
+[downloads-badge]:  https://img.shields.io/github/downloads/damionx7/Zettel-Notes/total?label=downloads&style=flat-square
 [license-badge]: https://img.shields.io/badge/license-AGPL-purple.svg?style=flat-square
 [license]: https://opensource.org/licenses/AGPL-3.0
-[release]: https://github.com/drl990114/MarkFlowy/releases
+[release]: https://github.com/damionx7/Zettel-Notes/releases
 [prs-welcome-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
-[prs-welcome]: https://github.com/drl990114/MarkFlowy/blob/main/CONTRIBUTING.md
+[prs-welcome]: https://github.com/damionx7/Zettel-Notes/blob/main/CONTRIBUTING.md
 [coc-badge]: https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square
-[coc]: https://github.com/drl990114/MarkFlowy/blob/main/CODE_OF_CONDUCT.md
-[commit-badge]: https://img.shields.io/github/commit-activity/m/drl990114/MarkFlowy?color=%23ff9900&style=flat-square
-[commit]: https://github.com/drl990114/MarkFlowy
-[version-badge]: https://img.shields.io/github/v/release/drl990114/MarkFlowy?color=%239accfe&label=version&style=flat-square
+[coc]: https://github.com/damionx7/Zettel-Notes/blob/main/CODE_OF_CONDUCT.md
+[commit-badge]: https://img.shields.io/github/commit-activity/m/damionx7/Zettel-Notes?color=%23ff9900&style=flat-square
+[commit]: https://github.com/damionx7/Zettel-Notes
+[version-badge]: https://img.shields.io/github/v/release/damionx7/Zettel-Notes?color=%239accfe&label=version&style=flat-square
 [rust-version-icon]: https://img.shields.io/badge/Rust-1.96.0-dea584?style=flat-square
-[typescript-version-icon]: https://img.shields.io/github/package-json/dependency-version/drl990114/MarkFlowy/dev/typescript?label=TypeScript&style=flat-square
-[codefactor]: https://www.codefactor.io/repository/github/drl990114/markflowy/badge/main?style=flat-square
-[issues-closed]: https://img.shields.io/github/issues-closed/drl990114/MarkFlowy.svg?style=flat-square
+[typescript-version-icon]: https://img.shields.io/github/package-json/dependency-version/damionx7/Zettel-Notes/dev/typescript?label=TypeScript&style=flat-square
+[codefactor]: https://www.codefactor.io/repository/github/damionx7/Zettel-Notes/badge/main?style=flat-square
+[issues-closed]: https://img.shields.io/github/issues-closed/damionx7/Zettel-Notes.svg?style=flat-square
 
 
 ## License
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdrl990114%2FMarkFlowy.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdrl990114%2FMarkFlowy?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdamionx7%2FZettel-Notes.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdamionx7%2FZettel-Notes?ref=badge_large)

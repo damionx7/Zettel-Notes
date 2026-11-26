@@ -7,14 +7,14 @@ const PRODUCTION_CLOUD_API_URL = 'https://api.markflowy.cc'
 
 function getCloudApiUrl() {
   const configuredUrl =
-    process.env.MARKFLOWY_CLOUD_API_URL?.trim() ||
+    process.env.ZETTEL_NOTES_CLOUD_API_URL?.trim() ||
     // Backward compatibility for existing deployments. The browser no longer reads this value.
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
     (process.env.NODE_ENV === 'development' ? LOCAL_CLOUD_API_URL : PRODUCTION_CLOUD_API_URL)
 
   const url = new URL(configuredUrl)
   if (url.protocol !== 'http:' && url.protocol !== 'https:') {
-    throw new Error('MARKFLOWY_CLOUD_API_URL must use http or https')
+    throw new Error('ZETTEL_NOTES_CLOUD_API_URL must use http or https')
   }
 
   return configuredUrl.replace(/\/+$/, '')
@@ -28,7 +28,7 @@ module.exports = withSvgr(
     },
     i18n: { ...i18n },
     output: 'standalone',
-    transpilePackages: ['@markflowy/interface', 'zens'],
+    transpilePackages: ['@zettel-notes/interface', 'zens'],
     turbopack: {},
     async redirects() {
       return [

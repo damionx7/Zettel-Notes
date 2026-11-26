@@ -12,8 +12,8 @@ fn desktop_bundle_cli_and_lockfile_versions_match() {
         .as_array()
         .unwrap()
         .iter()
-        .find(|package| package["name"].as_str() == Some("markflowy"))
-        .expect("MarkFlowy must be present in Cargo.lock");
+        .find(|package| package["name"].as_str() == Some("zettel-notes"))
+        .expect("Zettel Notes must be present in Cargo.lock");
     let version = bundle["version"].as_str().expect("bundle version");
 
     // About uses Tauri's configured version; CLI and startup diagnostics use

@@ -71,7 +71,7 @@ export function getStartupPerformanceReport() {
     : undefined
   return {
     schemaVersion: 1,
-    hostVersion: typeof __MARKFLOWY_HOST_VERSION__ === 'string' ? __MARKFLOWY_HOST_VERSION__ : undefined,
+    hostVersion: typeof __ZETTEL_NOTES_HOST_VERSION__ === 'string' ? __ZETTEL_NOTES_HOST_VERSION__ : undefined,
     buildKind: import.meta.env.DEV ? 'development' : 'production',
     timeOrigin: performance.timeOrigin,
     navigationType: navigation?.type ?? 'unknown',

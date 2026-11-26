@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { EditorState } from '@codemirror/state'
 import { EditorView } from '@codemirror/view'
-import type { IHeadingData } from '@markflowy/interface'
+import type { IHeadingData } from '@zettel-notes/interface'
 import type { MfCodemirrorView } from 'rme'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { getOutlineSession, OutlineSession } from './outlineSession'

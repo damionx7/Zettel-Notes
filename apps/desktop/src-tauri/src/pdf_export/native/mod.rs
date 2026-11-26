@@ -126,7 +126,7 @@ fn parse_ready_document(payload: &str) -> Result<ReadyDocument, PdfExportError> 
 fn printable_title(title: &str) -> String {
     let title = title.chars().take(128).collect::<String>();
     if title.is_empty() {
-        "MarkFlowy PDF".into()
+        "Zettel Notes PDF".into()
     } else {
         title
     }
@@ -200,7 +200,7 @@ pub(super) async fn render(
 ) -> Result<(Vec<u8>, usize), PdfExportError> {
     let directory = Arc::new(
         tempfile::Builder::new()
-            .prefix("markflowy-native-pdf-")
+            .prefix("zettel-notes-native-pdf-")
             .tempdir()
             .map_err(native_error)?,
     );
@@ -404,7 +404,7 @@ mod tests {
         assert_eq!(printable.chars().count(), 128);
         assert!(printable.encode_utf16().count() < 1000);
         assert_ne!(printable, ready.title);
-        assert_eq!(printable_title(""), "MarkFlowy PDF");
+        assert_eq!(printable_title(""), "Zettel Notes PDF");
         let truncated_payload = payload.chars().take(999).collect::<String>();
         assert!(parse_ready_document(&truncated_payload).is_err());
         assert!(parse_ready_document("null").is_err());

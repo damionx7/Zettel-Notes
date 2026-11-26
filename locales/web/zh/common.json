@@ -5,7 +5,7 @@
   "docs": {
     "tableOfContents": "本页目录",
     "content": {
-      "description": "从这里开始使用 MarkFlowy：安装应用、编辑本地 Markdown 文件、切换所见即所得与源码模式，以及配置可选的 AI 辅助。",
+      "description": "从这里开始使用 Zettel Notes：安装应用、编辑本地 Markdown 文件、切换所见即所得与源码模式，以及配置可选的 AI 辅助。",
       "fallback": "这些指南目前提供英文版本。"
     },
     "sidebar": {
@@ -14,7 +14,7 @@
   },
   "mock": {
     "intro": {
-      "title": "欢迎使用 MarkFlowy！",
+      "title": "欢迎使用 Zettel Notes！",
       "ai_label": "AI 驱动：",
       "ai_desc": "内置 Copilot、翻译、摘要功能，支持 DeepSeek/ChatGPT 等主流模型。",
       "lightweight_label": "轻量化：",
@@ -41,11 +41,11 @@
   },
   "home": {
     "hero": {
-      "title": "MarkFlowy",
+      "title": "Zettel Notes",
       "subtitle": "本地优先的 Markdown 编辑器，专注大文档编辑与可选的 AI 辅助。",
-      "description": "让想法流动，专注每一次写作。MarkFlowy 是适用于 macOS、Windows 和 Linux 的本地优先 Markdown 编辑器，支持所见即所得与源码编辑，可选接入云端 AI 或本地 Ollama 模型。",
+      "description": "让想法流动，专注每一次写作。Zettel Notes 是适用于 macOS、Windows 和 Linux 的本地优先 Markdown 编辑器，支持所见即所得与源码编辑，可选接入云端 AI 或本地 Ollama 模型。",
       "download": "立即下载",
-      "metaTitle": "MarkFlowy — 本地优先的 Markdown 编辑器"
+      "metaTitle": "Zettel Notes — 本地优先的 Markdown 编辑器"
     },
     "statRings": {
       "platforms": "桌面平台",
@@ -91,10 +91,10 @@
       "title": "由众多贡献者共同构建",
       "titleLead": "由众多贡献者",
       "titleAccent": "共同构建",
-      "description": "感谢所有为 MarkFlowy 做出贡献的开发者",
+      "description": "感谢所有为 Zettel Notes 做出贡献的开发者",
       "count": "{{count}} 位贡献者环绕其中",
       "viewAll": "查看全部贡献者",
-      "globeLabel": "MarkFlowy 全球贡献者地球",
+      "globeLabel": "Zettel Notes 全球贡献者地球",
       "orbitLabel": "环绕地球的贡献者资料链接"
     },
     "guides": {
@@ -104,8 +104,8 @@
   },
   "releases": {
     "title": "版本发布",
-    "meta_description": "查看 MarkFlowy 各版本的新功能、编辑体验改进与问题修复，下载适用于 macOS、Windows 和 Linux 的 Markdown 编辑器。",
-    "description_before_link": "这里汇总了 MarkFlowy 的最新版本。点击版本可查看详细变更与更新，可前往",
+    "meta_description": "查看 Zettel Notes 各版本的新功能、编辑体验改进与问题修复，下载适用于 macOS、Windows 和 Linux 的 Markdown 编辑器。",
+    "description_before_link": "这里汇总了 Zettel Notes 的最新版本。点击版本可查看详细变更与更新，可前往",
     "github_link": "GitHub Releases",
     "description_after_link": "下载。",
     "see_details": "查看详情"
@@ -186,7 +186,7 @@
       "start": "开始使用",
       "downloadDescription": "适用于 macOS、Windows 和 Linux",
       "webDescription": "在浏览器中打开工作空间 · Beta",
-      "featuresDescription": "了解 MarkFlowy 的编辑能力",
+      "featuresDescription": "了解 Zettel Notes 的编辑能力",
       "quickstart": "快速开始",
       "explore": "探索更多",
       "support": "帮助与支持",
@@ -196,14 +196,14 @@
       "contributeDescription": "从一个问题、一次改进开始",
       "feedbackDescription": "报告问题，分享使用建议",
       "contributors": "贡献者",
-      "contributorsDescription": "认识一起完善 MarkFlowy 的人",
+      "contributorsDescription": "认识一起完善 Zettel Notes 的人",
       "back": "返回"
     },
     "hero": {
       "eyebrow": "本地优先，让灵感自由生长",
       "title": "让想法流动，专注每一次写作。",
       "lead": "为流畅编辑与专注写作而打磨的 Markdown 编辑器。",
-      "description": "本地优先，所见即所得与源码自由切换。AI 也能通过官方 Skill 操作 MarkFlowy，协助你打开、保存和导出文档。",
+      "description": "本地优先，所见即所得与源码自由切换。AI 也能通过官方 Skill 操作 Zettel Notes，协助你打开、保存和导出文档。",
       "try": "在线体验",
       "platforms": "在熟悉的平台上，进入写作状态"
     },
@@ -211,8 +211,8 @@
       "eyebrow": "从本地文件夹，到写作工作区",
       "title": "把笔记与长文，放在一起。",
       "description": "打开本地文件夹，让笔记、草稿与项目资料有序相伴。在同一个窗口里浏览文件、查看文档大纲，继续写下去。",
-      "note": "MarkFlowy 桌面版 · 本地工作区",
-      "screenshotAlt": "MarkFlowy 桌面版浅色界面，包含本地文件、所见即所得编辑器和文档目录"
+      "note": "Zettel Notes 桌面版 · 本地工作区",
+      "screenshotAlt": "Zettel Notes 桌面版浅色界面，包含本地文件、所见即所得编辑器和文档目录"
     },
     "singleFile": {
       "eyebrow": "单文件模式",
@@ -231,8 +231,8 @@
         "body": "当一则笔记变成一个项目，打开本地文件夹，继续使用熟悉的编辑工具。"
       },
       "link": "了解单文件写作",
-      "note": "MarkFlowy 桌面版 · 单文件模式",
-      "screenshotAlt": "MarkFlowy 桌面版单文件模式，Markdown 文档与紧凑标题栏中的文件名"
+      "note": "Zettel Notes 桌面版 · 单文件模式",
+      "screenshotAlt": "Zettel Notes 桌面版单文件模式，Markdown 文档与紧凑标题栏中的文件名"
     },
     "features": {
       "eyebrow": "每个细节，都为内容让路",
@@ -242,7 +242,7 @@
         "title": "用你习惯的方式，写 Markdown。",
         "body": "在所见即所得与源码模式间切换。在同一个工作空间里，处理 Markdown、JSON 和纯文本。",
         "link": "了解编辑体验",
-        "alt": "MarkFlowy 桌面编辑器中的写作示例"
+        "alt": "Zettel Notes 桌面编辑器中的写作示例"
       },
       "local": {
         "title": "高性能，让长文写作更轻快。",
@@ -251,7 +251,7 @@
       "ai": {
         "title": "需要时，给灵感一点助力。",
         "body": "按需接入 AI，辅助对话、摘要与翻译。使用自己的云端服务，也可以连接本地 Ollama 模型。",
-        "alt": "MarkFlowy 桌面编辑器与可选的 AI 助手面板"
+        "alt": "Zettel Notes 桌面编辑器与可选的 AI 助手面板"
       },
       "personal": {
         "title": "把这里，变成你的写作空间。",
@@ -286,7 +286,7 @@
     "stats": {
       "eyebrow": "用开放，连接每一次创作",
       "title": "一点点积累，让好工具走得更远。",
-      "body": "从一次关注，到一次下载，再到一次参与。MarkFlowy 和热爱写作与开源的人一起成长。",
+      "body": "从一次关注，到一次下载，再到一次参与。Zettel Notes 和热爱写作与开源的人一起成长。",
       "stars": "GitHub Stars",
       "forks": "开源分支 Forks",
       "downloads": "发行包下载次数",
@@ -297,7 +297,7 @@
     "community": {
       "eyebrow": "开放构建，一起向前",
       "title": "好的工具，和使用它的人一起成长。",
-      "body": "MarkFlowy 因每一次参与而变得更好。阅读源码、分享想法、反馈问题，或亲手完善你的写作工具。",
+      "body": "Zettel Notes 因每一次参与而变得更好。阅读源码、分享想法、反馈问题，或亲手完善你的写作工具。",
       "thanks": "感谢每一位贡献者"
     },
     "cta": {

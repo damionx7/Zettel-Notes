@@ -1,4 +1,4 @@
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { StrictMode, useState, type ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
@@ -23,7 +23,7 @@ vi.mock('@/commands', () => ({
   keybindingRegistry: { formatKeybinding: vi.fn() },
 }))
 
-vi.mock('@markflowy/i18n', () => ({ useTranslation: () => ({ t: (key: string) => key }) }))
+vi.mock('@zettel-notes/i18n', () => ({ useTranslation: () => ({ t: (key: string) => key }) }))
 
 vi.mock('zens', async (importOriginal) => {
   const original = await importOriginal<typeof Zens>()

@@ -1,7 +1,7 @@
 import { TooltipProvider } from '@/components/ui/tooltip'
 import useEditorStore from '@/stores/useEditorStore'
 import useLayoutStore, { type DockSide } from '@/stores/useLayoutStore'
-import { desktopDarkTheme } from '@markflowy/theme'
+import { desktopDarkTheme } from '@zettel-notes/theme'
 import { cleanup, createEvent, fireEvent, render, screen, within } from '@testing-library/react'
 import { ThemeProvider } from 'styled-components'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'

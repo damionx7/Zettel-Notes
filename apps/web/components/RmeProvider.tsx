@@ -1,4 +1,4 @@
-import { createInstance, editorResources, I18nextProvider, initReactI18next } from '@markflowy/i18n'
+import { createInstance, editorResources, I18nextProvider, initReactI18next } from '@zettel-notes/i18n'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo } from 'react'
 import { applicationTheme, applicationThemes } from '../utils/websiteTheme'

@@ -1,5 +1,5 @@
 import { useMemo, type FC, type ReactNode } from 'react'
-import { FileTreeContext, type FileTreeContextValue } from '@markflowy/interface'
+import { FileTreeContext, type FileTreeContextValue } from '@zettel-notes/interface'
 import { useEditorStore } from '@/stores'
 import { refreshWorkspaceDirectory } from '@/services/workspace-refresh'
 

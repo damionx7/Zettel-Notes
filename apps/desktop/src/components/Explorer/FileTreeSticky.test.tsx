@@ -1,4 +1,4 @@
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import type { NodeApi, RowRendererProps } from 'react-arborist'
 import type { ReactNode } from 'react'
@@ -151,8 +151,8 @@ afterEach(() => {
 const rootFile: IFile = {
   id: 'workspace-root',
   kind: 'dir',
-  name: 'markflowy',
-  path: '/workspace/markflowy',
+  name: 'zettel-notes',
+  path: '/workspace/zettel-notes',
 }
 
 function createRowProps(): RowRendererProps<IFile> {

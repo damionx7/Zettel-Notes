@@ -5,7 +5,7 @@ const justCodeContent = `
 
 ## JavaScript
 \`\`\`javascript
-const greeting = "Hello, MarkFlowy!"
+const greeting = "Hello, Zettel Notes!"
 console.log(greeting)
 
 const sum = (a, b) => a + b
@@ -48,9 +48,9 @@ database:
 `.trim()
 
 const defaultContent = `
-# MarkFlowy Editor — 全格式 Markdown 调试手册
+# Zettel Notes Editor — 全格式 Markdown 调试手册
 
-欢迎使用 **MarkFlowy**，一个现代化的所见即所得 Markdown 编辑器。本文档覆盖了编辑器的全部 Markdown 格式能力，方便调试与体验。
+欢迎使用 **Zettel Notes**，一个现代化的所见即所得 Markdown 编辑器。本文档覆盖了编辑器的全部 Markdown 格式能力，方便调试与体验。
 
 ---
 
@@ -79,25 +79,25 @@ const defaultContent = `
 ## 三、链接与图片
 
 ### 链接
-- 普通链接：[MarkFlowy GitHub](https://github.com/drl990114/MarkFlowy)
+- 普通链接：[Zettel Notes GitHub](https://github.com/damionx7/Zettel-Notes)
 - 自动链接：https://www.google.com
 - 邮箱链接：<example@email.com>
 
 ### 引用式链接
 引用式链接将 URL 定义与正文分离，适合多处引用同一链接的场景：
 
-正文中使用 [MarkFlowy 项目][repo] 和 [问题追踪][issues] 来引用链接，也可以直接用 [GitHub][] 这种简写形式。
+正文中使用 [Zettel Notes 项目][repo] 和 [问题追踪][issues] 来引用链接，也可以直接用 [GitHub][] 这种简写形式。
 
-[repo]: https://github.com/drl990114/MarkFlowy "MarkFlowy 主仓库"
-[issues]: https://github.com/drl990114/MarkFlowy/issues "问题追踪"
+[repo]: https://github.com/damionx7/Zettel-Notes "Zettel Notes 主仓库"
+[issues]: https://github.com/damionx7/Zettel-Notes/issues "问题追踪"
 [GitHub]: https://github.com
 
 ### 引用式图片
 同样支持引用式图片语法：
 
-![MarkFlowy Logo][logo]
+![Zettel Notes Logo][logo]
 
-[logo]: https://www.markflowy.cc/logo.svg "MarkFlowy 示例图片"
+[logo]: https://damionx7.github.io/Zettel-Notes/logo.svg "Zettel Notes 示例图片"
 
 ---
 
@@ -311,7 +311,7 @@ sequenceDiagram
 
 :smile: :rocket: :star: :fire: :heart: :zap: :bulb: :book: :computer: :art:
 
-© 2025 MarkFlowy Team &trade; &reg; &para; &sect;
+© 2025 Zettel Notes Team &trade; &reg; &para; &sect;
 
 ---
 
@@ -327,7 +327,7 @@ sequenceDiagram
 
 下面是分隔线 ↓
 
-> **提示**：以上涵盖了 MarkFlowy 编辑器支持的全部 Markdown 格式。你可以在调试面板中切换不同的内容模板来测试各种场景。
+> **提示**：以上涵盖了 Zettel Notes 编辑器支持的全部 Markdown 格式。你可以在调试面板中切换不同的内容模板来测试各种场景。
 `.trim()
 
 const longContent = defaultContent + '\n\n' + (singleRow.repeat(200) + '\n\n').repeat(5)
@@ -336,7 +336,7 @@ const tableContent = `
 # 表格与复杂排版测试
 
 ## 产品对比表
-| 特性 | MarkFlowy | Typora | Notion | Obsidian |
+| 特性 | Zettel Notes | Typora | Notion | Obsidian |
 |------|:---------:|:------:|:------:|:--------:|
 | WYSIWYG | ✅ | ✅ | ✅ | ❌ |
 | 开源 | ✅ | ❌ | ❌ | ❌ |

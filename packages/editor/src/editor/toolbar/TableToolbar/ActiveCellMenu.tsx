@@ -1,4 +1,4 @@
-import { useTranslation } from '@markflowy/i18n'
+import { useTranslation } from '@zettel-notes/i18n'
 import { useCommands, useRemirrorContext, type UseMultiPositionerReturn } from '@rme-sdk/sdk/react'
 import { useState } from 'react'
 import { Dropdown, type DropdownMenuItem, type MenuItemType } from 'zens'

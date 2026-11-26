@@ -51,7 +51,7 @@ describe('application menu', () => {
 
   it('exposes the migrated application menu from the title bar', () => {
     render(<AppMenuButton />)
-    const trigger = screen.getByRole('button', { name: 'MarkFlowy Menu' })
+    const trigger = screen.getByRole('button', { name: 'Zettel Notes Menu' })
     vi.spyOn(trigger, 'getBoundingClientRect').mockReturnValue({
       bottom: 34,
       left: 76,

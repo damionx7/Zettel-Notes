@@ -1,6 +1,6 @@
 ---
-seoTitle: '自定义 MarkFlowy 主题'
-description: '使用 JSON 主题与 CSS 片段自定义 MarkFlowy，提供模板、选择器说明和实时预览。'
+seoTitle: '自定义 Zettel Notes 主题'
+description: '使用 JSON 主题与 CSS 片段自定义 Zettel Notes，提供模板、选择器说明和实时预览。'
 updatedAt: '2026-11-06'
 ---
 
@@ -10,11 +10,11 @@ updatedAt: '2026-11-06'
 
 ## 使用 AI Agent 辅助开发
 
-仓库提供 [MarkFlowy Dev](https://github.com/drl990114/MarkFlowy/tree/main/skills/markflowy-dev) 开发辅助 Skill，目前覆盖自定义主题与 CSS，附带浅色/深色模板，以及校验、导入和分享指南。将 `skills/markflowy-dev` 整个目录复制到所用 Agent 的 Skill 目录即可安装，例如 Codex 的 `~/.agents/skills/markflowy-dev`。
+仓库提供 [Zettel Notes Dev](https://github.com/damionx7/Zettel-Notes/tree/main/skills/zettel-notes-dev) 开发辅助 Skill，目前覆盖自定义主题与 CSS，附带浅色/深色模板，以及校验、导入和分享指南。将 `skills/zettel-notes-dev` 整个目录复制到所用 Agent 的 Skill 目录即可安装，例如 Codex 的 `~/.agents/skills/zettel-notes-dev`。
 
-可以这样提问：`使用 $markflowy-dev 创建一个暖纸色的 MarkFlowy 主题，包含浅色和深色变体，并说明如何导入和校验。` 没有源码仓库也可以通过应用主题编辑器完成开发。
+可以这样提问：`使用 $zettel-notes-dev 创建一个暖纸色的 Zettel Notes 主题，包含浅色和深色变体，并说明如何导入和校验。` 没有源码仓库也可以通过应用主题编辑器完成开发。
 
-局部样式可以直接请求个人片段：`使用 $markflowy-dev 为 MarkFlowy 已完成任务添加删除线，输出独立 CSS 片段，保留我当前的主题。` Skill 会区分整套主题、独立 CSS 片段和明确随主题变体切换的 CSS。解释选择器不需要生成新主题；勾选任务或修改正文格式属于普通文档编辑。
+局部样式可以直接请求个人片段：`使用 $zettel-notes-dev 为 Zettel Notes 已完成任务添加删除线，输出独立 CSS 片段，保留我当前的主题。` Skill 会区分整套主题、独立 CSS 片段和明确随主题变体切换的 CSS。解释选择器不需要生成新主题；勾选任务或修改正文格式属于普通文档编辑。
 
 ## 可视化编辑
 

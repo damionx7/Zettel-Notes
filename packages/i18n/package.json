@@ -1,5 +1,5 @@
 {
-  "name": "@markflowy/i18n",
+  "name": "@zettel-notes/i18n",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",

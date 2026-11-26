@@ -1,4 +1,4 @@
-import { ContextMenu, FileTree, SideBarHeader, TableOfContents } from '@markflowy/interface'
+import { ContextMenu, FileTree, SideBarHeader, TableOfContents } from '@zettel-notes/interface'
 import { FileTreeProvider, WebFileSystemProvider } from 'adapters'
 import { EditorToolbar } from 'components/workspace/EditorToolbar'
 import { FillFlexParent } from 'components/FillFlexParent'
@@ -450,7 +450,7 @@ function WorkspaceDetailPageContent() {
         onActiveIdChange={setActiveId}
       >
         <Container data-mobile-view={mobileView}>
-          <SeoHead title={`${workspaceTitle} | MarkFlowy`} />
+          <SeoHead title={`${workspaceTitle} | Zettel Notes`} />
           {renderToolbar()}
 
           {error && <ErrorBanner>{error}</ErrorBanner>}

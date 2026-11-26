@@ -8,7 +8,7 @@ describe('persisted draft across native process restart', () => {
   installChecks()
   const original = 'Original disk version survives restart'
   const draft = 'Unsaved draft recovered after restarting the app'
-  if (process.env.MARKFLOWY_E2E_PHASE === 'persist') {
+  if (process.env.ZETTEL_NOTES_E2E_PHASE === 'persist') {
     it('persists the exact dirty draft before the native process exits', async () => {
       const path = await fixture('draft-restart', original)
       await openFile(path, original)
@@ -20,7 +20,7 @@ describe('persisted draft across native process restart', () => {
     })
   } else {
     it('recovers the unsaved draft in a new process without overwriting disk', async () => {
-      assert.equal(process.env.MARKFLOWY_E2E_PHASE, 'recover')
+      assert.equal(process.env.ZETTEL_NOTES_E2E_PHASE, 'recover')
       const profile = JSON.parse(await readFile(join(root, 'native-profile.json'), 'utf8'))
       assert.notEqual(String(profile.pid), await readFile(join(root, 'previous-pid'), 'utf8'))
       const path = join(root, 'files', 'draft-restart.md')

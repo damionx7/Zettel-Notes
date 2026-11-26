@@ -57,7 +57,7 @@ vi.mock('@/services/app-setting', () => ({
   default: { writeSettingData: state.writeSettingData },
 }))
 vi.mock('@/stores/useAppInfoStore', () => ({
-  default: () => ({ appInfo: { name: 'MarkFlowy', version: '1.0.0' } }),
+  default: () => ({ appInfo: { name: 'Zettel Notes', version: '1.0.0' } }),
 }))
 vi.mock('@/stores/useAppSettingStore', async () => {
   const { create } = await import('zustand')

@@ -1,7 +1,7 @@
 import { useActive, useCommands } from '@rme-sdk/sdk/react'
 import { FC, useCallback } from 'react'
 
-import { t } from '@markflowy/i18n'
+import { t } from '@zettel-notes/i18n'
 import { LineBlockquoteExtension } from '../../../extensions/BlockQuote'
 import { CommandButton, CommandButtonProps } from './command-button'
 

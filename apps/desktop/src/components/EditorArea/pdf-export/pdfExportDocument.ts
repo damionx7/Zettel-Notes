@@ -1,5 +1,5 @@
 import { decodeLocalResource, localResourcePath } from '@/helper/localResourcePath'
-import { FileResultCode, type FileSysResult } from '@markflowy/interface'
+import { FileResultCode, type FileSysResult } from '@zettel-notes/interface'
 import { invoke } from '@tauri-apps/api/core'
 import postcss from 'postcss'
 import valueParser from 'postcss-value-parser'

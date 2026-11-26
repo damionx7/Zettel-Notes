@@ -1,4 +1,4 @@
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { createRef, type ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'

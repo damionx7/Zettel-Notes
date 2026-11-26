@@ -15,7 +15,7 @@ import {
 } from './export-editor-opening-fixtures.mjs'
 
 test('exports every ordinary fixture as an exact, deterministic file', async () => {
-  const outputDir = await mkdtemp(join(tmpdir(), 'markflowy-opening-fixtures-'))
+  const outputDir = await mkdtemp(join(tmpdir(), 'zettel-notes-opening-fixtures-'))
   try {
     const results = await exportEditorOpeningFixtures({ outputDir })
     assert.deepEqual(
@@ -55,7 +55,7 @@ test('rejects unknown fixtures and missing output directories', async () => {
 })
 
 test('exports a 200 KiB CJK startup fixture without splitting UTF-8 characters', async () => {
-  const outputDir = await mkdtemp(join(tmpdir(), 'markflowy-startup-fixtures-'))
+  const outputDir = await mkdtemp(join(tmpdir(), 'zettel-notes-startup-fixtures-'))
   try {
     const [result] = await exportEditorOpeningFixtures({ outputDir, selected: 'cjk', byteLength: 200 * 1024 })
     const content = await readFile(result.path)

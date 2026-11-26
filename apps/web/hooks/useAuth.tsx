@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { apiClient } from '../utils/apiClient'
 import { clearAuthSession } from '../utils/authSession'
-import type { User } from '@markflowy/types'
+import type { User } from '@zettel-notes/types'
 
 interface AuthState {
   user: User | null

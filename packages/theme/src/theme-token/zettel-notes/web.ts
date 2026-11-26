@@ -1,4 +1,4 @@
-import { markflowyDarkTheme } from './index'
+import { zettelNotesDarkTheme } from './index'
 import { inkwashTokens } from './web-atelier'
 
 export const webSpecificTokens = {
@@ -62,6 +62,6 @@ export const webSpecificTokens = {
 }
 
 export const webDarkTheme = {
-  ...markflowyDarkTheme,
+  ...zettelNotesDarkTheme,
   ...webSpecificTokens,
 }

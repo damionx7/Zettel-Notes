@@ -229,9 +229,9 @@ export function ThemeCustomization() {
                 onOpenReference={() =>
                   void run(() => {
                     const language = String(useAppSettingStore.getState().settingData.language)
-                    const locale = language === 'cn' || language.startsWith('zh') ? '/zh' : ''
+                    const docsLocale = language === 'cn' || language.startsWith('zh') ? 'zh' : 'en'
                     return openUrl(
-                      `https://www.markflowy.cc${locale}/docs/Extension/CustomTheme#editor-css-selectors`,
+                      `https://github.com/damionx7/Zettel-Notes/blob/main/docs/${docsLocale}/Extension/CustomTheme.md#editor-css-selectors`,
                     )
                   })
                 }

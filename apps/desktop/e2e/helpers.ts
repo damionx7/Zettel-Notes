@@ -8,9 +8,9 @@ import { browser, $ } from '@wdio/globals'
 import { Key } from 'webdriverio'
 import { parseReceipt } from './protocol'
 
-export const root = process.env.MARKFLOWY_E2E_ROOT!
-const binary = process.env.MARKFLOWY_E2E_BINARY!
-const report = process.env.MARKFLOWY_E2E_REPORT!
+export const root = process.env.ZETTEL_NOTES_E2E_ROOT!
+const binary = process.env.ZETTEL_NOTES_E2E_BINARY!
+const report = process.env.ZETTEL_NOTES_E2E_REPORT!
 export const editor = '[data-editor-active="true"] [data-mf-editor-mode]'
 export const sha256 = (content: string) => createHash('sha256').update(content).digest('hex')
 
@@ -146,7 +146,7 @@ export function installChecks() {
     // Match the CLI target and avoid rediscovering the active native window before
     // every element command. The embedded driver uses Tauri labels as handles.
     await browser.switchToWindow('main')
-    await browser.waitUntil(() => browser.execute(() => !!window.__MARKFLOWY_E2E__ && !!window.__TAURI__),
+    await browser.waitUntil(() => browser.execute(() => !!window.__ZETTEL_NOTES_E2E__ && !!window.__TAURI__),
       { timeout: 60_000, timeoutMsg: 'Expected the isolated native E2E binary' })
     await browser.waitUntil(async () => {
       const runtime = await readFile(join(root, 'runtime', 'runtime.json'), 'utf8')
@@ -156,7 +156,7 @@ export function installChecks() {
     }, { timeout: 60_000, timeoutMsg: 'Native app/CLI startup did not complete' })
   })
   afterEach(async () => {
-    const errors = await browser.execute(() => window.__MARKFLOWY_E2E__?.errors)
+    const errors = await browser.execute(() => window.__ZETTEL_NOTES_E2E__?.errors)
     assert.deepEqual(errors, [], 'Unhandled frontend exceptions')
   })
 }

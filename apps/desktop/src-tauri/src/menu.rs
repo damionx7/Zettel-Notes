@@ -77,10 +77,10 @@ pub fn generate_menu(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         &[
             &Submenu::with_items(
                 app,
-                "MarkFlowy",
+                "Zettel Notes",
                 true,
                 &[
-                    &MenuItemBuilder::new("About MarkFlowy")
+                    &MenuItemBuilder::new("About Zettel Notes")
                         .id("About")
                         .build(app)?,
                     &MenuItemBuilder::new("Settings").id("Settings").build(app)?,

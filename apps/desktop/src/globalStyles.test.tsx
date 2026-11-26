@@ -1,4 +1,4 @@
-import { markflowyLightTheme } from '../../../packages/theme/src/theme-token/markflowy'
+import { zettelNotesLightTheme } from '../../../packages/theme/src/theme-token/zettel-notes'
 import { sepiaTheme } from '../../../packages/theme/src/theme-token/sepia'
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -33,7 +33,7 @@ describe('DesktopSpecificStyles theme semantics', () => {
 
   it('keeps chrome, menu, ghost, and pressed surfaces independent', () => {
     const theme = {
-      ...markflowyLightTheme,
+      ...zettelNotesLightTheme,
       contextMenuBgColorHover: '#303030',
       fileTreeSelectedBgColor: '#404040',
       hoverColor: '#101010',

@@ -1,12 +1,12 @@
 ---
-seoTitle: "参与 MarkFlowy 开发"
-description: "了解如何配置 MarkFlowy 开发环境并向项目贡献改进。"
+seoTitle: "参与 Zettel Notes 开发"
+description: "了解如何配置 Zettel Notes 开发环境并向项目贡献改进。"
 updatedAt: "2026-09-27"
 ---
 
-# 为 MarkFlowy 做贡献
+# 为 Zettel Notes 做贡献
 
-欢迎，并感谢你对 MarkFlowy 的关注与贡献！
+欢迎，并感谢你对 Zettel Notes 的关注与贡献！
 
 ## 如何贡献代码
 
@@ -24,7 +24,7 @@ updatedAt: "2026-09-27"
 
 ### 目录
 
-- [为 MarkFlowy 做贡献](#为-markflowy-做贡献)
+- [为 Zettel Notes 做贡献](#为-zettel-notes-做贡献)
   - [如何贡献代码](#如何贡献代码)
     - [前置条件](#前置条件)
     - [目录](#目录)
@@ -34,7 +34,7 @@ updatedAt: "2026-09-27"
     - [开发工作步骤](#开发工作步骤)
       - [Fork](#fork-1)
       - [安装依赖](#安装依赖)
-      - [启动 MarkFlowy](#启动-markflowy)
+      - [启动 Zettel Notes](#启动-zettel-notes)
 - [致谢](#致谢)
 
 ### 多语言翻译贡献步骤
@@ -43,7 +43,7 @@ updatedAt: "2026-09-27"
 
 #### Fork
 
-Fork [MarkFlowy](https://github.com/drl990114/MarkFlowy) 并执行 `git clone`。
+Fork [Zettel Notes](https://github.com/damionx7/Zettel-Notes) 并执行 `git clone`。
 
 #### 翻译文件
 
@@ -59,7 +59,7 @@ Fork [MarkFlowy](https://github.com/drl990114/MarkFlowy) 并执行 `git clone`�
 
 #### Fork
 
-Fork [MarkFlowy](https://github.com/drl990114/MarkFlowy) 并执行 `git clone`。
+Fork [Zettel Notes](https://github.com/damionx7/Zettel-Notes) 并执行 `git clone`。
 
 #### 安装依赖
 
@@ -72,12 +72,12 @@ yarn install --immutable
 
 公开依赖安装不需要 GitHub Packages token。请保留仓库锁文件，以及 `postinstall` 应用的依赖源码补丁。
 
-#### 启动 MarkFlowy
+#### 启动 Zettel Notes
 
 首次启动前，先准备桌面端依赖的工作区产物，再运行开发启动脚本：
 
 ```bash
-yarn turbo run build --filter='@markflowy/desktop^...' --concurrency=2
+yarn turbo run build --filter='@zettel-notes/desktop^...' --concurrency=2
 yarn dev:desktop
 ```
 
@@ -85,7 +85,7 @@ yarn dev:desktop
 
 ### 公开仓库与尚未开源的 Capricorn
 
-Capricorn 编辑器目前尚未开源，其源码仓库和运行时包均不包含在 MarkFlowy 的公开仓库中。克隆 MarkFlowy 不会获得 Capricorn 源码或私有包的访问权限。
+Capricorn 编辑器目前尚未开源，其源码仓库和运行时包均不包含在 Zettel Notes 的公开仓库中。克隆 Zettel Notes 不会获得 Capricorn 源码或私有包的访问权限。
 
 未安装 Capricorn 时，公开检出支持 Markdown 源码和阅读模式。实时编辑模式需要私有包 `@drl990114/capricorn-runtime`，其包清单标记为 `UNLICENSED`。`packages/editor` 仍保留 RME 及 ProseMirror/CodeMirror 集成；Capricorn 是独立运行时，并非 RME 源码更新。
 
@@ -101,15 +101,15 @@ yarn install:capricorn-runtime
 
 公开仓库贡献者应针对修改行为运行相关单测，并执行桌面端的 `build:types`（实际为 `tsc --noEmit`，同时检查 `src` 和 `tests`）。普通 `test` 不要求安装 Capricorn 私有运行时。RME 仍用于源码模式、预览与导出，其测试继续保留在 `packages/editor`。
 
-涉及 Capricorn 接入的修改，由具备私有包访问权限的维护者安装固定版本运行时后执行 `test:capricorn-published`，验证 MarkFlowy 与真实运行时之间的宿主契约。这是发布流程的必需检查，与普通 `test` 的测试集合互斥，CI 各执行一次。公开检出的回退模式无法证明私有运行时的行为一致。
+涉及 Capricorn 接入的修改，由具备私有包访问权限的维护者安装固定版本运行时后执行 `test:capricorn-published`，验证 Zettel Notes 与真实运行时之间的宿主契约。这是发布流程的必需检查，与普通 `test` 的测试集合互斥，CI 各执行一次。公开检出的回退模式无法证明私有运行时的行为一致。
 
 `test:capricorn-source` 仅供具备 Capricorn 私有源码仓库访问权限的维护者本地联调，使用相同的宿主契约对接相邻的源码检出。私有包访问权限不等于源码访问权限。编辑器内部行为的回归测试由维护者在 Capricorn 私有仓库中维护，不属于公开仓库贡献者的验证要求。
 
 ```bash
-yarn workspace @markflowy/desktop build:types
-yarn workspace @markflowy/desktop test <path-to-test>
+yarn workspace @zettel-notes/desktop build:types
+yarn workspace @zettel-notes/desktop test <path-to-test>
 # 仅供具备私有包访问权限并已安装固定版本运行时的维护者：
-yarn workspace @markflowy/desktop test:capricorn-published
+yarn workspace @zettel-notes/desktop test:capricorn-published
 ```
 
 仅对修改的 TypeScript 文件使用现有 ESLint 8 工具链，不加 `--fix`：
@@ -123,9 +123,9 @@ node node_modules/@umijs/fabric/node_modules/eslint/bin/eslint.js \
 
 ## 如何提交主题到主题商店
 
-MarkFlowy 内置了主题商店功能，用户可以浏览、下载和安装社区创建的主题。如果你想将自己的主题提交到主题商店供其他用户使用，请参考 [自定义主题文档](https://www.markflowy.cc/zh/docs/Extension/CustomTheme) 中的"分享你的主题"部分，该文档详细介绍了主题创建的完整流程和提交到主题商店的具体步骤。
+Zettel Notes 内置了主题商店功能，用户可以浏览、下载和安装社区创建的主题。如果你想将自己的主题提交到主题商店供其他用户使用，请参考 [自定义主题文档](https://damionx7.github.io/Zettel-Notes/zh/docs/Extension/CustomTheme) 中的"分享你的主题"部分，该文档详细介绍了主题创建的完整流程和提交到主题商店的具体步骤。
 
 # 致谢
 
-无论大小，你对开源项目的贡献都会让它变得更好。感谢你抽出时间为 MarkFlowy 做出贡献！
+无论大小，你对开源项目的贡献都会让它变得更好。感谢你抽出时间为 Zettel Notes 做出贡献！
 

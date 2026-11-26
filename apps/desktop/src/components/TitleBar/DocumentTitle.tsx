@@ -1,6 +1,6 @@
 import { XIcon } from 'lucide-react'
 import { useLayoutEffect, useRef, useState } from 'react'
-import { useFileSystem, type IFile } from '@markflowy/interface'
+import { useFileSystem, type IFile } from '@zettel-notes/interface'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'

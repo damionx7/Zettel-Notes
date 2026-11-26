@@ -33,7 +33,7 @@ const distCtx = await esbuild.context({
 
 await distCtx.watch()
 
-if (process.env.MARKFLOWY_EDITOR_WATCH_ONLY !== '1') {
+if (process.env.ZETTEL_NOTES_EDITOR_WATCH_ONLY !== '1') {
   const devCtx = await esbuild.context({
     entryPoints: ['./src/index-dev.tsx'],
     bundle: true,

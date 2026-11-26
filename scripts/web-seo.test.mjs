@@ -71,7 +71,7 @@ for (const locale of ['en', 'zh', 'ru']) {
   test(`${locale} pages render localized large social cards with usable image metadata`, async () => {
     const head = renderHead({ locale })
     const imageLocale = locale === 'zh' ? 'zh' : 'en'
-    const imageUrl = `https://www.markflowy.cc/social/markflowy-${imageLocale}.png`
+    const imageUrl = `https://damionx7.github.io/Zettel-Notes/social/zettel-notes-${imageLocale}.png`
     assert.equal(metadata(head, 'twitter:card'), 'summary_large_image')
     assert.equal(metadata(head, 'twitter:image'), imageUrl)
     assert.equal(metadata(head, 'og:image'), imageUrl)
@@ -92,7 +92,7 @@ for (const locale of ['en', 'zh', 'ru']) {
     assert.match(metadata(head, 'description'), locale === 'zh' ? /本地优先/ : locale === 'ru' ? /редактор Markdown/ : /local-first/)
 
     const png = await readFile(
-      new URL(`../apps/web/public/social/markflowy-${imageLocale}.png`, import.meta.url),
+      new URL(`../apps/web/public/social/zettel-notes-${imageLocale}.png`, import.meta.url),
     )
     assert.deepEqual(png.subarray(0, 8), Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
     assert.equal(png.toString('ascii', 12, 16), 'IHDR')
@@ -109,7 +109,7 @@ test('canonical and social page URLs exclude tracking and fragments for all site
       pathname: '/docs/[...slug]',
       asPath: `/${locale}/docs/intro/?utm_source=twitter#download`,
     })
-    const expected = `https://www.markflowy.cc${locale === 'en' ? '' : `/${locale}`}/docs/intro`
+    const expected = `https://damionx7.github.io/Zettel-Notes${locale === 'en' ? '' : `/${locale}`}/docs/intro`
     assert.deepEqual(
       links(head, 'canonical').map(({ props }) => props.href),
       [expected],
@@ -123,8 +123,8 @@ test('canonical and social page URLs exclude tracking and fragments for all site
 
 test('custom image URLs do not inherit dimensions or MIME types from the default card', () => {
   const head = renderHead({ title: 'Custom page', image: '/images/custom.jpg' })
-  assert.equal(metadata(head, 'og:image'), 'https://www.markflowy.cc/images/custom.jpg')
-  assert.equal(metadata(head, 'twitter:image'), 'https://www.markflowy.cc/images/custom.jpg')
+  assert.equal(metadata(head, 'og:image'), 'https://damionx7.github.io/Zettel-Notes/images/custom.jpg')
+  assert.equal(metadata(head, 'twitter:image'), 'https://damionx7.github.io/Zettel-Notes/images/custom.jpg')
   assert.equal(metadata(head, 'og:image:alt'), 'Custom page')
   for (const property of ['og:image:width', 'og:image:height', 'og:image:type']) {
     assert.ok(!head.elements.some(({ props }) => props.property === property), property)
@@ -155,21 +155,21 @@ test('the English privacy page advertises only translations that exist', () => {
   assert.deepEqual(
     links(head, 'alternate').map(({ props }) => ({ hrefLang: props.hrefLang, href: props.href })),
     [
-      { hrefLang: 'en', href: 'https://www.markflowy.cc/privacy' },
-      { hrefLang: 'x-default', href: 'https://www.markflowy.cc/privacy' },
+      { hrefLang: 'en', href: 'https://damionx7.github.io/Zettel-Notes/privacy' },
+      { hrefLang: 'x-default', href: 'https://damionx7.github.io/Zettel-Notes/privacy' },
     ],
   )
   assert.ok(!head.elements.some(({ props }) => props.property === 'og:locale:alternate'))
 })
 
 test('documentation retains its title and Markdown discovery without homepage structured data', () => {
-  const title = 'Custom themes | MarkFlowy'
+  const title = 'Custom themes | Zettel Notes'
   const head = renderHead({
     pathname: '/docs/[...slug]',
     asPath: '/docs/Extension/CustomTheme',
     title,
     description: 'Create and share a custom editor theme.',
-    markdownUrl: 'https://www.markflowy.cc/docs/Extension/CustomTheme.md',
+    markdownUrl: 'https://damionx7.github.io/Zettel-Notes/docs/Extension/CustomTheme.md',
   })
   assert.deepEqual(
     head.elements.filter(({ type }) => type === 'title').map(({ props }) => props.children),
@@ -182,7 +182,7 @@ test('documentation retains its title and Markdown discovery without homepage st
     links(head, 'alternate').some(
       ({ props }) =>
         props.type === 'text/markdown' &&
-        props.href === 'https://www.markflowy.cc/docs/Extension/CustomTheme.md',
+        props.href === 'https://damionx7.github.io/Zettel-Notes/docs/Extension/CustomTheme.md',
     ),
   )
   assert.ok(
@@ -208,16 +208,16 @@ test('homepage structured data has stable brand URLs and escapes embedded closin
     assert.equal(data['@context'], 'https://schema.org')
     const website = data['@graph'].find((entry) => entry['@type'] === 'WebSite')
     const application = data['@graph'].find((entry) => entry['@type'] === 'SoftwareApplication')
-    assert.equal(website.name, 'MarkFlowy')
-    assert.equal(website.url, 'https://www.markflowy.cc/')
-    assert.equal(website['@id'], 'https://www.markflowy.cc/#website')
-    assert.equal(application['@id'], 'https://www.markflowy.cc/#application')
-    assert.equal(application.url, `https://www.markflowy.cc${locale === 'en' ? '/' : `/${locale}`}`)
-    assert.equal(application.image, `https://www.markflowy.cc/social/markflowy-${locale === 'zh' ? 'zh' : 'en'}.png`)
+    assert.equal(website.name, 'Zettel Notes')
+    assert.equal(website.url, 'https://damionx7.github.io/Zettel-Notes/')
+    assert.equal(website['@id'], 'https://damionx7.github.io/Zettel-Notes/#website')
+    assert.equal(application['@id'], 'https://damionx7.github.io/Zettel-Notes/#application')
+    assert.equal(application.url, `https://damionx7.github.io/Zettel-Notes${locale === 'en' ? '/' : `/${locale}`}`)
+    assert.equal(application.image, `https://damionx7.github.io/Zettel-Notes/social/zettel-notes-${locale === 'zh' ? 'zh' : 'en'}.png`)
     assert.deepEqual(website.inLanguage, ['en', 'zh-CN', 'ru'])
     assert.equal(application.description, description)
-    assert.equal(application.downloadUrl, 'https://github.com/drl990114/MarkFlowy/releases')
-    assert.deepEqual(application.sameAs, ['https://github.com/drl990114/MarkFlowy'])
+    assert.equal(application.downloadUrl, 'https://github.com/damionx7/Zettel-Notes/releases')
+    assert.deepEqual(application.sameAs, ['https://github.com/damionx7/Zettel-Notes'])
     assert.equal(application.operatingSystem, 'macOS, Windows, Linux')
   }
 })

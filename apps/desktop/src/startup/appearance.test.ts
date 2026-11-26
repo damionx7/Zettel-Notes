@@ -40,7 +40,7 @@ beforeEach(() => {
   invokeMock.mockRejectedValue(new Error('Tauri is unavailable'))
   window.localStorage.clear()
   window.sessionStorage.clear()
-  delete window.__MARKFLOWY_BOOTSTRAP__
+  delete window.__ZETTEL_NOTES_BOOTSTRAP__
   window.openedUrls = null
   Reflect.deleteProperty(window, '__TAURI_INTERNALS__')
   vi.spyOn(window, 'matchMedia').mockImplementation(
@@ -93,7 +93,7 @@ describe('startup appearance bootstrap', () => {
         themeId: 'Stored Light',
       }),
     )
-    window.__MARKFLOWY_BOOTSTRAP__ = {
+    window.__ZETTEL_NOTES_BOOTSTRAP__ = {
       appearance: normalizeStartupAppearance(customDarkAppearance, 'dark'),
       openedUrls: ['file:///tmp/notes,2026.md'],
       sessionId: 'session-1',
@@ -106,13 +106,13 @@ describe('startup appearance bootstrap', () => {
       resolvedMode: 'dark',
       themeId: 'Local Midnight',
     })
-    expect(window.__MARKFLOWY_BOOTSTRAP__?.appearance).toEqual(appearance)
-    expect(window.__MARKFLOWY_BOOTSTRAP__).toMatchObject({
+    expect(window.__ZETTEL_NOTES_BOOTSTRAP__?.appearance).toEqual(appearance)
+    expect(window.__ZETTEL_NOTES_BOOTSTRAP__).toMatchObject({
       openedUrls: ['file:///tmp/notes,2026.md'],
       sessionId: 'session-1',
     })
     expect(window.openedUrls).toEqual(['file:///tmp/notes,2026.md'])
-    expect(Object.keys(window.__MARKFLOWY_BOOTSTRAP__ ?? {}).sort()).toEqual([
+    expect(Object.keys(window.__ZETTEL_NOTES_BOOTSTRAP__ ?? {}).sort()).toEqual([
       'appearance',
       'openedUrls',
       'sessionId',
@@ -125,12 +125,12 @@ describe('startup appearance bootstrap', () => {
         ...customDarkAppearance,
         preference: 'light',
         resolvedMode: 'light',
-        themeId: 'MarkFlowy Light',
+        themeId: 'Zettel Notes Light',
         palette: DEFAULT_STARTUP_PALETTES.light,
       },
       'light',
     )
-    window.__MARKFLOWY_BOOTSTRAP__ = {
+    window.__ZETTEL_NOTES_BOOTSTRAP__ = {
       appearance: staleLightAppearance,
       openedUrls: [],
       sessionId: 'native-session',
@@ -138,7 +138,7 @@ describe('startup appearance bootstrap', () => {
     Object.defineProperty(window, '__TAURI_INTERNALS__', { configurable: true, value: {} })
 
     cacheStartupAppearance(customDarkAppearance, window)
-    window.__MARKFLOWY_BOOTSTRAP__ = {
+    window.__ZETTEL_NOTES_BOOTSTRAP__ = {
       appearance: staleLightAppearance,
       openedUrls: [],
       sessionId: 'native-session',
@@ -196,12 +196,12 @@ describe('startup appearance bootstrap', () => {
       themeId: 'Stored Light',
     })
 
-    delete window.__MARKFLOWY_BOOTSTRAP__
+    delete window.__ZETTEL_NOTES_BOOTSTRAP__
     Object.defineProperty(window, '__TAURI_INTERNALS__', { configurable: true, value: {} })
     expect(readWindowBootstrap(window)).toMatchObject({
       preference: 'dark',
       resolvedMode: 'dark',
-      themeId: 'MarkFlowy Dark',
+      themeId: 'Zettel Notes Dark',
     })
   })
 
@@ -215,7 +215,7 @@ describe('startup appearance bootstrap', () => {
       schemaVersion: 1,
       preference: 'dark',
       resolvedMode: 'dark',
-      themeId: 'MarkFlowy Dark',
+      themeId: 'Zettel Notes Dark',
       palette: DEFAULT_STARTUP_PALETTES.dark,
     })
   })
@@ -227,7 +227,7 @@ describe('startup appearance bootstrap', () => {
       schemaVersion: 1,
       preference: 'system',
       resolvedMode: 'light',
-      themeId: 'MarkFlowy Light',
+      themeId: 'Zettel Notes Light',
       palette: DEFAULT_STARTUP_PALETTES.light,
     })
   })
@@ -235,7 +235,7 @@ describe('startup appearance bootstrap', () => {
   it('keeps the native resolved mode authoritative over a transient webview query', () => {
     vi.mocked(window.matchMedia).mockReturnValue({ matches: false } as MediaQueryList)
     Object.defineProperty(window, '__TAURI_INTERNALS__', { configurable: true, value: {} })
-    window.__MARKFLOWY_BOOTSTRAP__ = {
+    window.__ZETTEL_NOTES_BOOTSTRAP__ = {
       appearance: normalizeStartupAppearance(customDarkAppearance, 'dark'),
       openedUrls: [],
       sessionId: 'native-session',
@@ -346,14 +346,14 @@ describe('startup theme handoff', () => {
     const appearance = normalizeStartupAppearance(
       {
         ...customDarkAppearance,
-        themeId: 'MarkFlowy Dark',
+        themeId: 'Zettel Notes Dark',
       },
       'dark',
     )
 
     expect(resolveStartupTheme(appearance)).toMatchObject({
       synthetic: false,
-      theme: { name: 'MarkFlowy Dark', mode: 'dark' },
+      theme: { name: 'Zettel Notes Dark', mode: 'dark' },
     })
   })
 })

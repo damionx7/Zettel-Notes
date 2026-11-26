@@ -1,4 +1,4 @@
-import { lightTheme } from '@markflowy/theme'
+import { lightTheme } from '@zettel-notes/theme'
 import type { CSSProp } from 'styled-components'
 
 type ThemeType = typeof lightTheme.styledConstants

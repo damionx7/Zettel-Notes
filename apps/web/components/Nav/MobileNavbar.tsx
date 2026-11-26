@@ -49,7 +49,7 @@ export default function MobileNavbar({
         </NavButton>
       )}
       <Logo />
-      <Brand>MarkFlowy</Brand>
+      <Brand>Zettel Notes</Brand>
       {children}
       <MenuToggle
         type='button'

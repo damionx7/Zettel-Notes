@@ -1,11 +1,11 @@
 ---
-name: markflowy-dev
-description: Create, adapt, or troubleshoot MarkFlowy JSON themes and custom CSS. Use for semantic theme tokens, theme CSS, personal CSS snippets, and legacy theme migration. Not for ordinary document editing, task completion, Markdown formatting, or export.
+name: zettel-notes-dev
+description: Create, adapt, or troubleshoot Zettel Notes JSON themes and custom CSS. Use for semantic theme tokens, theme CSS, personal CSS snippets, and legacy theme migration. Not for ordinary document editing, task completion, Markdown formatting, or export.
 ---
 
-# MarkFlowy Dev
+# Zettel Notes Dev
 
-Help developers produce usable MarkFlowy customizations. Custom themes and CSS are the currently documented capabilities; keep future extension guidance in separate references when those capabilities exist. Do not assume MarkFlowy has an executable plugin API.
+Help developers produce usable Zettel Notes customizations. Custom themes and CSS are the currently documented capabilities; keep future extension guidance in separate references when those capabilities exist. Do not assume Zettel Notes has an executable plugin API.
 
 ## Establish the target
 
@@ -22,7 +22,7 @@ Choose the smallest artifact that matches the user's intent:
 
 Do not turn a small CSS request into a new theme or embed personal snippets in a theme merely because both use this skill. If the user explicitly chooses an artifact type, preserve it; ask only when a missing choice materially affects the result. Use the requested palette, mode, typography, existing customization, and output location. Reply in the user's language.
 
-Identify whether this is a standalone theme project or work inside a MarkFlowy checkout. Theme authors need only JSON and the installed application; do not require Node, a repository clone, a private Capricorn runtime, or a build. In a checkout, inspect its `AGENTS.md`, relevant source, and package versions before changing implementation code. All source paths in the reference are relative to that checkout, not the installed skill directory.
+Identify whether this is a standalone theme project or work inside a Zettel Notes checkout. Theme authors need only JSON and the installed application; do not require Node, a repository clone, a private Capricorn runtime, or a build. In a checkout, inspect its `AGENTS.md`, relevant source, and package versions before changing implementation code. All source paths in the reference are relative to that checkout, not the installed skill directory.
 
 ## Develop a customization
 
@@ -37,4 +37,4 @@ For a development request beyond the documented capabilities, inspect the releva
 
 For a theme, deliver a standalone JSON document containing only the intended variants and overrides. If the user requested a personal CSS snippet, deliver a separate `.css` file and explain that it must be enabled after import. Do not write directly to the application's `themes-v1.json` store.
 
-Report validation precisely: JSON parsing, MarkFlowy's semantic validation, CSS selector checks, and visual inspection are separate checks. A schema or source check does not prove CSS rendering, contrast, native editor behavior, or compatibility with a different installed version. If the app is unavailable, provide the relevant reference's preview checklist without claiming it passed.
+Report validation precisely: JSON parsing, Zettel Notes' semantic validation, CSS selector checks, and visual inspection are separate checks. A schema or source check does not prove CSS rendering, contrast, native editor behavior, or compatibility with a different installed version. If the app is unavailable, provide the relevant reference's preview checklist without claiming it passed.

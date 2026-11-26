@@ -1,6 +1,6 @@
 /* Website-only contracts. Editor and workspace roots never receive mf-site. */
 @font-face {
-  font-family: 'MarkFlowy Sans';
+  font-family: 'Zettel Notes Sans';
   src: url('/fonts/InterVariable.woff2') format('woff2');
   font-style: normal;
   font-weight: 100 900;
@@ -14,7 +14,7 @@ html:has(.mf-site-header[data-open='true']) {
   overflow: hidden;
 }
 .mf-site {
-  --sans: 'MarkFlowy Sans', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei',
+  --sans: 'Zettel Notes Sans', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei',
     'Noto Sans CJK SC', sans-serif;
   --body: var(--sans);
   --mf-site-header-height: 64px;

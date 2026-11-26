@@ -2,7 +2,7 @@
 import { EditorThemeContext, type EditorThemeConfig } from '@/editorThemeContext'
 import { SemanticThemeContext } from '@/themes/context'
 import { getThemeTokens } from '@/themes/runtime'
-import { desktopLightTheme, lightTheme } from '@markflowy/theme'
+import { desktopLightTheme, lightTheme } from '@zettel-notes/theme'
 import {
   act,
   useContext,
@@ -21,8 +21,8 @@ import {
 import type { RmeRuntime } from './rmeRuntime'
 
 vi.mock('@/stores/useThemeStore', () => ({
-  FALLBACK_LIGHT_THEME: 'MarkFlowy Light',
-  FALLBACK_DARK_THEME: 'MarkFlowy Dark',
+  FALLBACK_LIGHT_THEME: 'Zettel Notes Light',
+  FALLBACK_DARK_THEME: 'Zettel Notes Dark',
 }))
 
 type PreviewProps = ComponentProps<RmeRuntime['Preview']>

@@ -1,4 +1,4 @@
-import { t } from '@markflowy/i18n'
+import { t } from '@zettel-notes/i18n'
 import type { EditorView } from '@rme-sdk/sdk/core'
 import type { StandardListExtension } from '@rme-sdk/sdk/extensions/list'
 import { NodeSelection } from '@rme-sdk/sdk/pm/state'

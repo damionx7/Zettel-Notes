@@ -20,7 +20,7 @@ const selected = selectScenarios(process.argv.slice(2))
 assert.equal(process.platform, 'darwin', 'The first native E2E suite supports macOS 14+ only')
 const { stdout: macosVersion } = await promisify(execFile)('/usr/bin/sw_vers', ['-productVersion'])
 assertSupportedPlatform(process.platform, macosVersion)
-const binary = await assertBinary(resolve(process.env.MARKFLOWY_E2E_BINARY ??
+const binary = await assertBinary(resolve(process.env.ZETTEL_NOTES_E2E_BINARY ??
   join(repository, 'target/debug/zettel-notes')))
 const output = join(directory, 'reports', new Date().toISOString().replaceAll(':', '-'))
 await mkdir(output, { recursive: true })
@@ -43,7 +43,7 @@ async function stopOwnedApp(environment) {
   const ownsProcess = async () => {
     const { stdout } = await promisify(execFile)('ps', ['eww', '-p', String(metadata.pid), '-o', 'command='])
       .catch(() => ({ stdout: '' }))
-    return stdout.includes(binary) && stdout.includes(`MARKFLOWY_E2E_ID=${environment.id}`)
+    return stdout.includes(binary) && stdout.includes(`ZETTEL_NOTES_E2E_ID=${environment.id}`)
   }
   if (!(await ownsProcess())) return
   process.kill(metadata.pid, 'SIGTERM')
@@ -67,9 +67,9 @@ async function runPhase(environment, name, phase, report) {
   const child = spawn(process.execPath, [wdio, 'run', join(directory, 'wdio.conf.ts'),
     '--spec', join(directory, 'specs', `${name}.e2e.ts`)], {
     cwd: desktop,
-    env: { ...process.env, MARKFLOWY_E2E_ROOT: environment.root, MARKFLOWY_E2E_ID: environment.id,
-      MARKFLOWY_E2E_BINARY: binary, MARKFLOWY_E2E_REPORT: phaseOutput,
-      MARKFLOWY_E2E_PORT: port, TAURI_WEBDRIVER_PORT: port, MARKFLOWY_E2E_PHASE: phase },
+    env: { ...process.env, ZETTEL_NOTES_E2E_ROOT: environment.root, ZETTEL_NOTES_E2E_ID: environment.id,
+      ZETTEL_NOTES_E2E_BINARY: binary, ZETTEL_NOTES_E2E_REPORT: phaseOutput,
+      ZETTEL_NOTES_E2E_PORT: port, TAURI_WEBDRIVER_PORT: port, ZETTEL_NOTES_E2E_PHASE: phase },
     stdio: ['ignore', 'pipe', 'pipe'],
   })
   activeChild = child

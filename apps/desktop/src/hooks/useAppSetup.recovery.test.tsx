@@ -137,7 +137,7 @@ beforeEach(async () => {
   vi.resetModules()
   vi.resetAllMocks()
   window.openedUrls = []
-  delete window.__MARKFLOWY_BOOTSTRAP__
+  delete window.__ZETTEL_NOTES_BOOTSTRAP__
   mocks.windowLabel = 'main'
   mocks.settingData.auto_update = false
   const { default: settings } = await import('@/stores/useAppSettingStore')
@@ -195,7 +195,7 @@ async function startRuntime() {
 }
 
 function bootstrapSession(restoreSessionLabel: string | null) {
-  window.__MARKFLOWY_BOOTSTRAP__ = {
+  window.__ZETTEL_NOTES_BOOTSTRAP__ = {
     appearance: normalizeStartupAppearance({}),
     sessionId: 'app-session',
     openedUrls: [],

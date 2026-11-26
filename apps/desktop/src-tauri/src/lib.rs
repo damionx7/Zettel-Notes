@@ -65,7 +65,7 @@ struct OpenedUrls(Mutex<Option<Vec<url::Url>>>);
 static CLI_RUNTIME_WRITER: OnceLock<tokio::sync::mpsc::UnboundedSender<CliRuntimePatch>> =
     OnceLock::new();
 
-const CLI_GUI_CHILD_ENV: &str = "MARKFLOWY_CLI_GUI_CHILD";
+const CLI_GUI_CHILD_ENV: &str = "ZETTEL_NOTES_CLI_GUI_CHILD";
 const LEGACY_WINDOW_STATE_FILENAME: &str = ".window-state.json";
 const WINDOW_STATE_FILENAME: &str = ".window-state-v2.json";
 
@@ -300,7 +300,7 @@ mod opened_url_tests {
         assert!(script.contains("Array.isArray(window.openedUrls)"));
         assert!(script.contains("[...new Set([...current, ...incoming])]"));
         assert!(script.contains("file:///tmp/B,2.md"));
-        assert!(!script.contains("__MARKFLOWY_BOOTSTRAP__ ="));
+        assert!(!script.contains("__ZETTEL_NOTES_BOOTSTRAP__ ="));
     }
 
     #[test]
@@ -337,15 +337,15 @@ mod opened_url_tests {
 }
 
 fn print_version() {
-    println!("markflowy {}", env!("CARGO_PKG_VERSION"));
+    println!("zettel-notes {}", env!("CARGO_PKG_VERSION"));
 }
 
 fn print_cli_help() {
     println!(
         r#"Zettel Notes - Markdown editor, fork of MarkFlowy
 
-Usage: markflowy [COMMAND] [OPTIONS]
-       mf [COMMAND] [OPTIONS]
+Usage: zettel-notes [COMMAND] [OPTIONS]
+       zn [COMMAND] [OPTIONS]
 
 Commands:
   open <path> [--window-id <id>]       Open a file or folder
@@ -382,22 +382,22 @@ Options:
   --json                              Explicit JSON output (already the default)
 
 Examples:
-  markflowy open /path/to/file.md
-  markflowy open /path/to/folder --window-id main
-  markflowy file open /path/to/file.md --window-id main
-  markflowy file open /path/to/file.md --preview --wait applied
-  markflowy file wait /path/to/file.md --sha256 <digest>
-  markflowy file export /path/to/file.md --format html --output /path/to/file.html
-  markflowy window list
-  markflowy command execute app_save --window-id main
-  markflowy help
-  markflowy version
+  zettel-notes open /path/to/file.md
+  zettel-notes open /path/to/folder --window-id main
+  zettel-notes file open /path/to/file.md --window-id main
+  zettel-notes file open /path/to/file.md --preview --wait applied
+  zettel-notes file wait /path/to/file.md --sha256 <digest>
+  zettel-notes file export /path/to/file.md --format html --output /path/to/file.html
+  zettel-notes window list
+  zettel-notes command execute app_save --window-id main
+  zettel-notes help
+  zettel-notes version
 
 Control commands return a request-scoped JSON receipt; exit 0 means ok, 1 means
 operation failure/unknown completion, and 2 means invalid arguments. A GUI command
 receipt reports dispatched, not completion of an asynchronous save/export.
 PDF uses the interactive print dialog and cannot confirm a CLI destination.
-Create a symlink or alias 'mf' -> 'markflowy' for shorter invocation."#
+Create a symlink or alias 'zn' -> 'zettel-notes' for shorter invocation."#
     );
 }
 
@@ -1066,24 +1066,24 @@ fn update_cli_command_state(commands: Vec<CliCommandState>) -> Result<(), String
 fn cli_wrapper_name() -> &'static str {
     #[cfg(windows)]
     {
-        "markflowy.cmd"
+        "zettel-notes.cmd"
     }
 
     #[cfg(not(windows))]
     {
-        "markflowy"
+        "zettel-notes"
     }
 }
 
 fn cli_binary_name() -> &'static str {
     #[cfg(windows)]
     {
-        "markflowy.exe"
+        "zettel-notes.exe"
     }
 
     #[cfg(not(windows))]
     {
-        "markflowy"
+        "zettel-notes"
     }
 }
 
@@ -1135,13 +1135,13 @@ fn cli_install_dir(home_dir: &std::path::Path) -> PathBuf {
     env::var_os("LOCALAPPDATA")
         .map(PathBuf::from)
         .unwrap_or_else(|| home_dir.join("AppData").join("Local"))
-        .join("MarkFlowy")
+        .join("Zettel Notes")
         .join("bin")
 }
 
 /// ç‰ˆæœ¬æ ‡è®°æ–‡ä»¶è·¯å¾„ï¼Œä¸Ž wrapper åŒç›®å½•
 fn cli_version_file(dir: &std::path::Path) -> PathBuf {
-    dir.join(".markflowy-cli-version")
+    dir.join(".zettel-notes-cli-version")
 }
 
 /// è¯»å–å·²å®‰è£… CLI çš„ç‰ˆæœ¬æ ‡è®°
@@ -1162,7 +1162,7 @@ fn write_installed_cli_version(dir: &std::path::Path, version: &str) -> std::io:
 fn generate_wrapper_script(exe_path: &std::path::Path) -> String {
     let exe_str = exe_path.to_string_lossy();
     format!(
-        "#!/usr/bin/env sh\n# MarkFlowy CLI wrapper - auto-generated, do not edit\nexec \"{exe_str}\" \"$@\"\n"
+        "#!/usr/bin/env sh\n# Zettel Notes CLI wrapper - auto-generated, do not edit\nexec \"{exe_str}\" \"$@\"\n"
     )
 }
 
@@ -1171,7 +1171,7 @@ fn generate_wrapper_script(exe_path: &std::path::Path) -> String {
 fn generate_windows_wrapper_script(exe_path: &std::path::Path) -> String {
     let exe_str = exe_path.to_string_lossy();
     format!(
-        "@echo off\r\nrem MarkFlowy CLI wrapper - auto-generated, do not edit\r\n\"{exe_str}\" %*\r\n"
+        "@echo off\r\nrem Zettel Notes CLI wrapper - auto-generated, do not edit\r\n\"{exe_str}\" %*\r\n"
     )
 }
 
@@ -1275,12 +1275,12 @@ mod cli_installation_tests {
     use tempfile::tempdir;
 
     const VERSION: &str = env!("CARGO_PKG_VERSION");
-    const WRAPPER_NAME: &str = "markflowy.cmd";
-    const LEGACY_BINARY_NAME: &str = "markflowy.exe";
+    const WRAPPER_NAME: &str = "zettel-notes.cmd";
+    const LEGACY_BINARY_NAME: &str = "zettel-notes.exe";
 
     fn write_current_windows_installation(target_dir: &Path, current_exe: &Path) -> String {
         let wrapper = generate_windows_wrapper_script(current_exe);
-        fs::write(target_dir.join(".markflowy-cli-version"), VERSION).unwrap();
+        fs::write(target_dir.join(".zettel-notes-cli-version"), VERSION).unwrap();
         fs::write(target_dir.join(WRAPPER_NAME), &wrapper).unwrap();
         wrapper
     }
@@ -1288,7 +1288,7 @@ mod cli_installation_tests {
     #[test]
     fn accepts_matching_windows_cli_wrapper_without_legacy_exe() {
         let target_dir = tempdir().unwrap();
-        let current_exe = Path::new(r"C:\Program Files\MarkFlowy\markflowy.exe");
+        let current_exe = Path::new(r"C:\Program Files\Zettel Notes\zettel-notes.exe");
         let wrapper = write_current_windows_installation(target_dir.path(), current_exe);
 
         assert!(cli_installation_is_current(
@@ -1303,11 +1303,11 @@ mod cli_installation_tests {
     #[test]
     fn rejects_matching_version_when_windows_wrapper_targets_old_gui() {
         let target_dir = tempdir().unwrap();
-        let current_exe = Path::new(r"C:\Program Files\MarkFlowy\markflowy.exe");
+        let current_exe = Path::new(r"C:\Program Files\Zettel Notes\zettel-notes.exe");
         let expected_wrapper = generate_windows_wrapper_script(current_exe);
         let old_wrapper =
-            generate_windows_wrapper_script(Path::new(r"C:\OldMarkFlowy\markflowy.exe"));
-        fs::write(target_dir.path().join(".markflowy-cli-version"), VERSION).unwrap();
+            generate_windows_wrapper_script(Path::new(r"C:\Old Zettel Notes\zettel-notes.exe"));
+        fs::write(target_dir.path().join(".zettel-notes-cli-version"), VERSION).unwrap();
         fs::write(target_dir.path().join(WRAPPER_NAME), old_wrapper).unwrap();
 
         assert!(!cli_installation_is_current(
@@ -1322,7 +1322,7 @@ mod cli_installation_tests {
     #[test]
     fn rejects_windows_wrapper_shadowed_by_legacy_exe() {
         let target_dir = tempdir().unwrap();
-        let current_exe = Path::new(r"C:\Program Files\MarkFlowy\markflowy.exe");
+        let current_exe = Path::new(r"C:\Program Files\Zettel Notes\zettel-notes.exe");
         let wrapper = write_current_windows_installation(target_dir.path(), current_exe);
         fs::write(target_dir.path().join(LEGACY_BINARY_NAME), b"legacy").unwrap();
 
@@ -1338,7 +1338,7 @@ mod cli_installation_tests {
     #[test]
     fn rejects_missing_or_corrupt_windows_cli_state() {
         let target_dir = tempdir().unwrap();
-        let current_exe = Path::new(r"C:\Program Files\MarkFlowy\markflowy.exe");
+        let current_exe = Path::new(r"C:\Program Files\Zettel Notes\zettel-notes.exe");
         let expected_wrapper = generate_windows_wrapper_script(current_exe);
 
         assert!(!cli_installation_is_current(
@@ -1349,7 +1349,7 @@ mod cli_installation_tests {
             Some(LEGACY_BINARY_NAME),
         ));
 
-        fs::write(target_dir.path().join(".markflowy-cli-version"), VERSION).unwrap();
+        fs::write(target_dir.path().join(".zettel-notes-cli-version"), VERSION).unwrap();
         fs::write(target_dir.path().join(WRAPPER_NAME), "corrupt").unwrap();
 
         assert!(!cli_installation_is_current(
@@ -1367,7 +1367,7 @@ mod cli_installation_tests {
         let legacy_exe = target_dir.path().join(LEGACY_BINARY_NAME);
         fs::write(&legacy_exe, b"legacy").unwrap();
 
-        assert!(remove_legacy_cli_binary(&legacy_exe, Path::new("/installed/markflowy")).unwrap());
+        assert!(remove_legacy_cli_binary(&legacy_exe, Path::new("/installed/zettel-notes")).unwrap());
         assert!(!legacy_exe.exists());
     }
 
@@ -1419,7 +1419,7 @@ mod cli_installation_tests {
 macro_rules! cli_debug {
     ($($arg:tt)*) => {
         #[cfg(debug_assertions)]
-        eprintln!("[markflowy-cli] {}", format!($($arg)*));
+        eprintln!("[zettel-notes-cli] {}", format!($($arg)*));
     };
 }
 
@@ -1469,7 +1469,7 @@ fn remove_legacy_cli_binary(
     // the version marker untouched so the installed GUI can retry the repair.
     if same_path(old_exe, current_exe) {
         return Err(std::io::Error::other(
-            "cannot repair CLI while running from the legacy markflowy.exe copy",
+            "cannot repair CLI while running from the legacy zettel-notes.exe copy",
         ));
     }
 
@@ -1652,7 +1652,7 @@ fn install_cli_in_background(app: &tauri::App) {
 
             // Keep the managed CLI directory first in the user PATH. This makes
             // the maintained wrapper win over copies left in older PATH entries
-            // without deleting files outside MarkFlowy's managed directory.
+            // without deleting files outside Zettel Notes' managed directory.
             if let Err(error) = ensure_user_path_contains_dir(&install_dir) {
                 cli_debug!("failed to prioritize CLI dir in PATH: {:?}", error);
             }
@@ -2059,6 +2059,17 @@ pub fn run() {
                 APP_DIR.lock().unwrap().insert(0, home_dir_path);
             }
 
+            // Files and folders named after MarkFlowy are renamed before anything reads them.
+            #[cfg(not(feature = "e2e"))]
+            {
+                #[cfg(target_os = "linux")]
+                app::conf::migrate_legacy_linux_config_dir();
+                app::conf::migrate_legacy_file_names(&app::conf::app_root());
+                if let Ok(app_data_dir) = app.path().app_data_dir() {
+                    app::conf::migrate_legacy_file_names(&app_data_dir);
+                }
+            }
+
             #[cfg(feature = "e2e")]
             e2e::record_profile(app.handle())?;
             local_history::configure(app.handle());
@@ -2088,9 +2099,9 @@ pub fn run() {
             };
 
             setup::init(app.handle().clone(), opened_urls).map_err(|error| {
-                eprintln!("Failed to create MarkFlowy window: {error}");
+                eprintln!("Failed to create Zettel Notes window: {error}");
                 eprintln!(
-                    "If this happens on Linux, check WebKitGTK/GTK runtime dependencies and try launching with GDK_BACKEND=x11 markflowy."
+                    "If this happens on Linux, check WebKitGTK/GTK runtime dependencies and try launching with GDK_BACKEND=x11 zettel-notes."
                 );
                 error
             })?;
@@ -2149,10 +2160,10 @@ pub fn run() {
     let app = match app {
         Ok(app) => app,
         Err(error) => {
-            eprintln!("Failed to initialize MarkFlowy: {error}");
+            eprintln!("Failed to initialize Zettel Notes: {error}");
             #[cfg(target_os = "linux")]
             eprintln!(
-                "Linux hint: verify WebKitGTK/GTK runtime dependencies and try GDK_BACKEND=x11 markflowy if you are on Wayland."
+                "Linux hint: verify WebKitGTK/GTK runtime dependencies and try GDK_BACKEND=x11 zettel-notes if you are on Wayland."
             );
             std::process::exit(1);
         }

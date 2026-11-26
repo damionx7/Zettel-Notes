@@ -5,8 +5,8 @@ import {
   resolveTheme,
   themeTokenNames,
   themeVariableName,
-} from '@markflowy/theme/semantic'
-import { builtInThemes } from '@markflowy/theme'
+} from '@zettel-notes/theme/semantic'
+import { builtInThemes } from '@zettel-notes/theme'
 import {
   copyTheme,
   desktopVariables,

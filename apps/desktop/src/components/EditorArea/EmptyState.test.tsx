@@ -65,7 +65,7 @@ describe('EmptyState', () => {
     expect(screen.getByRole('group', { name: 'Get Started' })).toBeTruthy()
     expect(screen.queryByRole('heading')).toBeNull()
     expect(screen.queryByText(/Welcome back/)).toBeNull()
-    expect(container.querySelector('[data-testid="markflowy-logo"]')).toBeNull()
+    expect(container.querySelector('[data-testid="zettel-notes-logo"]')).toBeNull()
     expect(screen.queryByText('Recent Workspaces')).toBeNull()
     expect(
       [...screen.getByRole('button', { name: 'Open Folder' }).querySelectorAll('kbd')].map(

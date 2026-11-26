@@ -1,5 +1,5 @@
 {
-  "name": "@markflowy/interface",
+  "name": "@zettel-notes/interface",
   "version": "0.0.1",
   "license": "MIT",
   "homepage": "",
@@ -35,9 +35,9 @@
     "rme": ">=0.3.0"
   },
   "dependencies": {
-    "@markflowy/i18n": "workspace:*",
     "@popperjs/core": "^2.11.8",
     "@tanstack/react-virtual": "^3.13.18",
+    "@zettel-notes/i18n": "workspace:*",
     "classnames": "^2.5.1",
     "postcss": "^8.5.28",
     "react": "^19.2.4",
@@ -51,12 +51,12 @@
     "@codemirror/commands": "^6.3.0",
     "@codemirror/state": "^6.3.0",
     "@codemirror/view": "^6.22.0",
-    "@markflowy/theme": "workspace:*",
-    "@markflowy/types": "workspace:*",
     "@rollup/plugin-node-resolve": "15.3.0",
     "@rollup/plugin-typescript": "11.1.6",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "@zettel-notes/theme": "workspace:*",
+    "@zettel-notes/types": "workspace:*",
     "eslint": "9.39.5",
     "rimraf": "^6.0.1",
     "rme": "workspace:*",
