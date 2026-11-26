@@ -17,8 +17,10 @@ Get the latest version from the [Releases page](https://github.com/damionx7/Zett
 | macOS (Apple Silicon and Intel) | `Zettel-Notes_v<version>_macOS_universal.dmg` |
 | Linux | `.deb`, `.rpm` or `.AppImage` |
 
-The macOS app is not signed with an Apple Developer ID yet. The first time you open it,
-right-click the app and choose **Open**.
+The macOS app is not signed with an Apple Developer ID yet, so macOS blocks it the first
+time. Open **System Settings → Privacy & Security** and choose **Open Anyway**. If macOS
+says the app is damaged, run `xattr -cr "/Applications/Zettel Notes.app"` in Terminal and
+open it again.
 
 Updates are checked only when you ask: **Settings → Updates → Check for updates**.
 

@@ -2,6 +2,14 @@
 
 This file applies to the entire repository. If a subdirectory contains a more specific `AGENTS.md`, follow the more specific rules for that subtree.
 
+## Read First
+
+- `ARCHITECTURE.md`: where things live and how a note travels from disk to the editor.
+- `FORK.md`: what this app adds and removes compared with MarkFlowy, and the contracts that must not break (the encryption formats above all). The app no longer syncs with MarkFlowy; a wanted upstream feature is ported by hand.
+- `WORKFLOW.md`: the change loop, CI policy, release steps and environment notes.
+
+Standing decisions: English is the main language of code, comments, docs and UI source strings. The app ships four locales (`en`, `es`, `fr-FR`, `pt-BR`). Use Node 24. The AI assistant, Sentry, the MarkFlowy website, the WYSIWYG (Capricorn) editor and the in-app sync feature were removed on purpose: do not bring them back. Releases are bumped with `node scripts/bump-version.mjs` and must never be tagged or pushed by a script.
+
 ## Before You Start
 
 - First use `rg` to search for similar implementations and inspect the target workspace's `package.json`. Then review the official implementation and current version of the relevant open-source project. Prefer reusing existing capabilities.
@@ -26,7 +34,7 @@ Choose in the following order:
 1. Implement shared primitives in `packages/zens/src/components` using the existing Radix conventions, then expose them through `apps/desktop/src/components/ui`. Desktop business code must import from `@/components/ui/*` instead of assembling Radix primitives directly; other workspaces may import the shared zens components.
 2. Prefer Tailwind for new components and local styles. Use CVA for variants and follow neighboring components' `data-slot` naming conventions. Shared zens classes use the `mfc:` prefix and its local class-merging helper; Desktop classes remain unprefixed and use `@/lib/cn`.
 3. Use styled-components only to maintain existing styled layouts, legacy complex styles that depend heavily on `props.theme`, or third-party components without a suitable `className` API. Do not use it to create new foundational primitives such as Button, Dialog, or Input, and do not opportunistically rewrite untouched legacy pages.
-4. Use plain CSS for global contracts, fonts, keyframes, scrollbars, browser or Tauri behavior, third-party class selectors, or state styles that span multiple React trees. Keep local CSS with its feature. Namespace new first-party global classes with `mf-`; third-party integrations and existing features should retain their established namespace, such as `aui-`, while avoiding global pollution. Do not recreate existing UI primitives with plain CSS.
+4. Use plain CSS for global contracts, fonts, keyframes, scrollbars, browser or Tauri behavior, third-party class selectors, or state styles that span multiple React trees. Keep local CSS with its feature. Namespace new first-party global classes with `mf-`; third-party integrations and existing features should retain their established namespace while avoiding global pollution. Do not recreate existing UI primitives with plain CSS.
 5. Use Radix for primitive interaction, focus, Portals, and dismissal. Do not reintroduce Ariakit or a parallel focus/dismiss implementation.
 
 Keep migrations scoped to the code being touched. A component currently being reworked may be fully migrated to the new facade, but unrelated pages must not be migrated as a side effect.
@@ -69,7 +77,7 @@ Keep migrations scoped to the code being touched. A component currently being re
 ## Prohibited Actions
 
 - Do not add another UI, Dialog, Popover, or focus-trap library for an existing capability.
-- Do not import `@ariakit/react` directly in Desktop business components or bypass the facade to assemble Radix primitives directly.
+- Do not reintroduce `@ariakit/react`, and do not bypass the facade to assemble Radix primitives directly in Desktop business code.
 - Do not duplicate shared zens primitive implementations in Desktop or feature packages.
 - Do not place Desktop Tailwind or shadcn implementations in `packages/interface`.
 - Do not add Tailwind preflight, unscoped global CSS, hard-coded theme colors, or arbitrary z-index values.

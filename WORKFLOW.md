@@ -1,8 +1,8 @@
 # Working on Zettel Notes
 
 How a change travels from "I want X" to a tested release. Written for whoever picks this up
-next, human or agent. `FORK.md` lists what differs from MarkFlowy, which this app forked from; this file is
-about the day-to-day loop.
+next, human or agent. `FORK.md` lists what differs from MarkFlowy, which this app forked from, and
+`ARCHITECTURE.md` maps the code; this file is about the day-to-day loop.
 
 ## The loop
 
@@ -21,8 +21,8 @@ about the day-to-day loop.
    2. Tag the merged commit and push the tag: `git tag vX.Y.Z && git push origin vX.Y.Z`.
       `tauri-release.yml` first checks that the tag matches the committed version (and stops
       within a minute if it does not), then builds the installers for Windows, macOS and
-      Linux, publishes the release and updates `install.json` on GitHub Pages for the in-app
-      updater.
+      Linux (plus one universal macOS DMG), publishes a prerelease and updates `install.json`
+      on GitHub Pages for the in-app updater.
 
 Full installer builds run only on tags, or by hand (`nodejs.yml` and `test-bundle.yml` are
 `workflow_dispatch`). Never generate an installer during ordinary iteration.
@@ -50,8 +50,8 @@ and Settings → About, as the AGPL requires.
 
 ## Environment notes
 
-- `git config core.autocrlf false`, or CRLF checkouts break `gray-matter` parsing in the
-  documentation tests.
+- `git config core.autocrlf false` (Test CI sets it on Windows): some files are committed
+  with CRLF or mixed line endings, and converting them shows up as unrelated diffs.
 - On Windows, `TMP`, `TEMP` and `TMPDIR` must point to a folder the build can write to;
   otherwise turbo/vitest fail with `EPERM` while creating directories.
 - On Windows, Rust unit tests that start a WebView need the WebView2 runtime

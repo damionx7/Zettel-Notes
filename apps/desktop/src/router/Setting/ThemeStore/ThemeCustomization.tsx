@@ -227,13 +227,11 @@ export function ThemeCustomization() {
                 }
                 onCancel={() => setSnippet(undefined)}
                 onOpenReference={() =>
-                  void run(() => {
-                    const language = String(useAppSettingStore.getState().settingData.language)
-                    const docsLocale = language === 'cn' || language.startsWith('zh') ? 'zh' : 'en'
-                    return openUrl(
-                      `https://github.com/damionx7/Zettel-Notes/blob/main/docs/${docsLocale}/Extension/CustomTheme.md#editor-css-selectors`,
-                    )
-                  })
+                  void run(() =>
+                    openUrl(
+                      'https://github.com/damionx7/Zettel-Notes/blob/main/docs/en/Extension/CustomTheme.md#editor-css-selectors',
+                    ),
+                  )
                 }
               />
             )}
