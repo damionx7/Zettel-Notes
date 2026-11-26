@@ -145,6 +145,9 @@ export default defineConfig(async ({ command, mode }) => {
     test: {
       environment: 'happy-dom',
       reporters: ['verbose'],
+      // Hosted Intel Mac runners run the whole suite several times slower than a laptop, and
+      // interaction tests that take under half a second locally passed 5 s there.
+      testTimeout: process.env.CI ? 30_000 : 5_000,
       exclude: [...configDefaults.exclude],
       // Use the theme's ESM entry so real RME tests share CodeMirror's classes
       // instead of mixing the externalized CommonJS and ESM state packages.
