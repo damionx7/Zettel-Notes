@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002F","\u002Fauth","\u002Fauth\u002Fgithub\u002Fcallback","\u002Fdocs","\u002Fdocs\u002F[...slug]","\u002Fprivacy","\u002Freleases","\u002Fsettings","\u002Fworkspace"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
