@@ -13,9 +13,16 @@ about the day-to-day loop.
    (`yarn workspace @zettel-notes/desktop test`, `cargo test -p zettel-notes --lib`) and
    ESLint on the changed files only.
 4. **Open a pull request** against `main`. Test CI runs on every push and pull request.
-5. **Release** by pushing a `v*` tag: `tauri-release.yml` builds the installers for
-   Windows, macOS and Linux, publishes a prerelease and updates `install.json` on GitHub
-   Pages for the in-app updater.
+5. **Release** in two steps:
+   1. Bump the version with `node scripts/bump-version.mjs patch` (or `minor`, `major`,
+      `X.Y.Z`). It rewrites `tauri.conf.json`, `src-tauri/Cargo.toml`, `Cargo.lock` and
+      `apps/desktop/package.json` and nothing else; it never commits, tags or pushes.
+      Merge that change into `main`.
+   2. Tag the merged commit and push the tag: `git tag vX.Y.Z && git push origin vX.Y.Z`.
+      `tauri-release.yml` first checks that the tag matches the committed version (and stops
+      within a minute if it does not), then builds the installers for Windows, macOS and
+      Linux, publishes the release and updates `install.json` on GitHub Pages for the in-app
+      updater.
 
 Full installer builds run only on tags, or by hand (`nodejs.yml` and `test-bundle.yml` are
 `workflow_dispatch`). Never generate an installer during ordinary iteration.
