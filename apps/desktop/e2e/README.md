@@ -1,8 +1,9 @@
 # Native desktop E2E
 
 These tests drive the real React application in Tauri's WKWebView, with real Rust
-commands, files, watchers and SQLite history. Test CI runs them as a required step
-on macOS after building the workspaces and the isolated native test binary.
+commands, files, watchers and SQLite history. They run on macOS when Test CI is started by
+hand (Actions > Test CI > Run workflow), after building the workspaces and the isolated
+native test binary. Commits and tag releases are gated by the Linux suite only.
 
 The driver is [WebdriverIO's Tauri embedded provider](https://webdriver.io/docs/desktop-testing/tauri/),
 pinned to service/plugin 1.4.0. The optional Cargo `e2e` feature enables its local
@@ -77,4 +78,4 @@ and must not be populated using private documents.
 This first suite covers macOS WKWebView with WebDriver-generated input. It does
 not establish system IME, native file-picker, visual-regression, Windows/Linux,
 performance or packaged-release acceptance. Local type/unit/lint checks likewise
-do not prove that the native suite passed; that result must come from Test CI.
+do not prove that the native suite passed; that result must come from a manual Test CI run.
