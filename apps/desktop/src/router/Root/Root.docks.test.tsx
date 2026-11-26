@@ -1,4 +1,4 @@
-import type { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps } from 'react'
 import { desktopLightTheme } from '@zettel-notes/theme'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { ThemeProvider } from 'styled-components'
@@ -35,9 +35,6 @@ vi.mock('@/components/SideBar/RightBar', () => ({
   default: () => <input aria-label='TOC state' />,
 }))
 vi.mock('@/components/SideBar/DockSwitcher', () => ({ scheduleDockFocus: vi.fn() }))
-vi.mock('@/extensions/ai/AskRuntimeHost', () => ({
-  AskRuntimeHost: ({ children }: { children: ReactNode }) => <>{children}</>,
-}))
 vi.mock('@/components/EditorArea', () => ({ default: () => <div>Editor</div> }))
 vi.mock('@/components/EditorArea/focusActiveEditor', () => ({
   scheduleActiveEditorFocus: vi.fn(),
@@ -243,7 +240,7 @@ describe('Root dock resizing', () => {
   it('restores separate document and workspace widths even when both docks stay visible', async () => {
     useLayoutStore.setState({ documentDocks: {
       leftBar: { activePanelId: 'bookmarks', size: 210, visible: true },
-      rightBar: { activePanelId: 'ai', size: 320, visible: true },
+      rightBar: { activePanelId: 'toc', size: 320, visible: true },
     } })
     await renderLayout()
     act(() => {
@@ -403,7 +400,7 @@ describe('Root dock resizing', () => {
 
 
 describe('Root custom Dock placement', () => {
-  it.each(['explorer', 'search', 'bookmarks', 'toc', 'ai'] satisfies DockPanelId[])(
+  it.each(['explorer', 'search', 'bookmarks', 'toc'] satisfies DockPanelId[])(
     'updates the destination landmark and separator labels when moving %s', async (panelId) => {
       await renderLayout()
       const targetSide = DEFAULT_DOCK_PANEL_ORDER.left.includes(panelId) ? 'right' : 'left'
@@ -425,7 +422,6 @@ describe('Root custom Dock placement', () => {
     await renderLayout()
     act(() => {
       useLayoutStore.getState().moveDockPanel('toc', 'left')
-      useLayoutStore.getState().moveDockPanel('ai', 'left')
     })
     notifyResize()
     expect(useLayoutStore.getState().rightBar).toMatchObject({ activePanelId: null, visible: false })

@@ -20,11 +20,6 @@
     "delete": "rimraf node_modules"
   },
   "dependencies": {
-    "@ai-sdk/deepseek": "^1.0.28",
-    "@ai-sdk/google": "^2.0.32",
-    "@ai-sdk/openai": "^2.0.67",
-    "@assistant-ui/react": "0.14.26",
-    "@assistant-ui/react-markdown": "0.14.5",
     "@codemirror/merge": "6.12.1",
     "@codemirror/state": "^6.5.2",
     "@codemirror/view": "^6.38.6",
@@ -52,7 +47,6 @@
     "@zettel-notes/interface": "workspace:*",
     "@zettel-notes/theme": "workspace:*",
     "@zettel-notes/types": "workspace:*",
-    "ai": "^5.0.93",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
@@ -69,7 +63,6 @@
     "lucide-react": "^1.24.0",
     "markdown-it": "^14.2.0",
     "nanoid": "^5.1.5",
-    "ollama-ai-provider-v2": "^1.5.4",
     "overlayscrollbars": "^2.16.0",
     "overlayscrollbars-react": "^0.5.6",
     "pagedjs": "0.4.3",

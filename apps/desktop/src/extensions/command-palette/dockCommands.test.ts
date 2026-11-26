@@ -16,7 +16,7 @@ vi.mock('./editorCommands', () => ({
 }))
 
 const context: CommandPaletteContext = { target: null, platform: 'linux' }
-const allPanels: DockPanelId[] = ['explorer', 'search', 'bookmarks', 'toc', 'ai']
+const allPanels: DockPanelId[] = ['explorer', 'search', 'bookmarks', 'toc']
 const disposals: (() => void)[] = []
 const command = (id: string) => paletteCommands.find((item) => item.id === id)!
 
@@ -79,7 +79,7 @@ describe('Dock palette commands', () => {
       expect(await move.execute(context)).toBe(false)
       expect(useLayoutStore.getState()).toBe(before)
     }
-    for (const panelId of ['toc', 'bookmarks', 'ai']) {
+    for (const panelId of ['toc', 'bookmarks']) {
       const move = command(`app_moveDockPanel_${panelId}`)
       expect(move.getUnavailableReason(context)).toBeUndefined()
       expect(await move.execute(context)).toBe(true)

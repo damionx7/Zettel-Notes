@@ -11,23 +11,6 @@ vi.mock('@/i18n', () => ({
 
 import { getSettingMap } from './settingMap'
 
-describe('AI setting map', () => {
-  it('gives every provider tab a stable semantic id', () => {
-    const providers = getSettingMap().ai.model.children.map((child) => child.providerId)
-
-    expect(providers).toEqual(['openai', 'deepseek', 'ollama', 'google'])
-  })
-
-  it('keeps Ollama model configuration visible alongside discovery', () => {
-    const ollama = getSettingMap().ai.model.children.find((child) => child.providerId === 'ollama')
-
-    expect(ollama).toBeDefined()
-    expect(ollama).toHaveProperty('models')
-    expect(ollama).toHaveProperty('ApiBase')
-    expect(ollama).toHaveProperty('requestHeaders')
-  })
-})
-
 describe('Editor setting map', () => {
   it('keeps visual first-line indentation optional and off by default', () => {
     expect(getSettingMap().editor.Style.firstLineIndent).toMatchObject({
@@ -111,15 +94,15 @@ describe('Export setting map', () => {
 describe('Dock startup settings', () => {
   it('offers each side assigned panels in their saved order', () => {
     const { Startup } = getSettingMap({}, undefined, {
-      left: ['toc', 'explorer', 'search'], right: ['bookmarks', 'ai'],
+      left: ['toc', 'explorer', 'search'], right: ['bookmarks'],
     }).general
     expect(Startup.leftStartup.options.map(({ value }) => value)).toEqual(['restore', 'toc', 'explorer', 'search'])
-    expect(Startup.rightStartup.options.map(({ value }) => value)).toEqual(['restore', 'bookmarks', 'ai'])
+    expect(Startup.rightStartup.options.map(({ value }) => value)).toEqual(['restore', 'bookmarks'])
   })
 
   it('still offers restore for a side with no assigned panels', () => {
     const { Startup } = getSettingMap({}, undefined, {
-      left: ['explorer', 'search', 'bookmarks', 'toc', 'ai'], right: [],
+      left: ['explorer', 'search', 'bookmarks', 'toc'], right: [],
     }).general
     expect(Startup.rightStartup.options.map(({ value }) => value)).toEqual(['restore'])
   })

@@ -2,7 +2,7 @@ import { act } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { MemoryRouter, useLocation, useNavigate } from 'react-router'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { OpenSettingTarget } from '@/extensions/ai/aiProvidersService'
+import type { OpenSettingTarget } from '@/router/Setting/types'
 import type { SettingRouteState } from './SettingRouteController'
 import { SettingRouteController } from './SettingRouteController'
 
@@ -35,7 +35,6 @@ function LocationProbe() {
     <div
       data-category={navigationRequest?.target?.category}
       data-pathname={location.pathname}
-      data-provider={navigationRequest?.target?.providerId}
       data-request-id={navigationRequest?.id}
     >
       <button onClick={() => navigate('/')} type='button'>
@@ -82,19 +81,19 @@ describe('SettingRouteController navigation command', () => {
     act(() => root.unmount())
   })
 
-  it('navigates to the settings route and updates an AI provider request in place', () => {
+  it('navigates to the settings route and updates a category request in place', () => {
     expect(command.handler).toBeTypeOf('function')
 
-    act(() => command.handler?.({ category: 'ai', providerId: 'google' }))
+    act(() => command.handler?.({ category: 'editor' }))
     expect(focus.scheduleActiveEditorFocus).not.toHaveBeenCalled()
     expect(container.querySelector('[data-pathname="/settings"]')).not.toBeNull()
-    expect(container.querySelector('[data-provider="google"]')).not.toBeNull()
+    expect(container.querySelector('[data-category="editor"]')).not.toBeNull()
     const firstRequestId = container
       .querySelector('[data-request-id]')
       ?.getAttribute('data-request-id')
 
-    act(() => command.handler?.({ category: 'ai', providerId: 'ollama' }))
-    expect(container.querySelector('[data-provider="ollama"]')).not.toBeNull()
+    act(() => command.handler?.({ category: 'display' }))
+    expect(container.querySelector('[data-category="display"]')).not.toBeNull()
     expect(container.querySelector('[data-request-id]')?.getAttribute('data-request-id')).not.toBe(
       firstRequestId,
     )
@@ -114,8 +113,8 @@ describe('SettingRouteController navigation command', () => {
   })
 
   it('keeps repeated settings requests in the same history entry', () => {
-    act(() => command.handler?.({ category: 'ai', providerId: 'google' }))
-    act(() => command.handler?.({ category: 'ai', providerId: 'ollama' }))
+    act(() => command.handler?.({ category: 'editor' }))
+    act(() => command.handler?.({ category: 'display' }))
 
     act(() => container.querySelector<HTMLButtonElement>('button:last-child')?.click())
     expect(container.querySelector('[data-pathname="/"]')).not.toBeNull()

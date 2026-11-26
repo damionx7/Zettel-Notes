@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { Popover } from '@/components/ui/popover'
 import { Select } from '@/components/ui/select'
-import type { OpenSettingTarget } from '@/extensions/ai/aiProvidersService'
+import type { OpenSettingTarget } from '@/router/Setting/types'
 import { installUpdate } from '@/helper/updater'
 import useUpdaterStore from '@/stores/useUpdaterStore'
 import type { Update } from '@tauri-apps/plugin-updater'
@@ -64,7 +64,6 @@ vi.mock('@/stores/useAppSettingStore', async () => {
   return { default: create(() => ({ settingData: { file_exclude_patterns: '**/node_modules/**' } })) }
 })
 vi.mock('zens', () => ({ toast: { success: vi.fn(), error: vi.fn() } }))
-vi.mock('./CopilotSetting', () => ({ CopilotSetting: () => null }))
 vi.mock('./ExportSetting', () => ({ ExportSetting: () => null }))
 vi.mock('./ImageSetting', () => ({ ImageSetting: () => null }))
 vi.mock('./KeyboardTable', () => ({ KeyboardTable: () => null }))
@@ -113,7 +112,6 @@ vi.mock('./settingMap', () => ({
     display: { i18nKey: 'Appearance', desc: { i18nKey: 'Appearance settings' }, Theme: {} },
     themeStore: { i18nKey: 'Theme Store', desc: { i18nKey: 'Browse and install themes' } },
     editor: { i18nKey: 'Editor', desc: { i18nKey: 'Editor settings' }, behavior: {} },
-    ai: { i18nKey: 'AI', desc: { i18nKey: 'AI settings' }, model: {} },
   }),
 }))
 vi.mock('./component/SettingGroup', () => ({
@@ -524,14 +522,14 @@ describe('Settings dialog integration', () => {
     const checksBefore = state.checkUpdate.mock.calls.length
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'Editor' } })
 
-    act(() => state.handler?.({ category: 'ai', providerId: 'google' }))
+    act(() => state.handler?.({ category: 'editor' }))
     await waitFor(() =>
-      expect(screen.getByLabelText('Selected provider').textContent).toBe('google'),
+      expect(screen.getByRole('heading', { level: 1, name: 'Editor' })).toBeTruthy(),
     )
     expect((screen.getByRole('searchbox') as HTMLInputElement).value).toBe('')
-    act(() => state.handler?.({ category: 'ai', providerId: 'ollama' }))
+    act(() => state.handler?.({ category: 'display' }))
     await waitFor(() =>
-      expect(screen.getByLabelText('Selected provider').textContent).toBe('ollama'),
+      expect(screen.getByRole('heading', { level: 1, name: 'Appearance' })).toBeTruthy(),
     )
 
     expect(screen.getByRole('dialog', { name: 'settings.label' })).toBe(settings)

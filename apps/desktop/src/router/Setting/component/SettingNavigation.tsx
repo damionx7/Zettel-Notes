@@ -9,10 +9,8 @@ import {
   Keyboard,
   Palette,
   Settings2,
-  Sparkles,
   SquarePen,
   SwatchBook,
-  WandSparkles,
   type LucideIcon,
   Lock,
   Info,
@@ -23,7 +21,6 @@ import type { SettingCategoryKey } from '../settingSearch'
 const navigationSections = [
   { id: 'preferences', i18nKey: 'settings.navigation.preferences' },
   { id: 'writing', i18nKey: 'settings.navigation.writing' },
-  { id: 'ai', i18nKey: 'settings.navigation.ai' },
   { id: 'help', i18nKey: 'settings.navigation.help' },
 ] as const
 
@@ -41,8 +38,6 @@ const navigationItems: Record<
   encryption: { section: 'preferences', icon: Lock },
   export: { section: 'writing', icon: FileOutput },
   history: { section: 'writing', icon: History },
-  ai: { section: 'ai', icon: Sparkles },
-  copilot: { section: 'ai', icon: WandSparkles },
   updates: { section: 'help', icon: RefreshCw },
   about: { section: 'help', icon: Info },
 }

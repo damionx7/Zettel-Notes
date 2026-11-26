@@ -68,7 +68,7 @@ beforeEach(() => {
   useOpenTestState.switchWorkspace.mockReset().mockResolvedValue(true)
   useLayoutStore.setState({
     leftBar: { activePanelId: 'search', size: 304, visible: false },
-    rightBar: { activePanelId: 'ai', size: 336, visible: false },
+    rightBar: { activePanelId: 'toc', size: 336, visible: false },
     zenModeActive: false,
   })
 })
