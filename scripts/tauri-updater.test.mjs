@@ -209,3 +209,56 @@ for (const format of ['mjs', 'cjs']) {
     }
   }
 }
+
+// A tag without a section in the release-notes log must still produce install.json, with empty notes.
+// Upstream calls process.exit(0) here, which ended the v0.0.5 release before the manifest existed.
+for (const format of ['cjs', 'mjs']) {
+  for (const [name, log] of [
+    ['missing tag section', '# UPDATE LOG\n\n## v1.3.1\n\nOld notes\n'],
+    ['missing UPDATE_LOG.md', null],
+  ]) {
+    test(`${format}: updatelog returns empty notes for a ${name}`, async () => {
+      const source = await readFile(
+        new URL(`../node_modules/@tauri-release/cli/dist/updatelog.${format}`, import.meta.url),
+        'utf8',
+      )
+      const fs = {
+        existsSync: () => log !== null,
+        readFileSync: () => log,
+      }
+      const utils = {
+        $argv: () => ({}),
+        $: Object.fromEntries(['red', 'green', 'yellow', 'blue', 'gray'].map((key) => [key, String])),
+        UPDATE_LOG_PATH: '/fixture/UPDATE_LOG.md',
+        ROOT_PATH: '/fixture',
+        relativePath: () => 'UPDATE_LOG.md',
+      }
+      const dependencies = { fs, path, './shared/cli.de4d4f3c.cjs': utils, module: {} }
+      const process = {
+        exit: (code) => {
+          throw new Error(`process.exit(${code})`)
+        },
+      }
+      const context = {
+        fs,
+        path,
+        ...utils,
+        process,
+        console: { log() {} },
+        module: { exports: {} },
+        require: (dep) => {
+          assert.ok(Object.hasOwn(dependencies, dep), `Unexpected dependency: ${dep}`)
+          return dependencies[dep]
+        },
+      }
+      const script =
+        format === 'mjs'
+          ? source
+              .replace(/^import .+;\r?\n/gm, '')
+              .replace('export { updatelog as default };', 'updatelog')
+          : `${source}\nmodule.exports`
+      const updatelog = runInNewContext(script, context)
+      assert.equal(updatelog('v0.0.5').content, '')
+    })
+  }
+}
