@@ -12,9 +12,8 @@ The JavaScript mocking plugin is not used.
 
 ## Running
 
-Requires Node 24, macOS 14+, Rust/Tauri prerequisites, and the verified private
-Capricorn runtime (`yarn install:capricorn-runtime`). Missing prerequisites fail
-the run; there is no skipped-test or editor fallback path.
+Requires Node 24, macOS 14+ and the Rust/Tauri prerequisites. Missing prerequisites fail
+the run; there is no skipped-test path.
 Both the runner and the native binary reject older or unknown macOS versions,
 where WebKit would otherwise fall back to the default data store.
 
