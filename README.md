@@ -14,8 +14,7 @@ Get the latest version from the [Releases page](https://github.com/damionx7/Zett
 | System | File |
 | --- | --- |
 | Windows (64-bit) | `Zettel-Notes_v<version>_x64-setup.exe` or `.msi`, or the `_portable.zip` that needs no install |
-| macOS, Apple Silicon | `Zettel-Notes_v<version>_aarch64.dmg` |
-| macOS, Intel | `Zettel-Notes_v<version>_x64.dmg` |
+| macOS (Apple Silicon and Intel) | `Zettel-Notes_v<version>_macOS_universal.dmg` |
 | Linux | `.deb`, `.rpm` or `.AppImage` |
 
 The macOS app is not signed with an Apple Developer ID yet. The first time you open it,
