@@ -6,15 +6,18 @@ The fork exists for one reason: making the app
 partially compatible with notes written by [Zettel Notes](https://zettelnotes.eu) on
 Android.
 
-Everything below is deliberate. When a rebase onto `upstream/main` produces a conflict,
-this file is the tie-breaker: if the conflict is about something listed as **removed**,
-the answer is "keep it removed"; if it is about something listed as **added**, the
-answer is "keep our version".
+Everything below is deliberate. The fork has diverged too far to track MarkFlowy: it is
+**not synchronised with upstream** any more, and there is no upstream remote or sync
+tooling. A MarkFlowy feature that is wanted is cherry-picked or ported by hand, as an
+ordinary pull request. This file is then the tie-breaker: if the change touches something
+listed as **removed**, keep it removed; if it touches something listed as **added**, keep
+our version.
 
 ## Repository model
 
-- `main` is the default branch and carries the fork. Work lands through pull requests.
-- Upstream changes are ported by hand; see `WORKFLOW.md`.
+- `main` is the default branch and carries the app. Work lands through pull requests.
+- Nothing is merged or rebased from upstream; see "Taking a feature from MarkFlowy" in
+  `WORKFLOW.md`.
 
 ## Added
 
@@ -136,7 +139,7 @@ answer is "keep our version".
 - **Support settings section.**
 - **Synchronisation (Dropbox/WebDAV/SFTP)** — added and later removed; the settings page,
   service, connection probes, `probe_ssh_banner` command and every `sync_*` config field
-  are gone. If a rebase resurrects any of it, delete it.
+  are gone. If a cherry-pick brings any of it back, delete it.
 - **Attachment destinations** that were not wanted: absolute paths and Base64 embedding.
 - **MarkFlowy's website and docs** (`apps/web`, `docs/en`, `docs/zh`, `public/` screenshots)
   and their scripts and tests. `docs/CLI.md`, the custom theme guide
@@ -152,23 +155,13 @@ answer is "keep our version".
   settings). The right dock holds the table of contents only.
 - **Sentry error reporting** (`@sentry/react`, `startup/sentry.ts`, `services/error-reporting*`)
   and the release workflows' `.env` step. Errors are written to the console log instead.
+- **`mfdev` release tool** (`tools/cli`, `scripts/release.js`, `yarn release`). Versions are
+  bumped with `scripts/bump-version.mjs`, and a release tag must match the committed
+  version.
 
-## Where rebase conflicts are most likely
+## After cherry-picking from MarkFlowy
 
-| File | Why |
-|---|---|
-| `locales/{es,fr-FR,pt-BR}.json` | upstream adds keys constantly; we also delete whole sections |
-| `apps/desktop/src-tauri/Cargo.toml` | we changed the binary name and dropped dependencies |
-| `apps/desktop/src-tauri/tauri.conf.json` | product name, version, updater endpoint |
-| `apps/desktop/src/router/Setting/settingMap.ts` | categories added and removed |
-| `EditorArea/TextEditor.tsx`, `Editor.tsx` | the Capricorn plumbing lived here |
-| `packages/i18n/src/{index,desktop,types}.ts` | the locale registry |
-
-Keep forks of upstream files as small as possible: additive code in new files survives
-rebases almost for free, while reformatting or reordering an upstream file guarantees a
-conflict.
-
-## After every sync
+Upstream code is free to refactor here: there is no upstream diff to keep small.
 
 Run the checks in `AGENTS.md` (TypeScript, unit tests, lint on changed files).
 

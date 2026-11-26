@@ -1,7 +1,7 @@
 # Working on Zettel Notes
 
 How a change travels from "I want X" to a tested release. Written for whoever picks this up
-next, human or agent. `FORK.md` lists what differs from upstream MarkFlowy; this file is
+next, human or agent. `FORK.md` lists what differs from MarkFlowy, which this app forked from; this file is
 about the day-to-day loop.
 
 ## The loop
@@ -39,11 +39,14 @@ Full installer builds run only on tags, or by hand (`nodejs.yml` and `test-bundl
 | Do not edit `dist/`, `lib/`, `esm/` | Generated output |
 | Node 24 | Node 26 shadows `localStorage` in happy-dom and breaks ~130 tests |
 
-## Synchronising with upstream
+## Taking a feature from MarkFlowy
 
-Upstream is [MarkFlowy](https://github.com/drl990114/MarkFlowy). Changes are brought over
-by hand, as ordinary pull requests: cherry-pick or port the upstream commit, then use
-`FORK.md` as the tie-breaker for anything it lists as removed or added.
+Zettel Notes no longer synchronises with [MarkFlowy](https://github.com/drl990114/MarkFlowy):
+the code bases have diverged too far. When a MarkFlowy feature is wanted, port it by hand
+as an ordinary pull request (cherry-pick the commit if it applies, otherwise rewrite it),
+use `FORK.md` as the tie-breaker for anything it lists as removed or added, and run its
+"After cherry-picking" checks. Upstream credit stays in `LICENSE`, `NOTICE`, `README.md`
+and Settings → About, as the AGPL requires.
 
 ## Environment notes
 
