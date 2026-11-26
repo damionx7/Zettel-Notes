@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { apiClient } from '../utils/apiClient'
 import { saveAuthSession } from '../utils/authSession'
-import type { AuthSession } from '@markflowy/types'
+import type { AuthSession } from '@zettel-notes/types'
 
 export enum AuthMode {
   LOGIN = 'login',
@@ -14,7 +14,7 @@ export enum Step {
   CODE = 'code',
 }
 
-const COUNTDOWN_STORAGE_KEY = 'markflowy:emailCodeCountdown'
+const COUNTDOWN_STORAGE_KEY = 'zettel-notes:emailCodeCountdown'
 
 const getCountdownEndTime = (email: string) => {
   if (typeof window === 'undefined') return null

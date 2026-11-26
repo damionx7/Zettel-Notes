@@ -1,4 +1,4 @@
-import { darkTheme } from '@markflowy/theme'
+import { darkTheme } from '@zettel-notes/theme'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   discardStaleStartupTheme,

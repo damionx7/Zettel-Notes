@@ -114,7 +114,7 @@ describe('browser PDF export', () => {
     vi.mocked(inspectPdf).mockResolvedValue({
       pages: 2,
       outline: [
-        { title: 'MarkFlowy PDF probe', depth: 0, page: 1 },
+        { title: 'Zettel Notes PDF probe', depth: 0, page: 1 },
         { title: 'Nested heading', depth: 1, page: 1 },
         { title: 'Next page', depth: 0, page: 2 },
       ],
@@ -147,7 +147,7 @@ describe('browser PDF export', () => {
       .mockResolvedValueOnce({
         pages: 2,
         outline: [
-          { title: 'MarkFlowy PDF probe', depth: 0, page: 1 },
+          { title: 'Zettel Notes PDF probe', depth: 0, page: 1 },
           { title: 'Nested heading', depth: 1, page: 1 },
           { title: 'Next page', depth: 0, page: 2 },
         ],

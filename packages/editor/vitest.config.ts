@@ -8,7 +8,7 @@ export default defineConfig(() => ({
     alias: [
       { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
       {
-        find: '@markflowy/theme',
+        find: '@zettel-notes/theme',
         replacement: fileURLToPath(new URL('../theme/src/index.ts', import.meta.url)),
       },
     ],

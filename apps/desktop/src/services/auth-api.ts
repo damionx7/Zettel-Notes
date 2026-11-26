@@ -1,7 +1,7 @@
 import { apiClient } from './api-client'
-import type { AuthTokens, User } from '@markflowy/types'
+import type { AuthTokens, User } from '@zettel-notes/types'
 
-export type { AuthTokens, User } from '@markflowy/types'
+export type { AuthTokens, User } from '@zettel-notes/types'
 
 export interface SendEmailCodeParams {
   email: string

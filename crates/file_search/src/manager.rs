@@ -589,7 +589,7 @@ mod tests {
     #[test]
     fn find_names_respects_exclude_patterns() {
         let mut dir = std::env::temp_dir();
-        dir.push("markflowy_exclude_patterns_test");
+        dir.push("zettel_notes_exclude_patterns_test");
         if dir.exists() {
             let _ = std::fs::remove_dir_all(&dir);
         }

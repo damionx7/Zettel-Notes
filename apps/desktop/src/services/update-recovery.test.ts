@@ -1,14 +1,14 @@
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { FileResultCode } from '@markflowy/interface'
+import { FileResultCode } from '@zettel-notes/interface'
 import { clearMocks, mockIPC } from '@tauri-apps/api/mocks'
 import { BaseDirectory } from '@tauri-apps/api/path'
 import { LazyStore } from '@tauri-apps/plugin-store'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type * as UpdateRecovery from './update-recovery'
 
-const STORE_PATH = '.markflowy_updater.dat'
+const STORE_PATH = '.zettel_notes_updater.dat'
 const attempt = { fromVersion: '1.2.0', targetVersion: '1.2.1', startedAt: 1 }
 
 let directory: string
@@ -91,7 +91,7 @@ const ipc = vi.fn(async (command: string, args?: unknown): Promise<unknown> => {
 beforeEach(async () => {
   vi.resetModules()
   ipc.mockClear()
-  directory = await mkdtemp(join(tmpdir(), 'markflowy-update-recovery-'))
+  directory = await mkdtemp(join(tmpdir(), 'zettel-notes-update-recovery-'))
   filePath = join(directory, STORE_PATH)
   cache = {}
   loaded = false

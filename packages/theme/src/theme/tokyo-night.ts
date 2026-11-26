@@ -5,7 +5,7 @@ import { tokyoNightPalette } from './tokyo-night-palette'
 const { colors, syntax } = tokyoNightPalette
 
 // MarkText "Tokyo Night Storm" colors; provenance and license are in the palette.
-// MarkFlowy's shared surface/state roles are coarser than VS Code's workbench
+// Zettel Notes' shared surface/state roles are coarser than VS Code's workbench
 // roles, so this maps their nearest equivalent without introducing new colors.
 export const tokyoNightTheme: MfTheme = {
   name: 'Tokyo Night',
@@ -79,7 +79,7 @@ export const tokyoNightTheme: MfTheme = {
     'editor.selection.foreground': { ref: 'editor.foreground' },
     'editor.selection.inactiveBackground': colors['editor.inactiveSelectionBackground'],
     'editor.code.activeLine': colors['editor.lineHighlightBackground'],
-    // The port marks text with a bright chartreuse; MarkFlowy requires an
+    // The port marks text with a bright chartreuse; Zettel Notes requires an
     // opaque highlight background, so the ported alpha is dropped.
     'editor.highlight.background': '#e1fb05',
     'editor.highlight.foreground': colors['button.foreground'],

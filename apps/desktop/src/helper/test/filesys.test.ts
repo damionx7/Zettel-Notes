@@ -13,7 +13,7 @@ vi.mock('@tauri-apps/api/core', () => ({
 
 vi.mock('rme', () => ({}))
 
-vi.mock('@markflowy/interface', () => ({
+vi.mock('@zettel-notes/interface', () => ({
   FileResultCode: {
     Success: 'Success',
     NotFound: 'NotFound',

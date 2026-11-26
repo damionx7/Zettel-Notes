@@ -86,7 +86,7 @@ describe('PDF artifact inspection', () => {
     const probe = {
       pages: 2,
       outline: [
-        { title: 'MarkFlowy PDF probe', depth: 0, page: 1 },
+        { title: 'Zettel Notes PDF probe', depth: 0, page: 1 },
         { title: 'Nested heading', depth: 1, page: 1 },
         { title: 'Next page', depth: 0, page: 1 },
       ],

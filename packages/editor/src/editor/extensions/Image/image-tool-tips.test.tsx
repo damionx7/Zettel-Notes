@@ -1,12 +1,12 @@
 import type { NodeViewComponentProps } from '@rme-sdk/sdk/react'
-import { editorLightTheme } from '@markflowy/theme'
+import { editorLightTheme } from '@zettel-notes/theme'
 import { act, type ComponentProps, type InputHTMLAttributes, type Ref } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { ThemeProvider } from 'styled-components'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ImageToolTips, formatImageByteLength, getEmbeddedImageSourceInfo } from './image-tool-tips'
 
-vi.mock('@markflowy/i18n', () => ({ t: (key: string) => key }))
+vi.mock('@zettel-notes/i18n', () => ({ t: (key: string) => key }))
 
 vi.mock('zens', () => ({
   Button: ({ btnType: _btnType, size: _size, ...props }: Record<string, unknown>) => (

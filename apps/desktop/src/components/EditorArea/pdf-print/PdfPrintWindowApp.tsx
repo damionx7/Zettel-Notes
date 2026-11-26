@@ -1,6 +1,6 @@
 import { resolveAppThemeTokens } from '@/appThemeTokens'
 import { paragraphIndentationStyle } from '../paragraphIndentation'
-import { editorLightTheme } from '@markflowy/theme'
+import { editorLightTheme } from '@zettel-notes/theme'
 import { emitTo } from '@tauri-apps/api/event'
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow'
 import { useEffect, useMemo, useRef, useState } from 'react'

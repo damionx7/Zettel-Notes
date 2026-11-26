@@ -28,7 +28,7 @@ export default function Releases({ releases, sidebarPages }: ReleasesProps) {
       <p className='mf-eyebrow'>{t('site.releases.eyebrow')}</p>
       <p>
         {t('releases.description_before_link')}{' '}
-        <HighlightLink href='https://github.com/drl990114/MarkFlowy/releases' target='_blank'>
+        <HighlightLink href='https://github.com/damionx7/Zettel-Notes/releases' target='_blank'>
           {t('releases.github_link')}
         </HighlightLink>{' '}
         {t('releases.description_after_link')}

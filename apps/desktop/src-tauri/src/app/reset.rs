@@ -29,29 +29,19 @@ fn reset_targets(app: &tauri::AppHandle) -> Vec<PathBuf> {
         targets.push(runtime);
     }
 
-    // Folders from before the rename, so a reset also removes them instead of leaving orphan
-    // data behind. They are only deleted when the "clear data" action is used.
+    // On Linux without `~/.zettel-notes`, settings live in the XDG config folder
+    // (`~/.config/zettel-notes`, see `app_root_default`).
+    #[cfg(target_os = "linux")]
     if let Ok(home) = app.path().home_dir() {
-        targets.push(home.join(".markflowy"));
+        let config_home = std::env::var_os("XDG_CONFIG_HOME")
+            .map(PathBuf::from)
+            .filter(|path| path.is_absolute())
+            .unwrap_or_else(|| home.join(".config"));
+        targets.push(config_home.join("zettel-notes"));
     }
-    if let Ok(local) = app.path().home_dir() {
-        let legacy_local = local.join("AppData").join("Local").join("MarkFlowy");
-        targets.push(legacy_local);
-    }
-    if let Ok(roaming) = app.path().home_dir() {
-        targets.push(
-            roaming
-                .join("AppData")
-                .join("Roaming")
-                .join("com.drl990114.markflowy"),
-        );
-        targets.push(
-            roaming
-                .join("AppData")
-                .join("Local")
-                .join("com.drl990114.markflowy"),
-        );
-    }
+
+    // Folders that belong to upstream MarkFlowy (`~/.markflowy`, `com.drl990114.markflowy`)
+    // are deliberately left alone: they are another app's data, not ours.
 
     targets.sort();
     targets.dedup();

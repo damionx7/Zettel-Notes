@@ -1,4 +1,4 @@
-import type { desktopLightTheme, MfTheme } from '@markflowy/theme'
+import type { desktopLightTheme, MfTheme } from '@zettel-notes/theme'
 import { createContext } from 'react'
 
 export interface EditorThemeConfig {

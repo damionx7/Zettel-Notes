@@ -5,4 +5,4 @@ declare module 'virtual:mf-pdf-preview-style' {
   export default styles
 }
 
-declare const __MARKFLOWY_HOST_VERSION__: string | null
+declare const __ZETTEL_NOTES_HOST_VERSION__: string | null

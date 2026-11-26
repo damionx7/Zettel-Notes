@@ -1,4 +1,4 @@
-import type { ThemeOverrides } from '@markflowy/theme/semantic'
+import type { ThemeOverrides } from '@zettel-notes/theme/semantic'
 import { normalizeFontFamily } from '@/appThemeTokens'
 
 interface TypographyPreferences {

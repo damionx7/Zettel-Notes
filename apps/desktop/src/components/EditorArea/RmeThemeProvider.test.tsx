@@ -1,14 +1,14 @@
 import { cleanup, render } from '@testing-library/react'
 import { useEffect } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { desktopDarkTheme, desktopLightTheme } from '@markflowy/theme'
+import { desktopDarkTheme, desktopLightTheme } from '@zettel-notes/theme'
 import { darkTheme, ThemeProvider } from 'rme'
 import * as runtime from 'rme'
 import { alignCodeMirrorTheme } from '@/appThemeTokens'
 import { EditorThemeContext, type EditorThemeConfig } from '@/editorThemeContext'
 import { RmeThemeProvider } from './RmeThemeProvider'
 import { SemanticThemeContext } from '@/themes/context'
-import { resolveThemeTokens } from '@markflowy/theme/semantic'
+import { resolveThemeTokens } from '@zettel-notes/theme/semantic'
 
 vi.mock('rme', () => ({
   darkTheme: { codemirrorTheme: { theme: 'dark', settings: { background: '#111' }, styles: [] } },
@@ -93,7 +93,7 @@ describe('RME theme at the editor boundary', () => {
       return <div>document</div>
     }
     const config: EditorThemeConfig = {
-      name: 'MarkFlowy Light',
+      name: 'Zettel Notes Light',
       mode: 'light',
       token: desktopLightTheme,
       codemirrorTheme: undefined,
@@ -113,7 +113,7 @@ describe('RME theme at the editor boundary', () => {
     view.rerender(
       content({
         ...config,
-        name: 'MarkFlowy Dark',
+        name: 'Zettel Notes Dark',
         mode: 'dark',
         token: desktopDarkTheme,
         language: 'en',

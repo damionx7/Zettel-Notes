@@ -491,7 +491,7 @@ pub fn run_client_if_requested() {
             return Err(Receipt::error(
                 &request.request_id,
                 "app_not_running",
-                "Open MarkFlowy first",
+                "Open Zettel Notes first",
             ));
         }
         atomic_json(&directory.path().join("request.json"), &request)

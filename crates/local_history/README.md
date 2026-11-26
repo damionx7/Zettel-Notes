@@ -36,7 +36,7 @@ and application restarts do not split the batch. Local input, an explicit save, 
 ends it. A CLI `history begin` protects the initial text; all edits then share that session,
 and one `history commit` records the final text. Delayed matching notifications do not create
 another version after commit. Idempotent requests with conflicting arguments fail explicitly.
-See the [MarkFlowy skill](../../skills/markflowy/SKILL.md) for the AI workflow and CLI reference.
+See the [Zettel Notes skill](../../skills/zettel-notes/SKILL.md) for the AI workflow and CLI reference.
 
 Ordinary local checkpoints are limited to once per minute. Autosaves within a 30 second
 window share a record. Identical content is reused only when doing so preserves the displaced
@@ -61,9 +61,9 @@ generation. Unreferenced objects are collected and incremental vacuum reclaims d
 
 ## Validation
 
-- `cargo test -p mf_local_history -p markflowy --lib`
-- `yarn workspace @markflowy/desktop test`
-- `yarn workspace @markflowy/desktop build:types` (TypeScript only)
+- `cargo test -p mf_local_history -p zettel-notes --lib`
+- `yarn workspace @zettel-notes/desktop test`
+- `yarn workspace @zettel-notes/desktop build:types` (TypeScript only)
 - Changed-file ESLint, `yarn translate:check`, and skill validation
 
 These checks cover state transitions, concurrency admission, journal recovery, coalescing,

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import type { GitHubConnectionStatus } from '@markflowy/types'
+import type { GitHubConnectionStatus } from '@zettel-notes/types'
 import { useGitHubWorkspaceImport } from 'features/githubWorkspace/hooks/useGitHubWorkspaceImport'
 import { githubService, type GitHubRepo } from 'features/githubWorkspace/services/githubService'
 import { redirectToGitHub } from 'utils/githubAuthorization'
@@ -111,7 +111,7 @@ export function useGitHubSettings(isAuthenticated: boolean, authLoading: boolean
   }
 
   const handleDeleteConnection = async () => {
-    if (!confirm('Unlink this GitHub account from MarkFlowy?')) return
+    if (!confirm('Unlink this GitHub account from Zettel Notes?')) return
 
     setDisconnecting(true)
     setSettingsError('')
@@ -136,7 +136,7 @@ export function useGitHubSettings(isAuthenticated: boolean, authLoading: boolean
   const handleDeleteInstallation = async (installationId: string) => {
     if (
       !confirm(
-        'Remove this authorization record from your MarkFlowy account? This does not uninstall the GitHub App or change access on GitHub.',
+        'Remove this authorization record from your Zettel Notes account? This does not uninstall the GitHub App or change access on GitHub.',
       )
     )
       return
@@ -148,14 +148,14 @@ export function useGitHubSettings(isAuthenticated: boolean, authLoading: boolean
     try {
       await githubService.deleteInstallation(installationId)
       setSuccess(
-        'GitHub repository authorization removed from this MarkFlowy account. The GitHub App remains installed.',
+        'GitHub repository authorization removed from this Zettel Notes account. The GitHub App remains installed.',
       )
       await loadConnection()
     } catch (caughtError) {
       setSettingsError(
         caughtError instanceof Error && caughtError.message
           ? caughtError.message
-          : 'Failed to remove the GitHub authorization from MarkFlowy',
+          : 'Failed to remove the GitHub authorization from Zettel Notes',
       )
     } finally {
       setDeletingInstallationId(null)

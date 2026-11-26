@@ -54,7 +54,7 @@ export default defineConfig(async ({ command, mode }) => {
     optimizeDeps: {
       // Keep linked workspace modules live so warm starts can reuse the cache
       // without retaining an old copy of their components or theme contexts.
-      exclude: ['rme', 'zens', '@markflowy/theme'],
+      exclude: ['rme', 'zens', '@zettel-notes/theme'],
       // Discover the lazy history viewer before its first open, so loading a
       // version does not trigger dependency re-optimization mid-session.
       include: ['react-dom/server', '@codemirror/merge'],
@@ -96,7 +96,7 @@ export default defineConfig(async ({ command, mode }) => {
       },
     },
     define: {
-      __MARKFLOWY_HOST_VERSION__: JSON.stringify(
+      __ZETTEL_NOTES_HOST_VERSION__: JSON.stringify(
         JSON.parse(readFileSync(new URL('./src-tauri/tauri.conf.json', import.meta.url), 'utf8'))
           .version,
       ),
@@ -110,7 +110,7 @@ export default defineConfig(async ({ command, mode }) => {
               { find: /^zens\/esm\/(.*)$/, replacement: `${zensSourceRoot}/$1` },
               { find: /^zens$/, replacement: `${zensSourceRoot}/index.ts` },
               {
-                find: /^@markflowy\/theme$/,
+                find: /^@zettel-notes\/theme$/,
                 replacement: fileURLToPath(
                   new URL('../../packages/theme/src/index.ts', import.meta.url),
                 ),
@@ -119,7 +119,7 @@ export default defineConfig(async ({ command, mode }) => {
           : []),
         // Source alias keeps the authoring model available without rebuilding workspace packages.
         {
-          find: '@markflowy/theme/semantic',
+          find: '@zettel-notes/theme/semantic',
           replacement: fileURLToPath(
             new URL('../../packages/theme/src/semantic/index.ts', import.meta.url),
           ),
@@ -130,11 +130,11 @@ export default defineConfig(async ({ command, mode }) => {
           ...(mode === 'test' ? { customResolver: resolveTestWorkspaceAlias } : {}),
         },
         {
-          find: /^@markflowy\/i18n$/,
+          find: /^@zettel-notes\/i18n$/,
           replacement: fileURLToPath(new URL('./src/i18n/index.ts', import.meta.url)),
         },
         {
-          find: '@markflowy/i18n/desktop',
+          find: '@zettel-notes/i18n/desktop',
           replacement: fileURLToPath(
             new URL('../../packages/i18n/src/desktop.ts', import.meta.url),
           ),

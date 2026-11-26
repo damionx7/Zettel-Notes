@@ -1,4 +1,4 @@
-import type { IFile } from '@markflowy/interface'
+import type { IFile } from '@zettel-notes/interface'
 import { describe, expect, it, vi } from 'vitest'
 
 vi.mock('@/helper/files', () => ({ getFileObject: vi.fn() }))

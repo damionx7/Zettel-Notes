@@ -1,6 +1,6 @@
 import Color from 'color'
-import { builtInThemes } from '@markflowy/theme'
-import { parseThemeDocument, themeVariables } from '@markflowy/theme/semantic'
+import { builtInThemes } from '@zettel-notes/theme'
+import { parseThemeDocument, themeVariables } from '@zettel-notes/theme/semantic'
 import { describe, expect, it } from 'vitest'
 import { rmeEditorTokens } from './editorTokens'
 import { getThemeTokens, toAppTheme } from './runtime'

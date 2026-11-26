@@ -77,7 +77,7 @@ export const WebEditor = forwardRef<WebEditorRef, WebEditorProps>(function WebEd
     error,
   } = useRmeEditor()
   const [content, setContent] = useState(
-    initialContent === undefined ? '##### Welcome to MarkFlowy!' : initialContent,
+    initialContent === undefined ? '##### Welcome to Zettel Notes!' : initialContent,
   )
   const latestContentRef = useRef(content)
   const isApplyingExternalContentRef = useRef(false)

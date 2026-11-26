@@ -2,9 +2,9 @@
 
 ## Choose a compatible starting point
 
-MarkFlowy themes are declarative JSON documents, optionally containing CSS per variant. Prefer an export and JSON Schema from the developer's installed **Settings → Theme Store** when available. The bundled starter targets document format `version: 1`; it is a starting palette, not proof of compatibility with every app release.
+Zettel Notes themes are declarative JSON documents, optionally containing CSS per variant. Prefer an export and JSON Schema from the developer's installed **Settings → Theme Store** when available. The bundled starter targets document format `version: 1`; it is a starting palette, not proof of compatibility with every app release.
 
-With a MarkFlowy checkout, consult these sources as needed:
+With a Zettel Notes checkout, consult these sources as needed:
 
 | Question | Source relative to the checkout root |
 | --- | --- |
@@ -61,12 +61,12 @@ The app stores the library in `themes-v1.json` in its application data directory
 
 ## Validate from a checkout, when available
 
-For a standalone theme author, use the app's import/advanced JSON validation; Node is optional. A generic JSON Schema check helps with shape and token names but does not replace MarkFlowy's literal validation and reference-cycle resolution.
+For a standalone theme author, use the app's import/advanced JSON validation; Node is optional. A generic JSON Schema check helps with shape and token names but does not replace Zettel Notes' literal validation and reference-cycle resolution.
 
-In an already configured MarkFlowy checkout, reuse its parser through the existing `tsx` dependency. From the repository root, replace the final argument with the absolute path to the generated JSON:
+In an already configured Zettel Notes checkout, reuse its parser through the existing `tsx` dependency. From the repository root, replace the final argument with the absolute path to the generated JSON:
 
 ```sh
-yarn workspace @markflowy/desktop exec tsx --eval '
+yarn workspace @zettel-notes/desktop exec tsx --eval '
   import { readFileSync } from "node:fs";
   import { parseThemeDocument } from "../../packages/theme/src/semantic/index.ts";
   const theme = parseThemeDocument(JSON.parse(readFileSync(process.argv[1], "utf8")));
@@ -76,7 +76,7 @@ yarn workspace @markflowy/desktop exec tsx --eval '
 
 This validates the submitted document and resolves every variant; it does not launch the app, validate CSS, or perform a build. Do not substitute an old generated `dist` package for the current source parser.
 
-If the task changes application code as well, follow the checkout's `AGENTS.md`: run affected unit tests, Desktop's `yarn workspace @markflowy/desktop build:types` (`tsc --noEmit`), and lint changed TS/TSX files only. Do not run builds. For a theme-only JSON/CSS output, check that output rather than running unrelated application suites.
+If the task changes application code as well, follow the checkout's `AGENTS.md`: run affected unit tests, Desktop's `yarn workspace @zettel-notes/desktop build:types` (`tsc --noEmit`), and lint changed TS/TSX files only. Do not run builds. For a theme-only JSON/CSS output, check that output rather than running unrelated application suites.
 
 ## Legacy migration and sharing
 

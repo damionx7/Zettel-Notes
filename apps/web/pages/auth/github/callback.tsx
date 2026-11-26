@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { AuthSession } from '@markflowy/types'
+import type { AuthSession } from '@zettel-notes/types'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
@@ -84,7 +84,7 @@ export default function GitHubAuthCallbackPage() {
 
   return (
     <>
-      <SeoHead title={`${t('auth.githubCompleting')} - MarkFlowy`} />
+      <SeoHead title={`${t('auth.githubCompleting')} - Zettel Notes`} />
       <CallbackLayout>
         <CallbackCard aria-live='polite'>
           <GitHubIcon className='ri-github-fill' aria-hidden='true' />

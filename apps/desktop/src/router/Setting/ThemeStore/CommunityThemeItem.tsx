@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import type { MfTheme } from '@markflowy/theme'
+import type { MfTheme } from '@zettel-notes/theme'
 import { Download, LoaderCircle, Moon, RefreshCw, Sun } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toAppTheme } from '@/themes/runtime'

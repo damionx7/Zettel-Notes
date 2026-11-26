@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 
 const baseUrl = process.env.GEO_BASE_URL || 'http://localhost:3100'
-const origin = 'https://www.markflowy.cc'
+const origin = 'https://damionx7.github.io/Zettel-Notes'
 const request = (path, options = {}) =>
   fetch(new URL(path, baseUrl), {
     ...options,
@@ -18,7 +18,7 @@ test('homepage text and both primary actions are available before JavaScript run
     const heading = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1]
     assert.ok(heading?.includes(prefix ? '让想法流动' : 'Your ideas'))
     assert.ok(html.includes(`href="${prefix}/workspace/demo-workspace"`))
-    assert.ok(html.includes('href="https://github.com/drl990114/MarkFlowy/releases"'))
+    assert.ok(html.includes('href="https://github.com/damionx7/Zettel-Notes/releases"'))
     assert.doesNotMatch(html, /playground/i)
   }
 })
@@ -41,7 +41,7 @@ test('live HTML contains document-specific metadata and text without JavaScript'
       const response = await request(path)
       assert.equal(response.status, 200, path)
       const html = await response.text()
-      assert.match(html, /<title\b[^>]*>[^<]*MarkFlowy[^<]*<\/title>/)
+      assert.match(html, /<title\b[^>]*>[^<]*Zettel Notes[^<]*<\/title>/)
       assert.ok(html.includes(`rel="canonical" href="${origin}${path}"`), path)
       assert.ok(html.includes(`href="${origin}${path}.md"`), path)
       assert.ok(html.includes(`lang="${prefix ? 'zh' : 'en'}"`), path)
@@ -60,7 +60,7 @@ test('every llms document link returns Markdown through the public rewrite', asy
   assert.match(response.headers.get('content-type'), /^text\/plain/)
   const index = await response.text()
   assert.doesNotMatch(index, /playground/i)
-  const urls = [...index.matchAll(/\]\((https:\/\/www\.markflowy\.cc\/[^)]+\.md)\)/g)].map(
+  const urls = [...index.matchAll(/\]\((https:\/\/www\.zettel-notes\.cc\/[^)]+\.md)\)/g)].map(
     (match) => match[1],
   )
   assert.ok(urls.length >= 14)

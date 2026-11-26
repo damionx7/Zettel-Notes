@@ -1,6 +1,6 @@
 ---
-seoTitle: "MarkFlowy code of conduct"
-description: "Read the community code of conduct and reporting guidance for MarkFlowy contributors."
+seoTitle: "Zettel Notes code of conduct"
+description: "Read the community code of conduct and reporting guidance for Zettel Notes contributors."
 ---
 
 # Contributor Covenant Code of Conduct

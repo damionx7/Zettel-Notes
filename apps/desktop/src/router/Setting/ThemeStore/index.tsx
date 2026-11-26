@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { openUrl } from '@tauri-apps/plugin-opener'
-import { builtInThemes, type MfTheme } from '@markflowy/theme'
+import { builtInThemes, type MfTheme } from '@zettel-notes/theme'
 import { Check, ChevronDown, ArrowLeft, Download, FileJson, ExternalLink, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -17,7 +17,7 @@ import {
   parseThemeDocument,
   themeDocumentSchema,
   type ThemeDocument,
-} from '@markflowy/theme/semantic'
+} from '@zettel-notes/theme/semantic'
 import themeData from '../../../../../../community-themes.json'
 import { ThemeEditor } from './ThemeEditor'
 import { ThemeListItem, ThemeMenu } from './ThemeListItem'
@@ -277,14 +277,14 @@ export function ThemeStore({ mode, onBack, onSelected }: ThemeStoreProps) {
           </MenuItem>
           <DropdownMenuSeparator />
           <MenuItem
-            onSelect={() => void run(() => openUrl('https://github.com/drl990114/MarkFlowy'))}
+            onSelect={() => void run(() => openUrl('https://github.com/damionx7/Zettel-Notes'))}
           >
             <ExternalLink aria-hidden className='size-3.5' />
             {labels.submit}
           </MenuItem>
           <MenuItem
             onSelect={() =>
-              void run(() => exportJson(themeDocumentSchema, 'markflowy-theme.schema.json'))
+              void run(() => exportJson(themeDocumentSchema, 'zettel-notes-theme.schema.json'))
             }
           >
             <FileJson aria-hidden className='size-3.5' />

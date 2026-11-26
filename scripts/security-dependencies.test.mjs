@@ -22,7 +22,7 @@ test('postinstall patches target locked dependencies and apply with CI failure h
     }),
   )
   const patches = new URL('../patches/', import.meta.url)
-  const fixture = await mkdtemp(join(tmpdir(), 'markflowy-postinstall-'))
+  const fixture = await mkdtemp(join(tmpdir(), 'zettel-notes-postinstall-'))
   t.after(() => rm(fixture, { recursive: true, force: true }))
   await writeFile(join(fixture, 'package.json'), JSON.stringify({ private: true }))
   await cp(patches, join(fixture, 'patches'), { recursive: true })
@@ -50,11 +50,11 @@ test('TOML frontmatter retains MDX exports after the parser upgrade', async () =
   const { compile } = await import('@mdx-js/mdx')
   const { default: frontmatter } = await import('remark-frontmatter')
   const { default: mdxFrontmatter } = await import('remark-mdx-frontmatter')
-  const result = await compile('+++\ntitle = "MarkFlowy"\ncount = 2\n+++\n\n# Hello', {
+  const result = await compile('+++\ntitle = "Zettel Notes"\ncount = 2\n+++\n\n# Hello', {
     remarkPlugins: [[frontmatter, ['toml']], mdxFrontmatter],
   })
   assert.match(String(result), /export const frontmatter/)
-  assert.match(String(result), /"title": "MarkFlowy"/)
+  assert.match(String(result), /"title": "Zettel Notes"/)
   assert.match(String(result), /"count": 2/)
 })
 

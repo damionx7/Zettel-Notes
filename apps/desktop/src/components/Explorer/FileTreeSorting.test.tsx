@@ -1,4 +1,4 @@
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useMemo, useState, type ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
@@ -13,7 +13,7 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 import { ExplorerSortMenu } from './ExplorerSortMenu'
 import { createExplorerComparator } from './explorerSorting'
 
-vi.mock('@markflowy/i18n', () => ({ useTranslation: () => ({ t: (key: string) => key }) }))
+vi.mock('@zettel-notes/i18n', () => ({ useTranslation: () => ({ t: (key: string) => key }) }))
 vi.mock('@/i18n', () => ({ useTranslation: () => ({ t: (key: string) => key }) }))
 
 const fileSystem: FileSystemContextValue = {

@@ -48,7 +48,7 @@ beforeEach(() => {
   mocks.setTheme.mockClear()
   mocks.writeSettingData.mockClear()
   window.sessionStorage.clear()
-  window.__MARKFLOWY_BOOTSTRAP__ = {
+  window.__ZETTEL_NOTES_BOOTSTRAP__ = {
     appearance: customDarkAppearance,
     openedUrls: [],
     sessionId: 'theme-test',
@@ -64,11 +64,11 @@ beforeEach(() => {
         }) as unknown as MediaQueryList,
     ),
   })
-  Reflect.deleteProperty(window, '__markflowyThemeSyncSetup')
+  Reflect.deleteProperty(window, '__zettelNotesThemeSyncSetup')
 })
 
 afterEach(() => {
-  delete window.__MARKFLOWY_BOOTSTRAP__
+  delete window.__ZETTEL_NOTES_BOOTSTRAP__
   document.documentElement.removeAttribute('data-mf-startup-theme-fallback')
   document.querySelectorAll('[data-mf-startup-theme-transition-guard]').forEach((node) => {
     node.remove()

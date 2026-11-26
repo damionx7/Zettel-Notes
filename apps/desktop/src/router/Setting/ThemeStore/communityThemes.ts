@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query'
 import { fetch as nativeFetch } from '@tauri-apps/plugin-http'
-import { parseThemeDocument } from '@markflowy/theme/semantic'
+import { parseThemeDocument } from '@zettel-notes/theme/semantic'
 
 export interface ThemeItem {
   id: string

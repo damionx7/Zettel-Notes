@@ -185,7 +185,7 @@ test(
   'terminateProcessTree lets the coordinator finish graceful shutdown',
   { timeout: 10_000, skip: process.platform === 'win32' },
   async (t) => {
-    const directory = await mkdtemp(join(tmpdir(), 'markflowy-dev-shutdown-'))
+    const directory = await mkdtemp(join(tmpdir(), 'zettel-notes-dev-shutdown-'))
     const marker = join(directory, 'shutdown.txt')
     const workerSource = `
     const { writeFileSync } = require('node:fs')
@@ -234,7 +234,7 @@ test(
 )
 
 test('waitForRequiredArtifacts ignores stale outputs that are cleaned and rebuilt', async (t) => {
-  const artifactDirectory = await mkdtemp(join(tmpdir(), 'markflowy-dev-artifacts-'))
+  const artifactDirectory = await mkdtemp(join(tmpdir(), 'zettel-notes-dev-artifacts-'))
   const entryArtifact = join(artifactDirectory, 'index.js')
   const dependencyArtifact = join(artifactDirectory, 'styles.css')
 
@@ -265,7 +265,7 @@ test('waitForRequiredArtifacts ignores stale outputs that are cleaned and rebuil
 })
 
 test('waitForRequiredArtifacts rejects a previous watcher session until all outputs are ready', async (t) => {
-  const artifactDirectory = await mkdtemp(join(tmpdir(), 'markflowy-dev-session-'))
+  const artifactDirectory = await mkdtemp(join(tmpdir(), 'zettel-notes-dev-session-'))
   const entry = join(artifactDirectory, 'index.js')
   const stylesheet = join(artifactDirectory, 'styles.css')
   const ready = join(artifactDirectory, '.dev-ready')
@@ -337,7 +337,7 @@ for (const scenario of [
       const lines = []
       const children = []
       let watcherReady
-      const temporaryDirectory = await mkdtemp(join(tmpdir(), 'markflowy-dev-lifecycle-'))
+      const temporaryDirectory = await mkdtemp(join(tmpdir(), 'zettel-notes-dev-lifecycle-'))
       t.after(async () => {
         await Promise.all(children.map((child) => terminateProcessTree(child.pid)))
         await rm(temporaryDirectory, { force: true, recursive: true })
@@ -353,7 +353,7 @@ for (const scenario of [
         spawnProcess: (_executable, args, options) => {
           const isWatcher = children.length === 0
           if (isWatcher) {
-            assert.ok(args.includes('--filter=@markflowy/desktop^...'))
+            assert.ok(args.includes('--filter=@zettel-notes/desktop^...'))
             assert.ok(args.includes('--filter=!zens'))
             assert.equal(args.includes('--only'), false)
           }

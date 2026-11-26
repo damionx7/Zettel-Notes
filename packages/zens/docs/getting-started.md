@@ -17,7 +17,7 @@ export function RenameField() {
 }
 ```
 
-In MarkFlowy Desktop, use `@/components/ui/button` and neighboring facade modules. Shared packages must import zens directly, never Desktop aliases.
+In Zettel Notes Desktop, use `@/components/ui/button` and neighboring facade modules. Shared packages must import zens directly, never Desktop aliases.
 
 ## Styling and themes
 

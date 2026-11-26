@@ -39,13 +39,13 @@ test('the shared gate requires real runtime, type, Rust and content validation',
   const steps = quality.jobs.test.steps
   const commands = steps.filter((step) => step.run).flatMap((step) => step.run.split('\n'))
   for (const command of [
-    'yarn workspace @markflowy/desktop build:types',
-    'yarn workspace @markflowy/desktop test:e2e:types',
-    'yarn workspace @markflowy/desktop test:e2e:runner',
-    'yarn workspace @markflowy/web build:types',
+    'yarn workspace @zettel-notes/desktop build:types',
+    'yarn workspace @zettel-notes/desktop test:e2e:types',
+    'yarn workspace @zettel-notes/desktop test:e2e:runner',
+    'yarn workspace @zettel-notes/web build:types',
     'yarn test',
     'cargo test --workspace --lib --tests --locked',
-    'yarn workspace @markflowy/web test:content',
+    'yarn workspace @zettel-notes/web test:content',
     'yarn test:security-dependencies',
     'yarn test:release-workflows',
     'yarn test:dev-desktop',
@@ -56,7 +56,7 @@ test('the shared gate requires real runtime, type, Rust and content validation',
   for (const step of steps) assert.notEqual(step['continue-on-error'], true, step.name)
   const generation = steps.findIndex((step) => step.run === 'yarn build')
   const verification = steps.findIndex(
-    (step) => step.run === 'yarn workspace @markflowy/web test:content',
+    (step) => step.run === 'yarn workspace @zettel-notes/web test:content',
   )
   assert.ok(generation >= 0 && verification > generation)
 })
@@ -80,10 +80,10 @@ test('the manual macOS run includes native E2E and always retains diagnostics', 
   const steps = quality.jobs.platforms.steps
   const frontend = steps.findIndex((step) => step.run === 'yarn build')
   const native = steps.findIndex(
-    (step) => step.run === 'yarn workspace @markflowy/desktop tauri:build:e2e',
+    (step) => step.run === 'yarn workspace @zettel-notes/desktop tauri:build:e2e',
   )
   const execution = steps.findIndex(
-    (step) => step.run === 'yarn workspace @markflowy/desktop test:e2e',
+    (step) => step.run === 'yarn workspace @zettel-notes/desktop test:e2e',
   )
   assert.ok(frontend >= 0 && native > frontend && execution > native)
   for (const step of [steps[native], steps[execution]]) {
@@ -120,7 +120,7 @@ test('installers take their version from the release tag', async () => {
     const build = steps.findIndex((step) => step.name === 'Build the app')
     assert.ok(stamp >= 0 && stamp < build, `${id} must set the version before building`)
     assert.equal(steps[stamp].shell, 'bash', `${id} must run the same shell on Windows`)
-    const directory = await mkdtemp(path.join(tmpdir(), 'markflowy-tag-version-'))
+    const directory = await mkdtemp(path.join(tmpdir(), 'zettel-notes-tag-version-'))
     try {
       const config = path.join(directory, 'apps/desktop/src-tauri/tauri.conf.json')
       await mkdir(path.dirname(config), { recursive: true })
@@ -161,7 +161,7 @@ test('DMG creation retries hdiutil when macOS reports the image busy', async (t)
     shim ??= steps[retry].run.match(/<<'SHIM'\n([\s\S]*?)\nSHIM/)[1]
   }
 
-  const directory = await mkdtemp(path.join(tmpdir(), 'markflowy-hdiutil-'))
+  const directory = await mkdtemp(path.join(tmpdir(), 'zettel-notes-hdiutil-'))
   t.after(() => rm(directory, { recursive: true, force: true }))
   const fake = path.join(directory, 'real-hdiutil')
   const counter = path.join(directory, 'calls')
@@ -253,7 +253,7 @@ test('releases publish one macOS disk image that holds both architectures', asyn
 
   // Run the script with stand-ins for the macOS tools. A fake executable's bytes name its
   // architectures, which the fake lipo reads and joins.
-  const directory = await mkdtemp(path.join(tmpdir(), 'markflowy-universal-'))
+  const directory = await mkdtemp(path.join(tmpdir(), 'zettel-notes-universal-'))
   t.after(() => rm(directory, { recursive: true, force: true }))
   const bin = path.join(directory, 'bin')
   const log = path.join(directory, 'calls')
@@ -307,7 +307,7 @@ printf '%s %s' "$(cat "$2")" "$(cat "$3")" > "$5"`,
 })
 
 test('all release packages retain matching signatures through collection and publication', async (t) => {
-  const directory = await mkdtemp(path.join(tmpdir(), 'markflowy-release-artifacts-'))
+  const directory = await mkdtemp(path.join(tmpdir(), 'zettel-notes-release-artifacts-'))
   t.after(() => rm(directory, { recursive: true, force: true }))
   const version = '1.2.3'
   const withSignatures = (assets) =>

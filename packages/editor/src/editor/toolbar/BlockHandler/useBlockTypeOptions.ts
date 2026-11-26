@@ -1,4 +1,4 @@
-import { useTranslation } from '@markflowy/i18n'
+import { useTranslation } from '@zettel-notes/i18n'
 import type { ProsemirrorNode } from '@rme-sdk/sdk/core'
 import type { StandardListExtension, StandardListKind } from '@rme-sdk/sdk/extensions/list'
 import { setBlockType, wrapIn } from '@rme-sdk/sdk/pm/commands'

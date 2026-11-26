@@ -59,3 +59,4 @@ yarn dev:desktop
 ## License
 
 [GNU Affero General Public License v3.0](https://github.com/damionx7/Zettel-Notes/blob/main/LICENSE), like MarkFlowy.
+Copyright and upstream credits are in [NOTICE](https://github.com/damionx7/Zettel-Notes/blob/main/NOTICE).

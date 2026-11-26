@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { builtInThemes, tokyoNightTheme } from '@markflowy/theme'
-import { codeMirrorSyntaxStyles, parseThemeDocument } from '@markflowy/theme/semantic'
+import { builtInThemes, tokyoNightTheme } from '@zettel-notes/theme'
+import { codeMirrorSyntaxStyles, parseThemeDocument } from '@zettel-notes/theme/semantic'
 import { tags } from '@lezer/highlight'
 import { rmeEditorTokens } from './editorTokens'
 import { copyTheme, getThemeTokens, toAppTheme } from './runtime'

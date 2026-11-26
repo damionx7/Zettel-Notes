@@ -1,4 +1,4 @@
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { StrictMode, useState, type MouseEventHandler, type ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
@@ -16,7 +16,7 @@ import { FileTreeContext } from '../../../../../packages/interface/src/contexts/
 import type { IFile } from '../../../../../packages/interface/src/types/file'
 import { Button } from '../ui/button'
 
-vi.mock('@markflowy/i18n', () => ({ useTranslation: () => ({ t: (key: string) => key }) }))
+vi.mock('@zettel-notes/i18n', () => ({ useTranslation: () => ({ t: (key: string) => key }) }))
 
 const fileSystem: FileSystemContextValue = {
   runFileMutation: (operation) => operation({ protectFileIds: vi.fn(), protectPaths: vi.fn() }),

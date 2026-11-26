@@ -6,7 +6,7 @@ export const OverlayScrollbarStyles = createGlobalStyle`
    * Include that base class so this theme continues to win when the lazy
    * editor CSS chunk is injected after styled-components global styles.
    */
-  .os-scrollbar.os-theme-markflowy {
+  .os-scrollbar.os-theme-zettel-notes {
     box-sizing: border-box;
     --os-size: 8px;
     --os-padding-perpendicular: 2px;

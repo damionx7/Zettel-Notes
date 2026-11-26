@@ -109,10 +109,11 @@ pub_struct!(AppConf {
     dialog_preferences: Option<HashMap<String, String>>,
 });
 
-pub const APP_CONF_PATH: &str = "markflowy.conf.json";
-pub const APP_FILE_EXCLUDE_PATTERNS_PATH: &str = "markflowy-ignore";
+pub const APP_CONF_PATH: &str = "zettel-notes.conf.json";
+pub const APP_FILE_EXCLUDE_PATTERNS_PATH: &str = "zettel-notes-ignore";
 pub const DEFAULT_EXCLUDE_PATTERNS: &str = ".DS_Store\n.git\nThumbs.db\n.svn\n.hg\n";
 pub const STORE_KEY: &str = "app_config_v3";
+pub const STORE_PATH: &str = "zettel_notes_store.bin";
 pub const STARTUP_APPEARANCE_PATH: &str = "startup_appearance_v1.json";
 pub const STARTUP_APPEARANCE_SCHEMA_VERSION: u32 = 1;
 
@@ -284,8 +285,8 @@ impl StartupAppearance {
 
         self.resolved_mode = current_mode;
         self.theme_id = match current_mode {
-            ResolvedThemeMode::Dark => "MarkFlowy Dark",
-            ResolvedThemeMode::Light => "MarkFlowy Light",
+            ResolvedThemeMode::Dark => "Zettel Notes Dark",
+            ResolvedThemeMode::Light => "Zettel Notes Light",
         }
         .to_string();
         self.palette = StartupPalette::fallback(current_mode);
@@ -383,9 +384,7 @@ fn parse_hex_color(value: &str) -> Option<tauri::webview::Color> {
 }
 
 fn create_store(app: &AppHandle) -> Result<std::sync::Arc<Store<tauri::Wry>>, String> {
-    let store_path = "markflowy_store.bin";
-
-    StoreBuilder::new(app.app_handle(), store_path)
+    StoreBuilder::new(app.app_handle(), STORE_PATH)
         .build()
         .map_err(|e| format!("Failed to build store: {:?}", e))
 }
@@ -553,6 +552,79 @@ fn startup_appearance_changed(
     current != Some(candidate)
 }
 
+/// The new name of a built-in theme that was saved under its MarkFlowy name.
+pub fn renamed_builtin_theme(name: &str) -> Option<&'static str> {
+    match name {
+        "MarkFlowy Light" => Some("Zettel Notes Light"),
+        "MarkFlowy Dark" => Some("Zettel Notes Dark"),
+        _ => None,
+    }
+}
+
+/// File names from before the rename to Zettel Notes, as `(old, new)` pairs inside one folder.
+/// The settings files live in [`app_root`]; the Tauri store files live in the app data folder.
+pub const LEGACY_FILE_NAMES: &[(&str, &str)] = &[
+    ("markflowy.conf.json", APP_CONF_PATH),
+    ("markflowy-ignore", APP_FILE_EXCLUDE_PATTERNS_PATH),
+    ("markflowy_store.bin", STORE_PATH),
+    (".markflowy_workspaces.dat", ".zettel_notes_workspaces.dat"),
+    (".markflowy_updater.dat", ".zettel_notes_updater.dat"),
+    (".markflowy_ai_ask.dat", ".zettel_notes_ai_ask.dat"),
+];
+
+/// Renames files that still carry a pre-rename name in `dir`, once. A file is left alone when
+/// its new name already exists, so nothing written under the new name is overwritten.
+pub fn migrate_legacy_file_names(dir: &Path) {
+    for (legacy, current) in LEGACY_FILE_NAMES {
+        let legacy = dir.join(legacy);
+        let current = dir.join(current);
+        if current.exists() || !legacy.is_file() {
+            continue;
+        }
+        if let Err(error) = std::fs::rename(&legacy, &current) {
+            eprintln!("Failed to rename {} to {}: {error}", legacy.display(), current.display());
+        }
+    }
+}
+
+/// On Linux the settings folder used to follow the upstream name (`~/.config/markflowy`).
+/// Copies it to the new folder once; the old folder is kept because upstream MarkFlowy may
+/// also use it.
+#[cfg(all(target_os = "linux", not(feature = "e2e")))]
+pub fn migrate_legacy_linux_config_dir() {
+    let legacy = choose_app_strategy(AppStrategyArgs {
+        top_level_domain: "com".to_string(),
+        author: "drl990114".to_string(),
+        app_name: "markflowy".to_string(),
+    });
+    let Ok(legacy) = legacy.map(|strategy| strategy.config_dir()) else {
+        return;
+    };
+    let current = app_root_default();
+    if current.exists() || !legacy.is_dir() || current == legacy {
+        return;
+    }
+    if let Err(error) = copy_dir_all(&legacy, &current) {
+        eprintln!("Failed to copy {} to {}: {error}", legacy.display(), current.display());
+    }
+}
+
+#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+fn copy_dir_all(from: &Path, to: &Path) -> std::io::Result<()> {
+    std::fs::create_dir_all(to)?;
+    for entry in std::fs::read_dir(from)? {
+        let entry = entry?;
+        let target = to.join(entry.file_name());
+        let file_type = entry.file_type()?;
+        if file_type.is_dir() {
+            copy_dir_all(&entry.path(), &target)?;
+        } else if file_type.is_file() {
+            std::fs::copy(entry.path(), target)?;
+        }
+    }
+    Ok(())
+}
+
 pub fn app_root() -> PathBuf {
     #[cfg(feature = "e2e")]
     {
@@ -587,9 +659,9 @@ fn app_root_default() -> PathBuf {
         #[cfg(not(target_os = "windows"))]
         {
             match choose_app_strategy(AppStrategyArgs {
-                top_level_domain: "com".to_string(),
-                author: "drl990114".to_string(),
-                app_name: "markflowy".to_string(),
+                top_level_domain: "eu".to_string(),
+                author: "thedoc".to_string(),
+                app_name: "zettel-notes".to_string(),
             }) {
                 Ok(strategy) => strategy.config_dir(),
                 Err(_) => data_root,
@@ -665,8 +737,8 @@ impl AppConf {
             theme_mode: Some("dark".to_string()),
             theme_accent_color: Some("system".to_string()),
             theme_use_personal_typography: Some(true),
-            light_theme: Some("MarkFlowy Light".to_string()),
-            dark_theme: Some("MarkFlowy Dark".to_string()),
+            light_theme: Some("Zettel Notes Light".to_string()),
+            dark_theme: Some("Zettel Notes Dark".to_string()),
             language: Some("en".to_string()),
             auto_update: Some(false),
             open_file_in_new_window: Some(true),
@@ -799,6 +871,12 @@ impl AppConf {
      * Generally used to be compatible with the original config when versions are different.
      */
     pub fn merge_conf(mut self, mut oldconf: AppConf) -> Self {
+        // The built-in themes were named "MarkFlowy Light/Dark" before the rename.
+        for theme in [&mut oldconf.light_theme, &mut oldconf.dark_theme] {
+            if let Some(renamed) = theme.as_deref().and_then(renamed_builtin_theme) {
+                *theme = Some(renamed.to_string());
+            }
+        }
         // Source typography used to share the body settings. Preserve that
         // appearance on upgrade; later writes keep the two modes independent.
         oldconf.editor_source_font_size = oldconf
@@ -1006,8 +1084,8 @@ impl AppConf {
         configured
             .filter(|value| !value.trim().is_empty())
             .unwrap_or(match mode {
-                ResolvedThemeMode::Dark => "MarkFlowy Dark",
-                ResolvedThemeMode::Light => "MarkFlowy Light",
+                ResolvedThemeMode::Dark => "Zettel Notes Dark",
+                ResolvedThemeMode::Light => "Zettel Notes Light",
             })
             .to_string()
     }
@@ -1256,10 +1334,14 @@ mod tests {
         write_startup_appearance_file, AppConf, ResolvedThemeMode, StartupAppearance,
         StartupPalette, ThemePreference, STARTUP_APPEARANCE_SCHEMA_VERSION, STORE_KEY,
     };
+    use super::{
+        copy_dir_all, migrate_legacy_file_names, renamed_builtin_theme, APP_CONF_PATH,
+        APP_FILE_EXCLUDE_PATTERNS_PATH,
+    };
     fn valid_appearance() -> StartupAppearance {
         StartupAppearance {
             schema_version: STARTUP_APPEARANCE_SCHEMA_VERSION,
-            theme_id: "MarkFlowy Dark".to_string(),
+            theme_id: "Zettel Notes Dark".to_string(),
             preference: ThemePreference::Dark,
             resolved_mode: ResolvedThemeMode::Dark,
             palette: StartupPalette::fallback(ResolvedThemeMode::Dark),
@@ -1328,7 +1410,7 @@ mod tests {
     #[test]
     fn pdf_browser_path_survives_patches_and_store_json_roundtrip() {
         let directory = tempfile::tempdir().expect("tempdir");
-        let path = directory.path().join("markflowy_store.bin");
+        let path = directory.path().join("zettel_notes_store.bin");
         for executable in [
             "/Applications/Google Chrome.app",
             "/Users/test/浏览器/Chrome App/Contents/MacOS/Google Chrome",
@@ -1535,7 +1617,7 @@ mod tests {
     #[test]
     fn missing_exclude_patterns_read_has_no_write_side_effect() {
         let directory = tempfile::tempdir().expect("tempdir");
-        let path = directory.path().join("markflowy-ignore");
+        let path = directory.path().join("zettel-notes-ignore");
 
         assert_eq!(
             read_file_exclude_patterns_from_path(&path, Some(".git\n")),
@@ -1605,7 +1687,7 @@ mod tests {
         let resolved = system.resolve_system_mode(ResolvedThemeMode::Light);
         assert_eq!(resolved.preference, ThemePreference::System);
         assert_eq!(resolved.resolved_mode, ResolvedThemeMode::Light);
-        assert_eq!(resolved.theme_id, "MarkFlowy Light");
+        assert_eq!(resolved.theme_id, "Zettel Notes Light");
         assert_eq!(
             resolved.palette,
             StartupPalette::fallback(ResolvedThemeMode::Light)
@@ -1638,13 +1720,13 @@ mod tests {
     fn startup_appearance_rejects_an_older_theme_identity() {
         let light_conf = empty_conf().amend(serde_json::json!({
             "theme_mode": "light",
-            "light_theme": "MarkFlowy Light"
+            "light_theme": "Zettel Notes Light"
         }));
         assert!(!valid_appearance().matches_conf_identity(&light_conf));
 
         let dark_conf = empty_conf().amend(serde_json::json!({
             "theme_mode": "dark",
-            "dark_theme": "MarkFlowy Dark"
+            "dark_theme": "Zettel Notes Dark"
         }));
         assert!(valid_appearance().matches_conf_identity(&dark_conf));
     }
@@ -1653,7 +1735,7 @@ mod tests {
     fn startup_appearance_identity_includes_the_accent_override() {
         let dark_conf = empty_conf().amend(serde_json::json!({
             "theme_mode": "dark",
-            "dark_theme": "MarkFlowy Dark",
+            "dark_theme": "Zettel Notes Dark",
             "theme_accent_color": "#abc"
         }));
         let mut appearance = valid_appearance();
@@ -1725,5 +1807,49 @@ mod tests {
         remove_startup_appearance_file(&path).expect("invalidate appearance");
         assert!(!path.exists());
         remove_startup_appearance_file(&path).expect("repeat invalidation");
+    }
+
+    #[test]
+    fn legacy_file_names_are_renamed_once_without_overwriting() {
+        let directory = tempfile::tempdir().expect("tempdir");
+        let dir = directory.path();
+        std::fs::write(dir.join("markflowy.conf.json"), "old settings").unwrap();
+        std::fs::write(dir.join("markflowy-ignore"), "old ignore").unwrap();
+        std::fs::write(dir.join(APP_FILE_EXCLUDE_PATTERNS_PATH), "new ignore").unwrap();
+
+        migrate_legacy_file_names(dir);
+
+        assert_eq!(std::fs::read_to_string(dir.join(APP_CONF_PATH)).unwrap(), "old settings");
+        assert!(!dir.join("markflowy.conf.json").exists());
+        assert_eq!(
+            std::fs::read_to_string(dir.join(APP_FILE_EXCLUDE_PATTERNS_PATH)).unwrap(),
+            "new ignore"
+        );
+        assert!(dir.join("markflowy-ignore").exists());
+        migrate_legacy_file_names(dir);
+        assert_eq!(std::fs::read_to_string(dir.join(APP_CONF_PATH)).unwrap(), "old settings");
+    }
+
+    #[test]
+    fn copy_dir_all_copies_nested_files() {
+        let directory = tempfile::tempdir().expect("tempdir");
+        let from = directory.path().join("from");
+        std::fs::create_dir_all(from.join("themes")).unwrap();
+        std::fs::write(from.join("markflowy.conf.json"), "settings").unwrap();
+        std::fs::write(from.join("themes").join("paper.json"), "{}").unwrap();
+        let to = directory.path().join("to");
+
+        copy_dir_all(&from, &to).unwrap();
+
+        assert_eq!(std::fs::read_to_string(to.join("markflowy.conf.json")).unwrap(), "settings");
+        assert_eq!(std::fs::read_to_string(to.join("themes").join("paper.json")).unwrap(), "{}");
+        assert!(from.join("markflowy.conf.json").exists());
+    }
+
+    #[test]
+    fn built_in_theme_names_from_before_the_rename_are_mapped() {
+        assert_eq!(renamed_builtin_theme("MarkFlowy Light"), Some("Zettel Notes Light"));
+        assert_eq!(renamed_builtin_theme("MarkFlowy Dark"), Some("Zettel Notes Dark"));
+        assert_eq!(renamed_builtin_theme("Paper"), None);
     }
 }

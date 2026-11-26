@@ -1,5 +1,5 @@
 {
-  "name": "@markflowy/github-api",
+  "name": "@zettel-notes/github-api",
   "version": "0.0.1",
   "type": "module",
   "main": "./dist/index.mjs",

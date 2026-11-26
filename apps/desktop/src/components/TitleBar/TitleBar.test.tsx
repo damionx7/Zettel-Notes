@@ -86,15 +86,15 @@ describe('TitleBar', () => {
     expect(markup).toContain('pl-[76px]')
     expect(markup).toContain('border-titlebar-border')
     expect(markup).toContain('size-3.5 text-content-primary')
-    expect(markup).toContain('MarkFlowy')
+    expect(markup).toContain('Zettel Notes')
     expect(markup).toContain('data-slot="workspace-picker-trigger"')
     expect(markup).toContain('aria-label="Open File or Folder"')
     expect(markup).not.toContain('>Open Folder</span>')
     expect(markup.match(/data-slot="workspace-picker-trigger"/g)).toHaveLength(1)
-    expect(markup).not.toContain('MarkFlowy</span>')
+    expect(markup).not.toContain('Zettel Notes</span>')
     expect(markup).not.toContain('data-mf-window-controls')
     expect(markup).not.toContain('data-slot="command-palette-trigger"')
-    expect(markup).toContain('aria-label="MarkFlowy Menu"')
+    expect(markup).toContain('aria-label="Zettel Notes Menu"')
   })
 
   it('keeps the workspace path in the open button tooltip', () => {
@@ -106,7 +106,7 @@ describe('TitleBar', () => {
       </TooltipProvider>,
     )
 
-    expect(markup).not.toContain('MarkFlowy</span>')
+    expect(markup).not.toContain('Zettel Notes</span>')
     expect(markup).toContain('Open File or Folder\n/Users/test/notes')
     expect(markup).toContain('>notes</span>')
     expect(markup).not.toContain('h-3.5 w-px')

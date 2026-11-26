@@ -1,6 +1,6 @@
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { parseThemeDocument } from '@markflowy/theme/semantic'
+import { parseThemeDocument } from '@zettel-notes/theme/semantic'
 import { changeLng, i18nInit } from '../../../../../../packages/i18n/src/desktop'
 vi.mock('@/i18n', async () => import('../../../../../../packages/i18n/src/desktop'))
 vi.mock('@/themes/library', () => ({

@@ -43,7 +43,7 @@ test('Next routes and next-i18next server props load the Russian web dictionary'
   })
   assert.equal(_nextI18Next.initialLocale, 'ru')
   assert.equal(_nextI18Next.initialI18nStore.ru.common.navigation.language, 'Язык')
-  assert.equal(_nextI18Next.initialI18nStore.ru.common.home.hero.download, 'Скачать MarkFlowy')
+  assert.equal(_nextI18Next.initialI18nStore.ru.common.home.hero.download, 'Скачать Zettel Notes')
 })
 
 test('client navigation from Russian docs to an English guide refreshes newly mounted chrome', async () => {
@@ -70,7 +70,7 @@ test('client navigation from Russian docs to an English guide refreshes newly mo
       'components/ThemeProvider': childrenOnly,
       'next/head': () => null,
       'styled-components': { createGlobalStyle: () => () => null },
-      '@markflowy/interface': { GlobalStyles: () => null },
+      '@zettel-notes/interface': { GlobalStyles: () => null },
       '../utils/website': { isWebsitePage: () => true },
       '../utils/websiteTheme': { applicationThemeCSS: '', websiteThemeCSS: '' },
     })
@@ -138,7 +138,7 @@ test('the web editor receives the Russian language and dictionary', async () => 
   let editorLocale
   const resources = { ru: { translation: { toolbar: { undo: 'Отмена' } } } }
   const { default: RmeProvider } = await loadModule('components/RmeProvider.tsx', {
-    '@markflowy/i18n': {
+    '@zettel-notes/i18n': {
       createInstance: () => ({}), editorResources: resources,
       I18nextProvider: ({ children }) => children,
     },

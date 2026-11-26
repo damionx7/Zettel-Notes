@@ -1,5 +1,5 @@
 import { fetch } from '@tauri-apps/plugin-http'
-import { ApiClient, createMemoryTokenStorage, type FetchAdapter } from '@markflowy/api-client'
+import { ApiClient, createMemoryTokenStorage, type FetchAdapter } from '@zettel-notes/api-client'
 import { logger } from '@/helper/logger'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3200'
@@ -31,4 +31,4 @@ class DesktopApiClient extends ApiClient {
 
 export const apiClient = new DesktopApiClient()
 
-export type { ApiResponse, RequestConfig } from '@markflowy/api-client'
+export type { ApiResponse, RequestConfig } from '@zettel-notes/api-client'

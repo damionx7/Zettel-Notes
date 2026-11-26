@@ -31,7 +31,7 @@ export default function SeoHead({
   children,
   description,
   image,
-  title = 'MarkFlowy',
+  title = 'Zettel Notes',
   url,
   availableLocales = SITE_LOCALES,
   markdownUrl,
@@ -43,7 +43,11 @@ export default function SeoHead({
   const alternates = getLanguageAlternates(router.asPath, availableLocales)
   const socialImage =
     typeof image === 'string' ? { url: image, alt: title } : image || getSocialImage(locale)
-  const imageUrl = new URL(socialImage.url, SITE_ORIGIN).href
+  // SITE_ORIGIN may include a base path (GitHub Pages), so a root-relative image path is
+  // appended to it instead of resolved against the bare origin.
+  const imageUrl = /^[a-z][a-z\d+.-]*:/i.test(socialImage.url)
+    ? socialImage.url
+    : new URL(`${SITE_ORIGIN}/${socialImage.url.replace(/^\/+/, '')}`).href
   const home = normalizePagePath(router.pathname) === '/'
 
   return (
@@ -75,7 +79,7 @@ export default function SeoHead({
         <meta property='og:image:height' content={String(socialImage.height)} key='og:image:height' />
       )}
       <meta property='og:description' content={summary} key='og:description' />
-      <meta property='og:site_name' content='MarkFlowy' key='og:site_name' />
+      <meta property='og:site_name' content='Zettel Notes' key='og:site_name' />
 
       <meta name='twitter:card' content='summary_large_image' key='twitter:card' />
       <meta name='twitter:title' content={title} key='twitter:title' />

@@ -260,7 +260,7 @@ mod security_bookmark {
         let args = AppStrategyArgs {
             top_level_domain: "com".to_string(),
             author: "toolsetlink".to_string(),
-            app_name: "MarkFlowy".to_string(),
+            app_name: "Zettel Notes".to_string(),
         };
 
         let app_support = match etcetera::app_strategy::choose_native_strategy(args) {
@@ -1505,7 +1505,7 @@ fn unique_replace_backup_path(target_path: &Path) -> AnyResult<PathBuf> {
     for _ in 0..16 {
         let mut backup_name = std::ffi::OsString::from(".");
         backup_name.push(file_name);
-        backup_name.push(format!(".markflowy-replace-{}.bak", uuid::Uuid::new_v4()));
+        backup_name.push(format!(".zettel-notes-replace-{}.bak", uuid::Uuid::new_v4()));
         let backup_path = parent.join(backup_name);
         if !backup_path.exists() {
             return Ok(backup_path);

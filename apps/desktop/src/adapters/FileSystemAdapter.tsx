@@ -10,7 +10,7 @@ import {
   type FileSystemContextValue,
   type MoveFileInfo,
   type RunFileMutation,
-} from '@markflowy/interface'
+} from '@zettel-notes/interface'
 import { logger } from '@/helper/logger'
 import { i18n } from '@/i18n'
 import { decryptNoteFileWithPassphrase, encryptNoteFile } from '@/services/note-encryption'

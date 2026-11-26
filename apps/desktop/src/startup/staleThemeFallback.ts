@@ -1,4 +1,4 @@
-import type { MfTheme } from '@markflowy/theme'
+import type { MfTheme } from '@zettel-notes/theme'
 
 export const STALE_STARTUP_THEME_TIMEOUT_MS = 1000
 

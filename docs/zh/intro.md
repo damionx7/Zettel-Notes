@@ -1,29 +1,29 @@
 ---
-seoTitle: "MarkFlowy 桌面版：入门与写作指南"
-description: "从单个 Markdown 文件或本地工作区开始，了解 MarkFlowy 桌面版的所见即所得与源码编辑、搜索、本地历史、主题、可选 AI 和导出。"
+seoTitle: "Zettel Notes 桌面版：入门与写作指南"
+description: "从单个 Markdown 文件或本地工作区开始，了解 Zettel Notes 桌面版的所见即所得与源码编辑、搜索、本地历史、主题、可选 AI 和导出。"
 updatedAt: "2026-10-05"
 ---
 
-# 用 MarkFlowy 写作
+# 用 Zettel Notes 写作
 
-MarkFlowy 是面向 macOS、Windows 和 Linux 的本地优先 Markdown 编辑器。打开已有的文件与文件夹，用所见即所得或 Markdown 源码模式写作，需要时再接入 AI。本地编辑无需登录，也无需配置 AI 服务。
+Zettel Notes 是面向 macOS、Windows 和 Linux 的本地优先 Markdown 编辑器。打开已有的文件与文件夹，用所见即所得或 Markdown 源码模式写作，需要时再接入 AI。本地编辑无需登录，也无需配置 AI 服务。
 
-![MarkFlowy 桌面版的本地文件树、所见即所得编辑器和文档目录](/screenshots/home.png)
+![Zettel Notes 桌面版的本地文件树、所见即所得编辑器和文档目录](/screenshots/home.png)
 
 ## 打开第一份文档
 
-1. 从 [GitHub Releases](https://github.com/drl990114/MarkFlowy/releases/latest) 安装适合操作系统的版本。
+1. 从 [GitHub Releases](https://github.com/damionx7/Zettel-Notes/releases/latest) 安装适合操作系统的版本。
 2. 选择**打开文件**编辑单个文档，或**打开文件夹**创建工作区。标题栏的打开菜单还可查看最近打开的文件和工作区，并在新窗口打开文件夹。
 3. 新建 Markdown 文档，或在已打开的文件夹中选择文件。TXT、JSON 等文本文件也可编辑。
 4. 输入内容后按 **Cmd/Ctrl + S** 保存；在**设置 → 通用**中配置自动保存与保存间隔。
 
-工作区使用普通文件。你可以自行选择备份与同步工具；本地编辑不会把所有文档上传到 MarkFlowy 云端账户。
+工作区使用普通文件。你可以自行选择备份与同步工具；本地编辑不会把所有文档上传到 Zettel Notes 云端账户。
 
 ## 从单个文件开始
 
-记录一则笔记或专心写一篇草稿时，直接打开 Markdown 文件即可，无需先打开文件夹。只有一个文档时，MarkFlowy 会自动采用紧凑的单文件布局，收起文档上方的标签栏。点击文档名称即可重命名，所见即所得、源码编辑、本地历史和导出功能仍可照常使用。
+记录一则笔记或专心写一篇草稿时，直接打开 Markdown 文件即可，无需先打开文件夹。只有一个文档时，Zettel Notes 会自动采用紧凑的单文件布局，收起文档上方的标签栏。点击文档名称即可重命名，所见即所得、源码编辑、本地历史和导出功能仍可照常使用。
 
-![MarkFlowy 桌面版单文件模式：紧凑的工具栏与标题栏中的文档名称](/screenshots/single-file.png)
+![Zettel Notes 桌面版单文件模式：紧凑的工具栏与标题栏中的文档名称](/screenshots/single-file.png)
 
 需要对照其他资料时，打开另一份文档或拆分编辑器，标签栏会自动出现。整理更多文件时，选择**打开文件夹**即可使用文件树与工作区搜索，无需额外设置模式。
 
@@ -68,7 +68,7 @@ MarkFlowy 是面向 macOS、Windows 和 Linux 的本地优先 Markdown 编辑器
 
 编辑器设置包含字体排版、全宽布局、代码块换行和光标动效。正文方向可选**自动**、**从左到右**或**从右到左**，也可在**更多 → 文本方向**单独设置当前文档。正文方向不改变 Markdown 源码和代码的从左到右显示。
 
-![MarkFlowy 桌面版深色主题](/screenshots/darkmode.png)
+![Zettel Notes 桌面版深色主题](/screenshots/darkmode.png)
 
 ## 按需配置 AI
 
@@ -85,7 +85,7 @@ MarkFlowy 是面向 macOS、Windows 和 Linux 的本地优先 Markdown 编辑器
 | HTML、图片 | Markdown 文档的**更多 → 导出**。 |
 | PDF | **更多 → 导出 → PDF**，随后使用系统打印对话框。 |
 | DOCX、ODT、EPUB | 安装 Pandoc，在**设置 → 导出**配置后，选择**通过 Pandoc 导出**。 |
-| 本地自动化 | 使用 [CLI 与官方 Skill](https://github.com/drl990114/MarkFlowy/blob/main/docs/CLI.md)进行本地文件操作和导出。 |
+| 本地自动化 | 使用 [CLI 与官方 Skill](https://github.com/damionx7/Zettel-Notes/blob/main/docs/CLI.md)进行本地文件操作和导出。 |
 
 可用导出项取决于文件类型和编辑模式。导出 PDF 时，在系统打印对话框中选择保存为 PDF。
 
@@ -108,31 +108,31 @@ MarkFlowy 是面向 macOS、Windows 和 Linux 的本地优先 Markdown 编辑器
 
 **Web App Beta** 是独立的浏览器工作区，具有自己的存储与登录行为。本文的本地文件、系统导出和截图示例均面向桌面版。
 
-MarkFlowy 针对大文档优化加载与渲染，让长篇 Markdown 的打开、滚动和编辑更流畅。
+Zettel Notes 针对大文档优化加载与渲染，让长篇 Markdown 的打开、滚动和编辑更流畅。
 
-MarkFlowy 使用 Tauri 与系统 WebView，安装包大小随平台和安装方式变化；Windows 离线包包含 WebView2。
+Zettel Notes 使用 Tauri 与系统 WebView，安装包大小随平台和安装方式变化；Windows 离线包包含 WebView2。
 
 ## 升级与反馈
 
 从旧版本迁移文档时，先备份并检查有代表性的表格、链接、图片、公式和保存结果。0.100 系列重构过编辑器，主题也改为声明式 JSON；旧主题请参考[主题迁移指南](./Extension/CustomTheme)。
 
-查看[更新日志](https://www.markflowy.cc/zh/releases)、[贡献指南](./Community/CONTRIBUTING)和 [Issue 列表](https://github.com/drl990114/MarkFlowy/issues)。报告问题时请附应用版本、操作系统、编辑模式和最小复现示例。
+查看[更新日志](https://github.com/damionx7/Zettel-Notes/releases)、[贡献指南](./Community/CONTRIBUTING)和 [Issue 列表](https://github.com/damionx7/Zettel-Notes/issues)。报告问题时请附应用版本、操作系统、编辑模式和最小复现示例。
 
 ## 下载
 
-支持 Windows、macOS 和 Linux，可从 [latest release](https://github.com/drl990114/MarkFlowy/releases/latest) 下载。
+支持 Windows、macOS 和 Linux，可从 [latest release](https://github.com/damionx7/Zettel-Notes/releases/latest) 下载。
 
 ### Windows
 
 下载并运行任意一个 x64 安装包：
 
-- `MarkFlowy_v<version>_x64-setup.exe` 或 `MarkFlowy_v<version>_x64.msi` — 安装程序。
-- `MarkFlowy_v<version>_offline_installer_x64-setup.exe` / `.msi` — 同上，内置 WebView2 运行时。
-- `MarkFlowy_v<version>_x64_portable.zip` — 解压即用，无需安装。
+- `Zettel-Notes_v<version>_x64-setup.exe` 或 `Zettel-Notes_v<version>_x64.msi` — 安装程序。
+- `Zettel-Notes_v<version>_offline_installer_x64-setup.exe` / `.msi` — 同上，内置 WebView2 运行时。
+- `Zettel-Notes_v<version>_x64_portable.zip` — 解压即用，无需安装。
 
 ### macOS
 
-下载 `MarkFlowy_v<version>_aarch64.dmg`（Apple silicon）或 `MarkFlowy_v<version>_x64.dmg`（Intel）。
+下载 `Zettel-Notes_v<version>_macOS_universal.dmg`，它可在 Apple silicon 和 Intel Mac 上原生运行。
 
 > 若 macOS 拦截了从官方 Release 页面下载的可信应用，可按 Apple 的[“仍要打开”说明](https://support.apple.com/zh-cn/102445)，在**系统设置 → 隐私与安全性**中操作。
 
@@ -140,21 +140,12 @@ MarkFlowy 使用 Tauri 与系统 WebView，安装包大小随平台和安装方�
 
 目前仅提供 x86_64 版本。
 
-#### Flatpak
-
-已上架 [FlatPark](https://flatpark.org) — [应用页面](https://flatpark.org/apps/io.github.drl990114.MarkFlowy)：
-
-```sh
-flatpak remote-add --if-not-exists flatpark https://dl.flatpark.org/flatpark.flatpakrepo
-flatpak install flatpark io.github.drl990114.MarkFlowy
-```
-
 #### 安装脚本
 
 按发行版安装 `.deb` 或 `.rpm`，无法识别发行版时安装 AppImage：
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/drl990114/MarkFlowy/main/scripts/install-linux.sh -o install-linux.sh
+curl -fsSL https://raw.githubusercontent.com/damionx7/Zettel-Notes/main/scripts/install-linux.sh -o install-linux.sh
 sh install-linux.sh
 ```
 

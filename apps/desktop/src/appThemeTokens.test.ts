@@ -1,4 +1,4 @@
-import { desktopDarkTheme, desktopLightTheme } from '@markflowy/theme'
+import { desktopDarkTheme, desktopLightTheme } from '@zettel-notes/theme'
 import { darkTheme as defaultEditorDarkTheme } from 'rme'
 import { describe, expect, it } from 'vitest'
 import {

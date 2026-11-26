@@ -41,21 +41,21 @@ export async function assertBinary(binary) {
 
 export async function createEnvironment(name, parent = tmpdir()) {
   assert.ok(scenarios.includes(name), 'Unknown E2E scenario')
-  const root = await realpath(await mkdtemp(join(parent, 'markflowy-e2e-')))
+  const root = await realpath(await mkdtemp(join(parent, 'zettel-notes-e2e-')))
   const id = randomUUID()
-  await writeFile(join(root, '.markflowy-e2e'), id)
+  await writeFile(join(root, '.zettel-notes-e2e'), id)
   await mkdir(join(root, 'files'))
   await mkdir(join(root, 'config'))
   // Zettel Notes autosaves by default; the scenarios observe unsaved drafts, so start with
   // autosave off (the upstream default these scenarios were written against).
-  await writeFile(join(root, 'config', 'markflowy.conf.json'), JSON.stringify(E2E_SETTINGS))
+  await writeFile(join(root, 'config', 'zettel-notes.conf.json'), JSON.stringify(E2E_SETTINGS))
   return { root, id, identifier: `${E2E_IDENTIFIER_PREFIX}${id.replaceAll('-', '')}` }
 }
 
 export async function assertOwner(environment) {
   assert.match(environment.id, /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/)
   assert.equal(environment.identifier, `${E2E_IDENTIFIER_PREFIX}${environment.id.replaceAll('-', '')}`)
-  assert.equal(await readFile(join(environment.root, '.markflowy-e2e'), 'utf8'), environment.id)
+  assert.equal(await readFile(join(environment.root, '.zettel-notes-e2e'), 'utf8'), environment.id)
   assert.equal(await realpath(environment.root), environment.root, 'E2E root was replaced')
 }
 

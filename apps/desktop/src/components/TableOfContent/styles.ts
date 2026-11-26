@@ -1,4 +1,4 @@
-import { darken, type ScThemeProps } from '@markflowy/theme'
+import { darken, type ScThemeProps } from '@zettel-notes/theme'
 import styled, { css } from 'styled-components'
 import type { ITocListProps } from './type'
 

@@ -7,7 +7,7 @@ interface FillFlexParentProps {
 
 /**
  * Component that fills its parent flex container and provides dimensions to children
- * Required by FileTree component from @markflowy/interface
+ * Required by FileTree component from @zettel-notes/interface
  */
 export const FillFlexParent: FC<FillFlexParentProps> = ({ children }) => {
   const ref = useRef<HTMLDivElement>(null)

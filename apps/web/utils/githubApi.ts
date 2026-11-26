@@ -4,7 +4,7 @@ type Releases = Endpoints['GET /repos/{owner}/{repo}/releases']['response']['dat
 const CACHE_DURATION = 60 * 60 * 1000 * 24
 const releasesCache: Record<string, { data: Releases; ts: number }> = {}
 
-export const getReleases = async (repo = 'MarkFlowy'): Promise<Releases> => {
+export const getReleases = async (repo = 'Zettel Notes'): Promise<Releases> => {
   const now = Date.now()
   const isBrowser = typeof window !== 'undefined'
   let cached = releasesCache[repo]

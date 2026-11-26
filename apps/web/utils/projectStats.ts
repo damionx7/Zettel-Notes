@@ -5,7 +5,7 @@ export type ProjectStats = {
   checkedAt: string
 }
 
-const repository = 'https://api.github.com/repos/drl990114/MarkFlowy'
+const repository = 'https://api.github.com/repos/damionx7/Zettel-Notes'
 const packageFile = /\.(dmg|exe|msi|deb|rpm|appimage|zip|tar\.gz)$/i
 const isCount = (value: unknown): value is number =>
   typeof value === 'number' && Number.isSafeInteger(value) && value >= 0

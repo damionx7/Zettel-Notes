@@ -34,9 +34,9 @@ export default function SiteFooter() {
     <footer className='mf-site-footer'>
       <div className='mf-container mf-footer-grid'>
         <div className='mf-footer-brand'>
-          <Link href='/' className='mf-site-brand' aria-label='MarkFlowy'>
+          <Link href='/' className='mf-site-brand' aria-label='Zettel Notes'>
             <Logo size={28} />
-            <span>MarkFlowy</span>
+            <span>Zettel Notes</span>
           </Link>
           <p>{t('site.footer.tagline')}</p>
           <span className='mf-footer-note'>macOS · Windows · Linux</span>
@@ -55,7 +55,7 @@ export default function SiteFooter() {
         ))}
       </div>
       <div className='mf-container mf-footer-bottom'>
-        <span>© 2023–{new Date().getFullYear()} MarkFlowy</span>
+        <span>© 2023–{new Date().getFullYear()} Zettel Notes</span>
         <div>
           <Link href='/privacy' locale='en'>
             {t('site.footer.privacy')}

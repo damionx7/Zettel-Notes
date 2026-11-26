@@ -3,7 +3,7 @@
 // actually overflows; a row must not create its own competing scroll container.
 export const editorScrollOptions = {
   scrollbars: {
-    theme: 'os-theme-markflowy',
+    theme: 'os-theme-zettel-notes',
     visibility: 'auto',
     autoHide: 'never',
     dragScroll: true,

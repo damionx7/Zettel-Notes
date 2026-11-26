@@ -63,7 +63,7 @@ export default function MobileNavbar({
     <Wrapper ref={wrapperRef}>
       <LogoLink href='/' unstyled>
         <Logo size={20} />
-        <BrandName>MarkFlowy</BrandName>
+        <BrandName>Zettel Notes</BrandName>
       </LogoLink>
 
       <MenuToggle
@@ -89,7 +89,7 @@ export default function MobileNavbar({
         <MobileActions>
           <LanguageSwitcher />
           <MobileGitHubLink
-            href='https://github.com/drl990114/MarkFlowy'
+            href='https://github.com/damionx7/Zettel-Notes'
             target='_blank'
             rel='noopener noreferrer'
             onClick={closeMenu}

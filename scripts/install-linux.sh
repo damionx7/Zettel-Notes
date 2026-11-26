@@ -1,23 +1,25 @@
 #!/usr/bin/env sh
 set -eu
 
-APP_NAME="MarkFlowy"
-PACKAGE_NAME="mark-flowy"
-RELEASE_BASE_URL="https://github.com/drl990114/MarkFlowy/releases"
-DEFAULT_MANIFEST_URL="$RELEASE_BASE_URL/latest/download/install.json"
-FALLBACK_MANIFEST_URL="https://drl990114.github.io/MarkFlowy/install.json"
+APP_NAME="Zettel Notes"
+PACKAGE_NAME="zettel-notes"
+RELEASE_BASE_URL="https://github.com/damionx7/Zettel-Notes/releases"
+# Releases are published as prereleases, so `releases/latest` does not resolve: GitHub Pages
+# serves the current install.json first.
+DEFAULT_MANIFEST_URL="https://damionx7.github.io/Zettel-Notes/install.json"
+FALLBACK_MANIFEST_URL="$RELEASE_BASE_URL/latest/download/install.json"
 
-INSTALL_DIR="${MARKFLOWY_INSTALL_DIR:-${HOME:-}/.local/share/markflowy}"
-BIN_DIR="${MARKFLOWY_BIN_DIR:-${HOME:-}/.local/bin}"
-APPIMAGE_PATH="$INSTALL_DIR/MarkFlowy.AppImage"
-BIN_PATH="$BIN_DIR/markflowy"
+INSTALL_DIR="${ZETTEL_NOTES_INSTALL_DIR:-${HOME:-}/.local/share/zettel-notes}"
+BIN_DIR="${ZETTEL_NOTES_BIN_DIR:-${HOME:-}/.local/bin}"
+APPIMAGE_PATH="$INSTALL_DIR/Zettel-Notes.AppImage"
+BIN_PATH="$BIN_DIR/zettel-notes"
 
 say() {
   printf '%s\n' "$*"
 }
 
 err() {
-  printf 'markflowy-install: %s\n' "$*" >&2
+  printf 'zettel-notes-install: %s\n' "$*" >&2
 }
 
 die() {
@@ -27,7 +29,7 @@ die() {
 
 usage() {
   cat <<'EOF'
-Install MarkFlowy for Linux.
+Install Zettel Notes for Linux.
 
 By default the script detects your distribution and installs the native
 package (.deb on Debian/Ubuntu, .rpm on Fedora/RHEL/openSUSE). On any other
@@ -36,13 +38,13 @@ distribution it falls back to the AppImage.
 Usage:
   sh install-linux.sh              Detect the distribution and install
   sh install-linux.sh --appimage   Always install the AppImage
-  sh install-linux.sh --uninstall  Remove MarkFlowy
+  sh install-linux.sh --uninstall  Remove Zettel Notes
 
 Environment:
-  MARKFLOWY_MANIFEST_URL   Override updater manifest URL.
-  MARKFLOWY_DOWNLOAD_URL   Override download URL (.deb, .rpm or AppImage).
-  MARKFLOWY_INSTALL_DIR    Override AppImage install directory.
-  MARKFLOWY_BIN_DIR        Override command install directory.
+  ZETTEL_NOTES_MANIFEST_URL   Override updater manifest URL.
+  ZETTEL_NOTES_DOWNLOAD_URL   Override download URL (.deb, .rpm or AppImage).
+  ZETTEL_NOTES_INSTALL_DIR    Override AppImage install directory.
+  ZETTEL_NOTES_BIN_DIR        Override command install directory.
 EOF
 }
 
@@ -62,10 +64,10 @@ download() {
 download_manifest() {
   output=$1
 
-  if [ -n "${MARKFLOWY_MANIFEST_URL:-}" ]; then
-    say "Fetching release manifest from $MARKFLOWY_MANIFEST_URL..."
-    download "$MARKFLOWY_MANIFEST_URL" "$output"
-    manifest_url=$MARKFLOWY_MANIFEST_URL
+  if [ -n "${ZETTEL_NOTES_MANIFEST_URL:-}" ]; then
+    say "Fetching release manifest from $ZETTEL_NOTES_MANIFEST_URL..."
+    download "$ZETTEL_NOTES_MANIFEST_URL" "$output"
+    manifest_url=$ZETTEL_NOTES_MANIFEST_URL
     return
   fi
 
@@ -410,7 +412,7 @@ uninstall() {
 
 install_appimage() {
   url=$1
-  appimage_tmp="$tmp_dir/MarkFlowy.AppImage"
+  appimage_tmp="$tmp_dir/Zettel-Notes.AppImage"
 
   say "Downloading the $APP_NAME AppImage ${version:-latest}..."
   download "$url" "$appimage_tmp"
@@ -433,11 +435,11 @@ install_appimage() {
 
   if ! path_contains_bin_dir; then
     say ""
-    say "Add this directory to PATH before running markflowy:"
+    say "Add this directory to PATH before running zettel-notes:"
     say "  export PATH=\"$BIN_DIR:\$PATH\""
   else
     say ""
-    say "Run: markflowy"
+    say "Run: zettel-notes"
   fi
 
   say ""
@@ -447,7 +449,7 @@ install_appimage() {
 install_package() {
   format=$1
   url=$2
-  package_tmp="$tmp_dir/markflowy.$format"
+  package_tmp="$tmp_dir/zettel-notes.$format"
 
   say "Downloading the $APP_NAME .$format package ${version:-latest}..."
 
@@ -479,7 +481,7 @@ install_package() {
 
   say ""
   say "$APP_NAME ${version:-latest} installed."
-  say "Run: markflowy"
+  say "Run: zettel-notes"
 }
 
 format=""
@@ -514,7 +516,7 @@ if [ "$action" = "uninstall" ]; then
   exit 0
 fi
 
-tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/markflowy.XXXXXX")
+tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/zettel-notes.XXXXXX")
 trap 'rm -rf "$tmp_dir"' EXIT HUP INT TERM
 
 platform=$(detect_platform)
@@ -522,23 +524,23 @@ version=""
 manifest_url=""
 appimage_url=""
 
-if [ -n "${MARKFLOWY_DOWNLOAD_URL:-}" ]; then
+if [ -n "${ZETTEL_NOTES_DOWNLOAD_URL:-}" ]; then
   if [ -z "$format" ]; then
-    case "$MARKFLOWY_DOWNLOAD_URL" in
+    case "$ZETTEL_NOTES_DOWNLOAD_URL" in
       *.deb) format="deb" ;;
       *.rpm) format="rpm" ;;
       *) format="appimage" ;;
     esac
   fi
 
-  deb_url=$MARKFLOWY_DOWNLOAD_URL
-  rpm_url=$MARKFLOWY_DOWNLOAD_URL
+  deb_url=$ZETTEL_NOTES_DOWNLOAD_URL
+  rpm_url=$ZETTEL_NOTES_DOWNLOAD_URL
 
   # Only an override that is actually an AppImage may be used as one. Reusing a
-  # .deb/.rpm override here would install the package file as `MarkFlowy.AppImage`
+  # .deb/.rpm override here would install the package file as `Zettel-Notes.AppImage`
   # when the package install fails.
   if [ "$format" = "appimage" ]; then
-    appimage_url=$MARKFLOWY_DOWNLOAD_URL
+    appimage_url=$ZETTEL_NOTES_DOWNLOAD_URL
   fi
 else
   manifest_path="$tmp_dir/install.json"
@@ -550,8 +552,8 @@ else
 
   [ -n "$version" ] || die "no version found in $manifest_url"
 
-  # Release assets are named MarkFlowy_v0.0.0_amd64.deb and
-  # MarkFlowy-0.0.0-1.x86_64.rpm, so both spellings of the version are needed.
+  # Release assets are named Zettel-Notes_v0.0.0_amd64.deb and
+  # Zettel Notes-0.0.0-1.x86_64.rpm, so both spellings of the version are needed.
   version_tag=$version
   case "$version_tag" in
     v*) ;;
@@ -602,6 +604,6 @@ if [ -n "$package_url" ]; then
 fi
 
 if [ "$format" = "appimage" ]; then
-  [ -n "$appimage_url" ] || die "no AppImage URL found for platform '$platform' in ${manifest_url:-MARKFLOWY_DOWNLOAD_URL}"
+  [ -n "$appimage_url" ] || die "no AppImage URL found for platform '$platform' in ${manifest_url:-ZETTEL_NOTES_DOWNLOAD_URL}"
   install_appimage "$appimage_url"
 fi

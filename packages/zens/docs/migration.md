@@ -6,7 +6,7 @@ The package name and its `lib`/`esm` JavaScript and declaration directories are 
 
 Generic primitives now live in `packages/zens/src/components`. Desktop `components/ui/*` modules forward those implementations, preserving application import paths. Shared `interface` and `rme` components import zens directly and have no dependency on Desktop's facade or Tailwind scan.
 
-Import `zens/esm/styles.css` once at your host entry (`zens/lib/styles.css` for CommonJS). Independent `rme` and `@markflowy/interface` hosts can import `rme/styles.css` or `@markflowy/interface/styles.css`; these entries include the shared component stylesheet. Keep any existing editor content styles as well, and avoid importing the same shared stylesheet twice. CSS is included in published `lib` and `esm` outputs and marked as a package side effect so bundlers retain it.
+Import `zens/esm/styles.css` once at your host entry (`zens/lib/styles.css` for CommonJS). Independent `rme` and `@zettel-notes/interface` hosts can import `rme/styles.css` or `@zettel-notes/interface/styles.css`; these entries include the shared component stylesheet. Keep any existing editor content styles as well, and avoid importing the same shared stylesheet twice. CSS is included in published `lib` and `esm` outputs and marked as a package side effect so bundlers retain it.
 
 ## Overlay and toolbar APIs
 

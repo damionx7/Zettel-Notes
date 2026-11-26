@@ -15,7 +15,7 @@ import {
   type FrozenEditorContext,
 } from './editorContext'
 
-const EDITOR_CONTEXT_MIME_TYPE = 'application/x-markflowy-editor-context'
+const EDITOR_CONTEXT_MIME_TYPE = 'application/x-zettel-notes-editor-context'
 
 type FreezeEditorContexts = (
   references: EditorContextReference[],

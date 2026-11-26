@@ -2,7 +2,7 @@ import { HeadingExtension, HeadingExtensionAttributes } from '@rme-sdk/sdk/exten
 import { useActive, useCommands } from '@rme-sdk/sdk/react';
 import { FC, useCallback } from 'react';
 
-import { t } from '@markflowy/i18n';
+import { t } from '@zettel-notes/i18n';
 import { CommandButton, CommandButtonProps } from './command-button';
 
 export interface ToggleHeadingButtonProps

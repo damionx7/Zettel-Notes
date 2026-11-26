@@ -1,5 +1,5 @@
 import { apiClient } from '../../../utils/apiClient'
-import type { AuthSession, GitHubConnectionStatus } from '@markflowy/types'
+import type { AuthSession, GitHubConnectionStatus } from '@zettel-notes/types'
 
 export interface GitHubRepo {
   id: string

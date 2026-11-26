@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server'
 import type { ComponentProps } from 'react'
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import { EditorViewType } from 'rme'
 import { ServerStyleSheet, StyleSheetManager, ThemeProvider } from 'styled-components'
 import { describe, expect, it } from 'vitest'

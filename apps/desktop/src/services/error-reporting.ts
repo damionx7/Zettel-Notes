@@ -10,7 +10,7 @@ let reportingEnabled = false
 let consentRevision = 0
 const pendingExceptions: unknown[] = []
 const MAX_PENDING_EXCEPTIONS = 20
-const CONSENT_TAG = 'markflowy_consent_revision'
+const CONSENT_TAG = 'zettel_notes_consent_revision'
 
 const reportException = (reporter: ErrorReporter, error: unknown) => reporter.captureException(error, {
   tags: { [CONSENT_TAG]: String(consentRevision) },

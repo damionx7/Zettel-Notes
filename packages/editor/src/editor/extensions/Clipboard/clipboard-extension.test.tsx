@@ -235,7 +235,7 @@ describe('ClipboardExtension', () => {
     }
   })
 
-  it('pastes MarkFlowy clipboard HTML back as structured nodes', async () => {
+  it('pastes Zettel Notes clipboard HTML back as structured nodes', async () => {
     const delegate = createWysiwygDelegate()
     const sourceDoc = delegate.stringToDoc(markdown)
     const htmlContainer = document.createElement('div')

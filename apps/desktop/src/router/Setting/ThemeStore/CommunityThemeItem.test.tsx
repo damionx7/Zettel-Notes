@@ -1,6 +1,6 @@
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import type { ThemeDocument } from '@markflowy/theme/semantic'
+import type { ThemeDocument } from '@zettel-notes/theme/semantic'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { i18nInit } from '../../../../../../packages/i18n/src/desktop'
 import { CommunityThemeItem } from './CommunityThemeItem'

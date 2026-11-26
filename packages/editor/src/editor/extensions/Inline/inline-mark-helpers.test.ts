@@ -493,7 +493,7 @@ describe('initDocMarks', () => {
 
   describe('image-only link labels', () => {
     const badgeUrl =
-      'https://img.shields.io/github/v/release/drl990114/MarkFlowy?color=%239accfe&label=version&style=flat-square'
+      'https://img.shields.io/github/v/release/damionx7/Zettel-Notes?color=%239accfe&label=version&style=flat-square'
     const releaseReference = { ...reference, label: 'release' }
 
     it.each([
@@ -503,7 +503,7 @@ describe('initDocMarks', () => {
         references: [releaseReference],
       },
       {
-        markdown: `[![App Version](${badgeUrl})](https://github.com/drl990114/MarkFlowy) plain`,
+        markdown: `[![App Version](${badgeUrl})](https://github.com/damionx7/Zettel-Notes) plain`,
         name: 'inline link',
         references: [],
       },
@@ -518,7 +518,7 @@ describe('initDocMarks', () => {
 
       const expectedSource = references.length
         ? '[][release]'
-        : '[](https://github.com/drl990114/MarkFlowy)'
+        : '[](https://github.com/damionx7/Zettel-Notes)'
       const hiddenSource = textNodes
         .filter((node) => node.marks.some((mark) => mark.type.name === 'mdMark'))
         .map((node) => node.text)

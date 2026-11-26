@@ -1,4 +1,4 @@
-import { markflowyDarkTheme, markflowyLightTheme } from './index'
+import { zettelNotesDarkTheme, zettelNotesLightTheme } from './index'
 
 export const editorSpecificTokens = {
   nodeSelectedColor: '#3988ff33',
@@ -37,12 +37,12 @@ export const editorSpecificTokens = {
 }
 
 export const editorLightTheme = {
-  ...markflowyLightTheme,
+  ...zettelNotesLightTheme,
   ...editorSpecificTokens,
 }
 
 export const editorDarkTheme = {
-  ...markflowyDarkTheme,
+  ...zettelNotesDarkTheme,
   ...editorSpecificTokens,
 
   nodeSelectedColor: 'rgba(55, 148, 255, 0.18)',

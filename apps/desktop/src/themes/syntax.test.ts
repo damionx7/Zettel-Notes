@@ -1,5 +1,5 @@
 import { tagHighlighter, tags, type Tag } from '@lezer/highlight'
-import { codeMirrorSyntaxStyles, resolveThemeTokens } from '@markflowy/theme/semantic'
+import { codeMirrorSyntaxStyles, resolveThemeTokens } from '@zettel-notes/theme/semantic'
 import { describe, expect, it } from 'vitest'
 
 const tokens = resolveThemeTokens('light', {

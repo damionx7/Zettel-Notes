@@ -4,7 +4,7 @@ import { useCommands, useEditorState } from '@rme-sdk/sdk/react'
 import { useCallback } from 'react'
 import type { FC } from 'react'
 
-import { t } from '@markflowy/i18n'
+import { t } from '@zettel-notes/i18n'
 import { getStandardListCommand } from '../../../extensions'
 import { CommandButton } from './command-button'
 import type { CommandButtonProps } from './command-button'

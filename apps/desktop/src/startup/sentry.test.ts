@@ -91,7 +91,7 @@ describe('deferred Sentry initialization', () => {
 
     await vi.waitFor(() => {
       expect(sentryCaptureException).toHaveBeenCalledWith(earlyError, {
-        tags: { markflowy_consent_revision: '1' },
+        tags: { zettel_notes_consent_revision: '1' },
       })
     })
     expect(sentryCaptureException).toHaveBeenCalledTimes(1)
@@ -133,7 +133,7 @@ describe('deferred Sentry initialization', () => {
     await initializeErrorReporter({ dsn: 'https://public@example.invalid/1' })
     const options = sentryInit.mock.calls[0][0]
     const transport = options.transport({})
-    const event = { tags: { markflowy_consent_revision: '1' }, exception: { values: [{ type: 'TypeError', value: 'private content' }] } }
+    const event = { tags: { zettel_notes_consent_revision: '1' }, exception: { values: [{ type: 'TypeError', value: 'private content' }] } }
     const safe = options.beforeSend(event)
     expect(JSON.stringify(safe)).not.toContain('private content')
     await transport.send([{ event_id: 'a'.repeat(32), trace: { private: 'context' } }, [

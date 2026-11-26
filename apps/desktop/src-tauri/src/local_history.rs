@@ -41,7 +41,7 @@ pub fn init(app: &tauri::AppHandle) -> Result<(), String> {
         let (sender, receiver) = mpsc::sync_channel::<Job>(64);
         let (ready, started) = mpsc::sync_channel(1);
         std::thread::Builder::new()
-            .name("markflowy-history".into())
+            .name("zettel-notes-history".into())
             .spawn(move || {
                 let mut store = match Store::open(&root.join("history.sqlite3")) {
                     Ok(s) => s.with_decoder(|bytes| {

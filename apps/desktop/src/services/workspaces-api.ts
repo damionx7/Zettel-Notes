@@ -5,9 +5,9 @@ import type {
   GitHubBranch,
   CreateOrUpdateFileParams,
   DeleteFileParams,
-} from '@markflowy/github-api'
+} from '@zettel-notes/github-api'
 
-export type { GitHubTreeItem, GitHubFileContent, GitHubBranch, CreateOrUpdateFileParams, DeleteFileParams } from '@markflowy/github-api'
+export type { GitHubTreeItem, GitHubFileContent, GitHubBranch, CreateOrUpdateFileParams, DeleteFileParams } from '@zettel-notes/github-api'
 
 export enum WorkspaceType {
   LOCAL = 'LOCAL',

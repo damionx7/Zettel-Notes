@@ -3,7 +3,7 @@ import { desktopVariables, getThemeTokens, isSemanticTheme, legacyTokens } from 
 import { typographyOverrides } from '@/themes/preferences'
 import NiceModal from '@ebay/nice-modal-react'
 import isPropValid from '@emotion/is-prop-valid'
-import { type desktopLightTheme } from '@markflowy/theme'
+import { type desktopLightTheme } from '@zettel-notes/theme'
 import { releaseStartupPalette } from '@/startup/appearance'
 import { createContext, useContext, useLayoutEffect, useMemo } from 'react'
 import { type IStyleSheetContext, StyleSheetManager, ThemeProvider } from 'styled-components'

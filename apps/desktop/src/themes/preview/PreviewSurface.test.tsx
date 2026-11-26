@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { parseThemeDocument, resolveTheme } from '@markflowy/theme/semantic'
+import { parseThemeDocument, resolveTheme } from '@zettel-notes/theme/semantic'
 import { PreviewSurface } from './PreviewSurface'
 
 const labels = {

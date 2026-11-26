@@ -1,7 +1,17 @@
 ---
-seoTitle: "MarkFlowy 许可证"
-description: "阅读 MarkFlowy 仓库附带的 GNU Affero General Public License 第 3 版原文。"
+seoTitle: "Zettel Notes 许可证"
+description: "阅读 Zettel Notes 仓库附带的 GNU Affero General Public License 第 3 版原文。"
 ---
+
+Zettel Notes
+Copyright (C) 2026-present damionx7
+Copyright (C) 2026 zekabra (WinZettel)
+Copyright (C) 2023-2026 drl990114 and the MarkFlowy contributors (MarkFlowy)
+
+Zettel Notes is a modified version of MarkFlowy (https://github.com/drl990114/MarkFlowy),
+by way of WinZettel (https://github.com/zekabra/WinZettel). It is distributed under the
+GNU Affero General Public License, version 3 or (at your option) any later version, whose
+full text follows. See [NOTICE](https://github.com/damionx7/Zettel-Notes/blob/main/NOTICE) for details.
 
                     GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007

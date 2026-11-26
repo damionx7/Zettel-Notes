@@ -2,7 +2,9 @@ import { create } from 'zustand'
 import { parseAIModelKey } from './aiProvidersService'
 import type { AIModelKey } from './aiProvidersService'
 
-export const AI_MODEL_PREFERENCE_STORAGE_KEY = 'markflowy-ai-profile-v1'
+export const AI_MODEL_PREFERENCE_STORAGE_KEY = 'zettel-notes-ai-profile-v1'
+/** The key used before the rename to Zettel Notes; read when the new key is missing. */
+export const LEGACY_AI_MODEL_PREFERENCE_STORAGE_KEY = 'markflowy-ai-profile-v1'
 
 type StoredAIModelPreference = {
   selectedModelKey?: AIModelKey
@@ -22,7 +24,9 @@ function readStoredPreference(): AIModelKey | undefined {
 
   try {
     const parsed = JSON.parse(
-      storage.getItem(AI_MODEL_PREFERENCE_STORAGE_KEY) ?? '{}',
+      storage.getItem(AI_MODEL_PREFERENCE_STORAGE_KEY) ??
+        storage.getItem(LEGACY_AI_MODEL_PREFERENCE_STORAGE_KEY) ??
+        '{}',
     ) as StoredAIModelPreference | null
     return parseAIModelKey(parsed?.selectedModelKey) ? parsed?.selectedModelKey : undefined
   } catch {

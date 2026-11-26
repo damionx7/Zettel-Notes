@@ -5,7 +5,7 @@
   "docs": {
     "tableOfContents": "On this page",
     "content": {
-      "description": "Get started with MarkFlowy: install the app, edit local Markdown files, switch between visual and source editing, and set up optional AI assistance.",
+      "description": "Get started with Zettel Notes: install the app, edit local Markdown files, switch between visual and source editing, and set up optional AI assistance.",
       "fallback": "These guides are currently available in English."
     },
     "sidebar": {
@@ -14,7 +14,7 @@
   },
   "mock": {
     "intro": {
-      "title": "Welcome to MarkFlowy!",
+      "title": "Welcome to Zettel Notes!",
       "ai_label": "AI-Powered:",
       "ai_desc": "Built-in Copilot, translation, summary, and DeepSeek/ChatGPT and other mainstream models support.",
       "lightweight_label": "Lightweight:",
@@ -41,11 +41,11 @@
   },
   "home": {
     "hero": {
-      "title": "MarkFlowy",
+      "title": "Zettel Notes",
       "subtitle": "A local-first Markdown editor focused on large documents and optional AI.",
-      "description": "Find your writing flow with MarkFlowy, a local-first Markdown editor for macOS, Windows, and Linux. Visual and source editing, with optional AI assistance.",
+      "description": "Find your writing flow with Zettel Notes, a local-first Markdown editor for macOS, Windows, and Linux. Visual and source editing, with optional AI assistance.",
       "download": "Download Now",
-      "metaTitle": "MarkFlowy — Local-first Markdown editor"
+      "metaTitle": "Zettel Notes — Local-first Markdown editor"
     },
     "statRings": {
       "platforms": "Platforms",
@@ -91,10 +91,10 @@
       "title": "Built by Many Contributors",
       "titleLead": "Built by Many",
       "titleAccent": "Contributors",
-      "description": "Thanks to all the developers who have contributed to MarkFlowy",
+      "description": "Thanks to all the developers who have contributed to Zettel Notes",
       "count": "{{count}} contributors in orbit",
       "viewAll": "View all contributors",
-      "globeLabel": "MarkFlowy global contributor globe",
+      "globeLabel": "Zettel Notes global contributor globe",
       "orbitLabel": "Contributor profile links orbiting the globe"
     },
     "guides": {
@@ -104,8 +104,8 @@
   },
   "releases": {
     "title": "Releases",
-    "meta_description": "Explore MarkFlowy releases, new editing features, improvements, and fixes. Download the Markdown editor for macOS, Windows, and Linux.",
-    "description_before_link": "Here are the latest releases of MarkFlowy. Click a version to see its detailed changes and updates. Download it from",
+    "meta_description": "Explore Zettel Notes releases, new editing features, improvements, and fixes. Download the Markdown editor for macOS, Windows, and Linux.",
+    "description_before_link": "Here are the latest releases of Zettel Notes. Click a version to see its detailed changes and updates. Download it from",
     "github_link": "GitHub Releases",
     "description_after_link": ".",
     "see_details": "See details"
@@ -186,7 +186,7 @@
       "start": "Get started",
       "downloadDescription": "For macOS, Windows, and Linux",
       "webDescription": "Your workspace in the browser · Beta",
-      "featuresDescription": "Discover what MarkFlowy can do",
+      "featuresDescription": "Discover what Zettel Notes can do",
       "quickstart": "Quick start",
       "explore": "Explore more",
       "support": "Help and support",
@@ -196,14 +196,14 @@
       "contributeDescription": "Start with an issue or an improvement",
       "feedbackDescription": "Report issues and share ideas",
       "contributors": "Contributors",
-      "contributorsDescription": "Meet the people building MarkFlowy",
+      "contributorsDescription": "Meet the people building Zettel Notes",
       "back": "Back"
     },
     "hero": {
       "eyebrow": "LOCAL FIRST. IDEAS FORWARD.",
       "title": "Your ideas, in full flow.",
       "lead": "A Markdown editor crafted for smooth editing and focused writing.",
-      "description": "Local-first, with visual and source editing. Your AI assistant can use the official Skill to open, save, and export documents in MarkFlowy.",
+      "description": "Local-first, with visual and source editing. Your AI assistant can use the official Skill to open, save, and export documents in Zettel Notes.",
       "try": "Try online",
       "platforms": "Made for the way you work"
     },
@@ -211,8 +211,8 @@
       "eyebrow": "YOUR LOCAL WORKSPACE",
       "title": "A folder for everything taking shape.",
       "description": "Open a local folder to bring notes, drafts, and project files together. Browse your files, follow the document outline, and keep writing in the same window.",
-      "note": "MarkFlowy Desktop · Local workspace",
-      "screenshotAlt": "MarkFlowy desktop in light mode, showing local files, the visual editor, and document outline"
+      "note": "Zettel Notes Desktop · Local workspace",
+      "screenshotAlt": "Zettel Notes desktop in light mode, showing local files, the visual editor, and document outline"
     },
     "singleFile": {
       "eyebrow": "SINGLE-FILE MODE",
@@ -231,8 +231,8 @@
         "body": "Open a local folder when one note becomes a project. Your familiar writing tools come with you."
       },
       "link": "Explore single-file writing",
-      "note": "MarkFlowy Desktop · Single-file mode",
-      "screenshotAlt": "MarkFlowy Desktop in single-file mode, with a Markdown document and its filename in the compact title bar"
+      "note": "Zettel Notes Desktop · Single-file mode",
+      "screenshotAlt": "Zettel Notes Desktop in single-file mode, with a Markdown document and its filename in the compact title bar"
     },
     "features": {
       "eyebrow": "THOUGHTFULLY CONNECTED",
@@ -242,7 +242,7 @@
         "title": "Markdown, the way you think.",
         "body": "Write visually or get closer to the source. Work with Markdown, JSON, and plain text in one familiar space.",
         "link": "Explore the editor",
-        "alt": "MarkFlowy desktop editor displaying a writing sample"
+        "alt": "Zettel Notes desktop editor displaying a writing sample"
       },
       "local": {
         "title": "High performance for longer drafts.",
@@ -251,7 +251,7 @@
       "ai": {
         "title": "A little help, when you need it.",
         "body": "Bring your own AI service for conversations, summaries, and translation, or connect a local model with Ollama.",
-        "alt": "MarkFlowy desktop editor with its optional AI assistant panel"
+        "alt": "Zettel Notes desktop editor with its optional AI assistant panel"
       },
       "personal": {
         "title": "Make yourself at home.",
@@ -286,7 +286,7 @@
     "stats": {
       "eyebrow": "Built in the open, growing together",
       "title": "Small contributions. Lasting progress.",
-      "body": "A star, a download, a contribution. MarkFlowy grows with people who care about writing and open source.",
+      "body": "A star, a download, a contribution. Zettel Notes grows with people who care about writing and open source.",
       "stars": "GitHub Stars",
       "forks": "Open-source forks",
       "downloads": "Release package downloads",
@@ -297,7 +297,7 @@
     "community": {
       "eyebrow": "BUILT IN THE OPEN",
       "title": "Better, together.",
-      "body": "MarkFlowy grows with the people who use it. Read the code, share an idea, report a bug, or help shape what comes next.",
+      "body": "Zettel Notes grows with the people who use it. Read the code, share an idea, report a bug, or help shape what comes next.",
       "thanks": "Made possible by our contributors"
     },
     "cta": {
@@ -338,7 +338,7 @@
     "shared": "Shared",
     "synced": "Synced",
     "signInRequired": "Sign in to connect",
-    "connectTitle": "Bring your repositories into MarkFlowy",
+    "connectTitle": "Bring your repositories into Zettel Notes",
     "connectDescription": "Connect GitHub, choose a repository, and keep your documents together.",
     "localShared": "Local & shared",
     "count": "{{count}} workspaces",

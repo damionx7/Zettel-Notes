@@ -79,9 +79,9 @@ jobs:
 
       - name: Check application types
         run: |
-          yarn workspace @markflowy/desktop build:types
-          yarn workspace @markflowy/desktop test:e2e:types
-          yarn workspace @markflowy/web build:types
+          yarn workspace @zettel-notes/desktop build:types
+          yarn workspace @zettel-notes/desktop test:e2e:types
+          yarn workspace @zettel-notes/web build:types
 
       - name: Run Test
         run: yarn test
@@ -94,11 +94,11 @@ jobs:
           yarn test:release-workflows
           yarn test:security-dependencies
           yarn test:dev-desktop
-          yarn workspace @markflowy/desktop test:e2e:runner
+          yarn workspace @zettel-notes/desktop test:e2e:runner
           yarn translate:check
 
       - name: Verify generated public documents
-        run: yarn workspace @markflowy/web test:content
+        run: yarn workspace @zettel-notes/web test:content
 
       - name: Keep the Turbo cache to recent builds
         if: github.ref == 'refs/heads/main'
@@ -178,7 +178,7 @@ jobs:
         run: yarn build
 
       - name: Check application types
-        run: yarn workspace @markflowy/desktop build:types
+        run: yarn workspace @zettel-notes/desktop build:types
 
       - name: Run Test
         run: yarn test
@@ -188,12 +188,12 @@ jobs:
 
       - name: Build isolated native E2E app
         if: runner.os == 'macOS'
-        run: yarn workspace @markflowy/desktop tauri:build:e2e
+        run: yarn workspace @zettel-notes/desktop tauri:build:e2e
 
       - name: Run native desktop E2E
         if: runner.os == 'macOS'
         timeout-minutes: 20
-        run: yarn workspace @markflowy/desktop test:e2e
+        run: yarn workspace @zettel-notes/desktop test:e2e
 
       - name: Upload native E2E diagnostics
         if: always() && runner.os == 'macOS'

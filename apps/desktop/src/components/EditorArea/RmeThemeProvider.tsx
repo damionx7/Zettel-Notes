@@ -1,6 +1,6 @@
 import { SemanticThemeContext } from '@/themes/context'
 import { rmeEditorTokens } from '@/themes/editorTokens'
-import { codeMirrorSyntaxStyles } from '@markflowy/theme/semantic'
+import { codeMirrorSyntaxStyles } from '@zettel-notes/theme/semantic'
 import { useContext, useMemo } from 'react'
 import type { RmeRuntime } from './rmeRuntime'
 import { alignCodeMirrorTheme } from '@/appThemeTokens'

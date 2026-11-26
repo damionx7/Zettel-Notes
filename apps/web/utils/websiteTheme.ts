@@ -1,9 +1,9 @@
-import { markflowyDarkTheme, markflowyLightTheme, webSpecificTokens } from '@markflowy/theme'
+import { zettelNotesDarkTheme, zettelNotesLightTheme, webSpecificTokens } from '@zettel-notes/theme'
 
 /** Shared visual language for Web. Desktop keeps its own theme. */
 const lightWebsiteTheme = {
   ...webSpecificTokens,
-  ...markflowyLightTheme,
+  ...zettelNotesLightTheme,
   primaryBg: '#ffffff',
   primaryText: '#0a2540',
   secondaryBg: '#f6f9fc',
@@ -18,9 +18,9 @@ const lightWebsiteTheme = {
   unselectedFontColor: '#52657a',
   labelFontColor: '#52657a',
   borderColor: '#e3e9ef',
-  accentColor: markflowyLightTheme.accentColor,
-  accentColorFocused: markflowyLightTheme.accentColorFocused,
-  borderColorFocused: markflowyLightTheme.borderColorFocused,
+  accentColor: zettelNotesLightTheme.accentColor,
+  accentColorFocused: zettelNotesLightTheme.accentColorFocused,
+  borderColorFocused: zettelNotesLightTheme.borderColorFocused,
   webPaper: '#ffffff',
   webPaperWarm: '#f6f9fc',
   webPaperDark: '#edf2f7',
@@ -31,8 +31,8 @@ const lightWebsiteTheme = {
   webInkSoft: '#425466',
   webInkMute: '#52657a',
   webInkFaint: '#65788c',
-  webSeal: markflowyLightTheme.accentColor,
-  webSealSoft: markflowyLightTheme.accentColor,
+  webSeal: zettelNotesLightTheme.accentColor,
+  webSealSoft: zettelNotesLightTheme.accentColor,
   webInkWash: '#8395ad',
   webLine: '#d5dfe9',
   webLineSoft: '#e5ebf1',
@@ -48,7 +48,7 @@ const lightWebsiteTheme = {
 
 const darkWebsiteTheme: typeof lightWebsiteTheme = {
   ...lightWebsiteTheme,
-  ...markflowyDarkTheme,
+  ...zettelNotesDarkTheme,
   // Low-chroma graphite surfaces keep brand blue reserved for meaningful accents.
   // Separate page, elevated and interactive levels (Radix/Geist color roles).
   primaryBg: '#141517',

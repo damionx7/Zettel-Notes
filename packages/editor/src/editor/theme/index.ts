@@ -1,5 +1,5 @@
 import { codemirrorLight, codemirrorDark } from './codemirror'
-import { common } from '@markflowy/theme'
+import { common } from '@zettel-notes/theme'
 import { styledDarkTheme } from './dark'
 import { styledLightTheme } from './light'
 

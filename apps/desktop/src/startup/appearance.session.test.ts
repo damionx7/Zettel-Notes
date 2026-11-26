@@ -52,7 +52,7 @@ afterEach(() => {
   vi.restoreAllMocks()
   window.localStorage.clear()
   window.sessionStorage.clear()
-  delete window.__MARKFLOWY_BOOTSTRAP__
+  delete window.__ZETTEL_NOTES_BOOTSTRAP__
   Reflect.deleteProperty(window, '__TAURI_INTERNALS__')
   window.openedUrls = null
   document.documentElement.removeAttribute('data-mf-theme')
@@ -80,23 +80,23 @@ describe.each([
       sessionId: 'native-session',
       ...fields,
     }
-    window.__MARKFLOWY_BOOTSTRAP__ = bootstrap
+    window.__ZETTEL_NOTES_BOOTSTRAP__ = bootstrap
 
     // Check every handoff in one startup instead of rerunning the same stages
     // independently and again in a complete-startup case.
     expect(bootstrapScript).toBeTruthy()
     window.eval(bootstrapScript!)
-    expect(window.__MARKFLOWY_BOOTSTRAP__).toStrictEqual(bootstrap)
+    expect(window.__ZETTEL_NOTES_BOOTSTRAP__).toStrictEqual(bootstrap)
 
     readWindowBootstrap(window)
-    expect(window.__MARKFLOWY_BOOTSTRAP__).toStrictEqual(bootstrap)
+    expect(window.__ZETTEL_NOTES_BOOTSTRAP__).toStrictEqual(bootstrap)
 
     await persistStartupAppearance(bootstrap.appearance, window)
     expect(invokeMock).toHaveBeenCalledWith('save_startup_appearance', {
       appearance: bootstrap.appearance,
     })
     // Strict equality distinguishes a missing legacy field from an explicit null.
-    expect(window.__MARKFLOWY_BOOTSTRAP__).toStrictEqual(bootstrap)
+    expect(window.__ZETTEL_NOTES_BOOTSTRAP__).toStrictEqual(bootstrap)
 
     const data = new Map<string, unknown>([
       [LAST_WINDOW_SESSION_KEY, windowSessionKey(lastActiveSession.windowLabel)],
@@ -112,7 +112,7 @@ describe.each([
     }
 
     expect(
-      await readWindowSession(store, 'main', window.__MARKFLOWY_BOOTSTRAP__?.restoreSessionLabel),
+      await readWindowSession(store, 'main', window.__ZETTEL_NOTES_BOOTSTRAP__?.restoreSessionLabel),
     ).toEqual(expected)
     if (!expected) expect(get).not.toHaveBeenCalled()
   })

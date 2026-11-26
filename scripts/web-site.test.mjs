@@ -20,7 +20,7 @@ function initializeHomeScroll(type, hash = '#features') {
   const events = new EventTarget()
   const frames = []
   const scrolls = []
-  const location = new URL(`https://markflowy.cc/zh?ref=homepage${hash}`)
+  const location = new URL(`https://damionx7.github.io/Zettel-Notes/zh?ref=homepage${hash}`)
   const state = { key: 'existing-history-entry' }
   const history = {
     state,
@@ -45,7 +45,7 @@ function initializeHomeScroll(type, hash = '#features') {
 
 test('homepage reload starts at the top and removes only the stale fragment', () => {
   const page = initializeHomeScroll('reload')
-  assert.equal(page.location.href, 'https://markflowy.cc/zh?ref=homepage')
+  assert.equal(page.location.href, 'https://damionx7.github.io/Zettel-Notes/zh?ref=homepage')
   assert.equal(page.history.state, page.state)
   assert.equal(page.history.scrollRestoration, 'manual')
   assert.deepEqual(page.scrolls, [{ top: 0, left: 0, behavior: 'instant' }])
@@ -91,15 +91,15 @@ test('homepage counts use compact lower-bound milestones across locales', () => 
 test('project statistics count stable packages, excluding signatures and update metadata', async () => {
   const releases = [
     release([
-      asset('MarkFlowy.dmg', 10),
-      asset('MarkFlowy.AppImage', 20),
-      asset('MarkFlowy.app.tar.gz', 30),
-      asset('MarkFlowy.msi', 40),
-      asset('MarkFlowy.exe', 50),
-      asset('MarkFlowy.deb', 60),
-      asset('MarkFlowy.rpm', 70),
-      asset('MarkFlowy_portable.zip', 80),
-      asset('MarkFlowy.exe.sig', 1000),
+      asset('Zettel-Notes.dmg', 10),
+      asset('Zettel-Notes.AppImage', 20),
+      asset('Zettel-Notes.app.tar.gz', 30),
+      asset('Zettel-Notes.msi', 40),
+      asset('Zettel-Notes.exe', 50),
+      asset('Zettel-Notes.deb', 60),
+      asset('Zettel-Notes.rpm', 70),
+      asset('Zettel Notes_portable.zip', 80),
+      asset('Zettel-Notes.exe.sig', 1000),
       asset('install.json', 2000),
       asset('checksums.txt', 3000),
     ]),

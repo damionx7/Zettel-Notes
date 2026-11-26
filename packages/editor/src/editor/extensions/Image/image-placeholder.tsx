@@ -1,4 +1,4 @@
-import { t } from '@markflowy/i18n'
+import { t } from '@zettel-notes/i18n'
 import type { CSSProperties, FC } from 'react'
 import styled, { css } from 'styled-components'
 

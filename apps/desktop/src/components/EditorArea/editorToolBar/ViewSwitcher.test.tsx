@@ -3,7 +3,7 @@ import { EditorViewType, type EditorViewTypeValue } from '@/constants/editorView
 import bus from '@/helper/eventBus'
 import type { IShowContextMenuParams } from '@/stores/useContextMenuStore'
 import useEditorViewTypeStore from '@/stores/useEditorViewTypeStore'
-import { desktopDarkTheme } from '@markflowy/theme'
+import { desktopDarkTheme } from '@zettel-notes/theme'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { enableMapSet } from 'immer'
 import { ThemeProvider } from 'styled-components'

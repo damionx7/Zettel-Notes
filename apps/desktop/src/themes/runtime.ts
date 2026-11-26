@@ -1,4 +1,4 @@
-import { desktopDarkTheme, desktopLightTheme, type MfTheme } from '@markflowy/theme'
+import { desktopDarkTheme, desktopLightTheme, type MfTheme } from '@zettel-notes/theme'
 import {
   resolveTheme,
   resolveThemeTokens,
@@ -10,7 +10,7 @@ import {
   type ResolvedTheme,
   type ResolvedTokens,
   type ThemeTokenName,
-} from '@markflowy/theme/semantic'
+} from '@zettel-notes/theme/semantic'
 
 /** Kept only at the legacy consumer boundary. New themes never expose these names. */
 const legacyMap = {

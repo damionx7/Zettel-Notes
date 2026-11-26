@@ -27,12 +27,12 @@ export default function ProjectStats({ stats }: { stats: ProjectStatsData }) {
     timeZone: 'UTC',
   }).format(new Date(stats.checkedAt))
   const metrics = [
-    { key: 'stars', value: stats.stars, href: 'https://github.com/drl990114/MarkFlowy/stargazers' },
-    { key: 'forks', value: stats.forks, href: 'https://github.com/drl990114/MarkFlowy/forks' },
+    { key: 'stars', value: stats.stars, href: 'https://github.com/damionx7/Zettel-Notes/stargazers' },
+    { key: 'forks', value: stats.forks, href: 'https://github.com/damionx7/Zettel-Notes/forks' },
     {
       key: 'downloads',
       value: stats.downloads,
-      href: 'https://github.com/drl990114/MarkFlowy/releases',
+      href: 'https://github.com/damionx7/Zettel-Notes/releases',
     },
   ]
   return (

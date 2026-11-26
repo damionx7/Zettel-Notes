@@ -1,5 +1,5 @@
 import { type Node } from '@rme-sdk/sdk/pm/model'
-import { useTranslation } from '@markflowy/i18n'
+import { useTranslation } from '@zettel-notes/i18n'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { LinkClickHandler } from '../../extensions/LinkClick'
 import { WysiwygThemeWrapper } from '../../theme'

@@ -8,7 +8,7 @@ import type * as FileSystem from '@/helper/filesys'
 import { TauriFileSystemProvider } from './FileSystemAdapter'
 
 vi.mock('@tauri-apps/api/core', () => ({ invoke: vi.fn() }))
-vi.mock('@markflowy/interface', async () => ({
+vi.mock('@zettel-notes/interface', async () => ({
   ...(await import('../../../../packages/interface/src/contexts/AppContext')),
   ...(await import('../../../../packages/interface/src/contexts/FileSystemContext')),
   ...(await import('../../../../packages/interface/src/types/file')),

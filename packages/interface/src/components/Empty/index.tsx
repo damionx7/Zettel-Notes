@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { useTranslation } from '@markflowy/i18n'
+import { useTranslation } from '@zettel-notes/i18n'
 import styled from 'styled-components'
 
 const Container = styled.div`

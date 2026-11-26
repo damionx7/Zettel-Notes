@@ -2,7 +2,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-libra
 import { EditorState } from '@codemirror/state'
 import { EditorView } from '@codemirror/view'
 import { enableMapSet } from 'immer'
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import { ThemeProvider } from 'styled-components'
 import { StrictMode, type PropsWithChildren } from 'react'
 import type { MfCodemirrorView } from 'rme'

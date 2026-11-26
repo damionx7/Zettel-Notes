@@ -1,4 +1,4 @@
-import type { IHeadingData } from '@markflowy/interface'
+import type { IHeadingData } from '@zettel-notes/interface'
 
 /**
  * Outline for the preview pane.

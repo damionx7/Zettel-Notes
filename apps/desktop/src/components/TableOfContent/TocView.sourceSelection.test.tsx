@@ -62,7 +62,7 @@ vi.mock('../SideBar/SideBarHeader', () => ({ default: () => null }))
 vi.mock('../SideBar/DockPanelMenu', () => ({ DockPanelMenu: () => null }))
 vi.mock('./styles', () => ({ TocViewContainer: ({ children }: { children: ReactNode }) => <div>{children}</div> }))
 vi.mock('@/i18n', () => ({ t: (key: string) => key }))
-vi.mock('@markflowy/interface', () => ({
+vi.mock('@zettel-notes/interface', () => ({
   TableOfContents: ({ ref, activeId }: { ref: Ref<unknown>; activeId?: string }) => {
     const [headings, setHeadings] = useState<{ id: string }[]>([])
     useImperativeHandle(ref, () => ({

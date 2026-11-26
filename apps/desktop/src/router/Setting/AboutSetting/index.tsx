@@ -7,7 +7,8 @@ import { logger } from '@/helper/logger'
 import { resetAppData } from '@/services/app-reset'
 import { SettingGroupContainer } from '../component/SettingGroup/styles'
 
-const MARKFLOWY_URL = 'https://github.com/drl990114/MarkFlowy'
+// Upstream credit: the app this one is forked from.
+const UPSTREAM_URL = 'https://github.com/drl990114/MarkFlowy'
 
 export const AboutSetting = () => {
   const { t } = useTranslation()
@@ -47,9 +48,9 @@ export const AboutSetting = () => {
           <button
             type='button'
             className='text-primary underline-offset-2 hover:underline'
-            onClick={() => void openUrl(MARKFLOWY_URL)}
+            onClick={() => void openUrl(UPSTREAM_URL)}
           >
-            {MARKFLOWY_URL}
+            {UPSTREAM_URL}
           </button>
         </p>
         <p className='text-sm leading-relaxed text-muted-foreground'>

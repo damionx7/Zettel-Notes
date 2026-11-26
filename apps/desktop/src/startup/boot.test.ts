@@ -7,7 +7,7 @@ const renderBootOverlay = () => {
     <div id="mf-boot-overlay" role="status" aria-live="polite">
       <div class="mf-startup-indicator">
         <div class="mf-boot-progress"></div>
-        <span class="mf-startup-label">Starting MarkFlowy…</span>
+        <span class="mf-startup-label">Starting Zettel Notes…</span>
       </div>
     </div>
   `
@@ -37,7 +37,7 @@ beforeEach(() => {
 afterEach(() => {
   vi.restoreAllMocks()
   window.sessionStorage.clear()
-  delete window.__MARKFLOWY_BOOTSTRAP__
+  delete window.__ZETTEL_NOTES_BOOTSTRAP__
   Reflect.deleteProperty(window, '__TAURI_INTERNALS__')
   document.body.innerHTML = ''
   document.documentElement.removeAttribute('data-mf-theme')
@@ -153,7 +153,7 @@ describe('static boot loader contract', () => {
       schemaVersion: 1 as const,
       preference: 'light' as const,
       resolvedMode: 'light' as const,
-      themeId: 'MarkFlowy Light',
+      themeId: 'Zettel Notes Light',
       palette: {
         surfaceApp: '#ffffff',
         surfacePanel: '#f9f9f9',
@@ -179,13 +179,13 @@ describe('static boot loader contract', () => {
         accent: '#3b82f6',
       },
     }
-    window.__MARKFLOWY_BOOTSTRAP__ = {
+    window.__ZETTEL_NOTES_BOOTSTRAP__ = {
       appearance: lightAppearance,
       openedUrls: [],
       sessionId: 'native-session',
     }
     window.sessionStorage.setItem(
-      'markflowy:startup-appearance:session:v1',
+      'zettel-notes:startup-appearance:session:v1',
       JSON.stringify(darkAppearance),
     )
     Object.defineProperty(window, '__TAURI_INTERNALS__', { configurable: true, value: {} })
@@ -194,7 +194,7 @@ describe('static boot loader contract', () => {
     expect(bootstrapScript).toBeTruthy()
     window.eval(bootstrapScript!)
 
-    expect(window.__MARKFLOWY_BOOTSTRAP__?.appearance).toMatchObject({
+    expect(window.__ZETTEL_NOTES_BOOTSTRAP__?.appearance).toMatchObject({
       resolvedMode: 'dark',
       themeId: 'Local Midnight',
     })

@@ -1,8 +1,8 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { darkTheme, lightTheme } from '@markflowy/theme'
-import { resolveThemeTokens, type ThemeDocument } from '@markflowy/theme/semantic'
+import { darkTheme, lightTheme } from '@zettel-notes/theme'
+import { resolveThemeTokens, type ThemeDocument } from '@zettel-notes/theme/semantic'
 import useThemeStore from '@/stores/useThemeStore'
 import useAppSettingStore from '@/stores/useAppSettingStore'
 import { SemanticThemeContext } from '@/themes/context'
@@ -64,7 +64,7 @@ vi.mock('@/themes/library', async () => {
 })
 vi.mock('@/stores/useThemeStore', async () => {
   const { create } = await import('zustand')
-  const { lightTheme: initialTheme } = await import('@markflowy/theme')
+  const { lightTheme: initialTheme } = await import('@zettel-notes/theme')
   return {
     default: create(() => ({
       themes: [initialTheme],
@@ -360,7 +360,7 @@ describe('declarative theme manager', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Selector reference' }))
       await waitFor(() =>
         expect(mocks.openUrl).toHaveBeenCalledExactlyOnceWith(
-          'https://www.markflowy.cc/zh/docs/Extension/CustomTheme#editor-css-selectors',
+          'https://github.com/damionx7/Zettel-Notes/blob/main/docs/zh/Extension/CustomTheme.md#editor-css-selectors',
         ),
       )
       expect(mocks.mutate).not.toHaveBeenCalled()
@@ -412,7 +412,7 @@ describe('declarative theme manager', () => {
 
     const builtIn = within(screen.getByRole('region', { name: 'Built-in themes' }))
     expect(builtIn.getAllByRole('article')).toHaveLength(1)
-    expect(builtIn.getByRole('article', { name: 'MarkFlowy Light' })).toBeTruthy()
+    expect(builtIn.getByRole('article', { name: 'Zettel Notes Light' })).toBeTruthy()
     const community = within(screen.getByRole('region', { name: 'Community themes' }))
     expect(community.getAllByRole('article')).toHaveLength(1)
     expect(community.getByText('Author: Mina')).toBeTruthy()
@@ -426,13 +426,13 @@ describe('declarative theme manager', () => {
 
   it('keeps the current theme visible and applies another theme with one action', async () => {
     renderStore()
-    const light = screen.getByRole('article', { name: 'MarkFlowy Light' })
+    const light = screen.getByRole('article', { name: 'Zettel Notes Light' })
     expect(light.getAttribute('aria-current')).toBe('true')
     expect(within(light).queryByRole('button', { name: /Set as .* theme/ })).toBeNull()
     expect(screen.queryByRole('button', { name: 'Copy and edit' })).toBeNull()
     expect(screen.getByText('Typography & CSS').closest('details')?.open).toBe(false)
 
-    const dark = screen.getByRole('article', { name: 'MarkFlowy Dark' })
+    const dark = screen.getByRole('article', { name: 'Zettel Notes Dark' })
     fireEvent.click(within(dark).getByRole('button', { name: /Set as .* theme/ }))
     await waitFor(() =>
       expect(mocks.apply).toHaveBeenCalledWith({
@@ -446,9 +446,9 @@ describe('declarative theme manager', () => {
 
   it('opens secondary actions by keyboard and restores focus after Escape', async () => {
     renderStore()
-    const trigger = screen.getByRole('button', { name: 'More actions: MarkFlowy Light' })
+    const trigger = screen.getByRole('button', { name: 'More actions: Zettel Notes Light' })
     trigger.focus()
-    const menu = await openMenu('More actions: MarkFlowy Light')
+    const menu = await openMenu('More actions: Zettel Notes Light')
     expect(menu.hasAttribute('data-mf-portal')).toBe(true)
     expect(screen.getByRole('menuitem', { name: 'Copy and edit' })).toBeTruthy()
     expect(screen.queryByRole('menuitem', { name: 'Remove' })).toBeNull()
@@ -587,15 +587,15 @@ describe('declarative theme manager', () => {
     expect(screen.getByRole('menuitem', { name: 'Export JSON Schema' })).toBeTruthy()
     fireEvent.click(screen.getByRole('menuitem', { name: 'Submit theme' }))
     await waitFor(() =>
-      expect(mocks.openUrl).toHaveBeenCalledWith('https://github.com/drl990114/MarkFlowy'),
+      expect(mocks.openUrl).toHaveBeenCalledWith('https://github.com/damionx7/Zettel-Notes'),
     )
   })
   it('filters installed themes by the requested mode and returns after a successful selection', async () => {
     const onSelected = vi.fn()
     renderStore({ mode: 'dark', onSelected })
-    expect(screen.queryByRole('article', { name: 'MarkFlowy Light' })).toBeNull()
+    expect(screen.queryByRole('article', { name: 'Zettel Notes Light' })).toBeNull()
     fireEvent.click(
-      within(screen.getByRole('article', { name: 'MarkFlowy Dark' })).getByRole('button', {
+      within(screen.getByRole('article', { name: 'Zettel Notes Dark' })).getByRole('button', {
         name: 'Set as dark theme',
       }),
     )

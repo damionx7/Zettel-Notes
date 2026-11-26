@@ -1,4 +1,4 @@
-import { editorSpecificTokens } from '@markflowy/theme'
+import { editorSpecificTokens } from '@zettel-notes/theme'
 
 export const styledLightTheme = {
   primaryFontColor: '#000000',

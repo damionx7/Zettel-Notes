@@ -1,5 +1,5 @@
 import { MapMode, type ChangeDesc, type Text } from '@codemirror/state'
-import type { IHeadingData } from '@markflowy/interface'
+import type { IHeadingData } from '@zettel-notes/interface'
 import type { MfCodemirrorView } from 'rme'
 import { subscribeSourceOutline } from './outlineTracking'
 

@@ -199,7 +199,7 @@ export function themeVariables(tokens: ResolvedTokens): Record<string, string> {
 }
 export const themeDocumentSchema = {
   $schema: 'https://json-schema.org/draft/2020-12/schema',
-  title: 'MarkFlowy Theme',
+  title: 'Zettel Notes Theme',
   type: 'object',
   required: ['version', 'id', 'name', 'variants'],
   properties: {

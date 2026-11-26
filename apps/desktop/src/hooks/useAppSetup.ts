@@ -286,10 +286,10 @@ const initThemeFromSettings = async (settingData: Record<string, any>) => {
       settingData.theme_mode = isDark ? 'dark' : 'light'
     }
     if (!settingData.light_theme) {
-      settingData.light_theme = 'MarkFlowy Light'
+      settingData.light_theme = 'Zettel Notes Light'
     }
     if (!settingData.dark_theme) {
-      settingData.dark_theme = 'MarkFlowy Dark'
+      settingData.dark_theme = 'Zettel Notes Dark'
     }
   }
 
@@ -354,7 +354,7 @@ const throwIfStartupCancelled = (signal: AbortSignal) => {
 }
 
 const readWorkspaceInputs = createWorkspaceInputReader(async () => {
-  const cacheStore = new LazyStore('.markflowy_workspaces.dat', { defaults: {}, autoSave: false })
+  const cacheStore = new LazyStore('.zettel_notes_workspaces.dat', { defaults: {}, autoSave: false })
   const [openedCache] = await Promise.all([
     invoke<OpenedCacheReadResult>('get_opened_cache'),
     cacheStore.init(),
@@ -363,7 +363,7 @@ const readWorkspaceInputs = createWorkspaceInputReader(async () => {
 })
 
 async function appWorkspaceSetup(signal: AbortSignal) {
-  const restoreSessionLabel = window.__MARKFLOWY_BOOTSTRAP__?.restoreSessionLabel
+  const restoreSessionLabel = window.__ZETTEL_NOTES_BOOTSTRAP__?.restoreSessionLabel
   collectingStartupOpenedPaths = true
   startupSession = undefined
   isolateStartupDrafts = currentWindow.label !== 'main' || restoreSessionLabel !== undefined
@@ -762,7 +762,7 @@ export const useAppRuntimeSetup = () => {
     if (!themeLibrarySetupPromise) themeLibrarySetupPromise = appThemeLibrarySetup()
     let stopChecks: (() => void) | undefined
     const cancel = afterStartupInteractive(() => {
-      if (!window.__MARKFLOWY_E2E__ && currentWindow.label === 'main') {
+      if (!window.__ZETTEL_NOTES_E2E__ && currentWindow.label === 'main') {
 
       }
       markStartupStage('deferred-start')

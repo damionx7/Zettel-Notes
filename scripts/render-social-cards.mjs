@@ -96,9 +96,9 @@ for (const locale of ['en', 'zh']) {
       chinese,
     }),
     await text('macOS  ·  Windows  ·  Linux', 18, 72, 551, { color: muted }),
-    await text('markflowy.cc', 18, 996, 551, { color: ink, weight: 'Medium' }),
+    await text('zettel-notes.cc', 18, 996, 551, { color: ink, weight: 'Medium' }),
   ]
-  const destination = path(`apps/web/public/social/markflowy-${locale}.png`)
+  const destination = path(`apps/web/public/social/zettel-notes-${locale}.png`)
   const result = await sharp(background)
     .composite(layers.map(({ input, left, top }) => ({ input, left, top })))
     .removeAlpha()

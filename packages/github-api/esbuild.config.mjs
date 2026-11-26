@@ -15,7 +15,7 @@ const buildOptions = {
 if (isWatch) {
   const ctx = await esbuild.context(buildOptions)
   await ctx.watch()
-  console.log('[@markflowy/github-api] watching for changes...')
+  console.log('[@zettel-notes/github-api] watching for changes...')
 } else {
   await esbuild.build(buildOptions)
 }

@@ -6,6 +6,6 @@ describe('editor scroll ownership', () => {
     expect(editorScrollOptions.overflow).toEqual({ x: 'scroll', y: 'scroll' })
     expect(editorScrollOptions.scrollbars.visibility).toBe('auto')
     expect(editorScrollOptions.scrollbars.dragScroll).toBe(true)
-    expect(editorScrollOptions.scrollbars.theme).toBe('os-theme-markflowy')
+    expect(editorScrollOptions.scrollbars.theme).toBe('os-theme-zettel-notes')
   })
 })

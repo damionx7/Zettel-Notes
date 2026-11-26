@@ -1,5 +1,5 @@
-export { Empty, List, SideBarHeader, FileTree } from '@markflowy/interface'
-export type { ContextMenuItem } from '@markflowy/interface'
+export { Empty, List, SideBarHeader, FileTree } from '@zettel-notes/interface'
+export type { ContextMenuItem } from '@zettel-notes/interface'
 export { default as Modal } from './Modal'
 
 export { default as Explorer } from './Explorer'

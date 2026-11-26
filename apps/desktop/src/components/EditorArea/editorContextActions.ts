@@ -3,7 +3,7 @@ import {
   executeEditorPaletteCommand,
   releaseEditorCommandTarget,
 } from '@/extensions/command-palette/editorCommands'
-import { createCommandMap } from '@markflowy/interface'
+import { createCommandMap } from '@zettel-notes/interface'
 import type { MfCodemirrorView } from 'rme'
 import type { DesktopMenuItemData } from '@/stores/useContextMenuStore'
 

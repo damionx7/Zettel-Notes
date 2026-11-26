@@ -1,6 +1,6 @@
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { enableMapSet } from 'immer'
-import type * as InterfaceModule from '@markflowy/interface'
+import type * as InterfaceModule from '@zettel-notes/interface'
 import type * as RenameDocumentModule from '@/services/rename-document'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { TooltipProvider } from '@/components/ui/tooltip'
@@ -12,7 +12,7 @@ import useEditorStore from '@/stores/useEditorStore'
 import { DocumentTitle } from './DocumentTitle'
 
 vi.mock('@tauri-apps/api/core', () => ({ invoke: vi.fn(), isTauri: () => false }))
-vi.mock('@markflowy/interface', async (importOriginal) => ({
+vi.mock('@zettel-notes/interface', async (importOriginal) => ({
   ...(await importOriginal<typeof InterfaceModule>()),
   useFileSystem: () => ({}),
 }))

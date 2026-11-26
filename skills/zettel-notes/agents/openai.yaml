@@ -1,0 +1,4 @@
+interface:
+  display_name: "Zettel Notes"
+  short_description: "Protect, version, save and display local documents"
+  default_prompt: "Use $zettel-notes to open my document in preview and confirm the requested content is displayed."

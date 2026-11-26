@@ -13,7 +13,7 @@ import { PDF_EXPORT_EVENT } from '../pdf-export/pdfExportMenuItem'
 import type { PdfExportDialogProps } from '../pdf-export/PdfExportDialog'
 import type * as PdfExportService from '../pdf-export/pdfExport'
 import { EditorThemeContext, type EditorThemeConfig } from '@/editorThemeContext'
-import { desktopDarkTheme } from '@markflowy/theme'
+import { desktopDarkTheme } from '@zettel-notes/theme'
 import type { RmeRuntime } from '../rmeRuntime'
 
 type RuntimeTheme = NonNullable<ComponentProps<RmeRuntime['ThemeProvider']>['theme']>
@@ -240,7 +240,7 @@ describe('PdfPrintController', () => {
   let root: Root
 
   beforeEach(() => {
-    document.title = 'MarkFlowy'
+    document.title = 'Zettel Notes'
     previewState.docs = []
     previewState.themes = []
     previewState.error = null
@@ -530,7 +530,7 @@ describe('PdfPrintController', () => {
     })
     printMocks.preparePrintDocument.mockResolvedValue({ failedImageCount: 1 })
     printMocks.openPdfPrintWindow.mockImplementation(async (printDocument) => {
-      expect(document.title).toBe('MarkFlowy')
+      expect(document.title).toBe('Zettel Notes')
       const printRoot = document.querySelector<HTMLElement>('.mf-pdf-print-root')
       expect(printRoot?.getAttribute('aria-hidden')).toBe('true')
       expect(printRoot?.style.getPropertyValue('--mf-paragraph-first-line-indent')).toBe('2em')
@@ -558,7 +558,7 @@ describe('PdfPrintController', () => {
       'contextmenu.editor_tab.export_pdf_image_warning:1',
     )
     expect(toastMocks.success).not.toHaveBeenCalled()
-    expect(document.title).toBe('MarkFlowy')
+    expect(document.title).toBe('Zettel Notes')
     expect(toastMocks.dismiss).toHaveBeenCalledWith('loading-toast')
   })
 
@@ -595,7 +595,7 @@ describe('PdfPrintController', () => {
     await waitFor(() => expect(toastMocks.error).toHaveBeenCalled())
 
     expect(printMocks.openPdfPrintWindow).not.toHaveBeenCalled()
-    expect(document.title).toBe('MarkFlowy')
+    expect(document.title).toBe('Zettel Notes')
     expect(document.querySelector('.mf-pdf-print-root')).toBeNull()
   })
 

@@ -1,5 +1,5 @@
 import type { NodeViewComponentProps } from '@rme-sdk/sdk/react'
-import { editorLightTheme } from '@markflowy/theme'
+import { editorLightTheme } from '@zettel-notes/theme'
 import { act, type ComponentProps } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { ThemeProvider } from 'styled-components'

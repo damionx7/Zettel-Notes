@@ -97,7 +97,7 @@ export default function PersonalSettingsPage() {
                 Account
               </PanelKicker>
               <PanelTitle>Basic Information</PanelTitle>
-              <PanelDesc>Your MarkFlowy account profile for the web workspace.</PanelDesc>
+              <PanelDesc>Your Zettel Notes account profile for the web workspace.</PanelDesc>
             </PanelHeader>
 
             <PanelBody>

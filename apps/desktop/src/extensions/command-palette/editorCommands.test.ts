@@ -29,7 +29,7 @@ vi.mock('@/helper/clipboard', () => ({
 vi.mock('@/components/EditorArea/requestImageInsert', () => ({ requestImageInsert: vi.fn() }))
 // Exercise the shared source commands without rebuilding their checked-out package artifacts.
 vi.mock(
-  '@markflowy/interface',
+  '@zettel-notes/interface',
   () => import('../../../../../packages/interface/src/components/Toolbar/CodeCommandButton'),
 )
 vi.mock('@/helper/logger', () => ({ logger: { debug: vi.fn(), warn: vi.fn(), error: vi.fn() } }))

@@ -1151,7 +1151,7 @@
                      "about":  {
                                    "label":  "Sobre",
                                    "desc":  "De onde vem esta aplicação e o que ela muda.",
-                                   "fork":  "Esta aplicação é um fork da MarkFlowy, disponível em",
+                                   "fork":  "Esta aplicação é um fork do MarkFlowy, disponível em",
                                    "compatibility":  "Tem algumas alterações para a tornar parcialmente compatível com o Zettel Notes para Android.",
                                    "reset":  {
                                                  "label":  "Repor definições",

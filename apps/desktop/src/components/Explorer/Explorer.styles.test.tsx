@@ -1,4 +1,4 @@
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { ServerStyleSheet, StyleSheetManager, ThemeProvider } from 'styled-components'
 import { describe, expect, it } from 'vitest'
@@ -33,7 +33,7 @@ function renderExplorerStyles() {
 }
 
 describe('Explorer file tree density', () => {
-  it('matches the MarkFlowy project panel type and layout contract', () => {
+  it('matches the Zettel Notes project panel type and layout contract', () => {
     const css = renderExplorerStyles()
 
     expect(EXPLORER_FILE_TREE_ROW_HEIGHT).toBe(26)

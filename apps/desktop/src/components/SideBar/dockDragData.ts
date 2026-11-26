@@ -1,7 +1,7 @@
 import { isDockPanelId, type DockPanelId } from '@/stores/useLayoutStore'
 import { create } from 'zustand'
 
-export const DOCK_PANEL_DRAG_TYPE = 'application/x-markflowy-dock-panel'
+export const DOCK_PANEL_DRAG_TYPE = 'application/x-zettel-notes-dock-panel'
 
 export const useDockDragStore = create<{ panelId: DockPanelId | null }>(() => ({ panelId: null }))
 

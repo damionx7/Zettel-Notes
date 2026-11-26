@@ -9,7 +9,7 @@ const harness = vi.hoisted(() => ({
   renderPreview: vi.fn(),
 }))
 
-vi.mock('@markflowy/i18n', () => ({
+vi.mock('@zettel-notes/i18n', () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }))
 
@@ -255,7 +255,7 @@ describe('Preview', () => {
 
   test('falls back to the encoded remote source when its resolved Blob cannot render', async () => {
     const source =
-      'https://img.shields.io/github/commit-activity/m/drl990114/MarkFlowy?color=%23ff9900'
+      'https://img.shields.io/github/commit-activity/m/damionx7/Zettel-Notes?color=%23ff9900'
     const resolveImage = vi.fn(async () => 'blob:preview-badge')
     harness.renderPreview.mockResolvedValue({
       html: [

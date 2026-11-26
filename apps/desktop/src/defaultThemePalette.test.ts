@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import {
-  markflowyDarkTheme,
-  markflowyLightTheme,
-} from '../../../packages/theme/src/theme-token/markflowy'
+  zettelNotesDarkTheme,
+  zettelNotesLightTheme,
+} from '../../../packages/theme/src/theme-token/zettel-notes'
 
-describe('default MarkFlowy palettes', () => {
+describe('default Zettel Notes palettes', () => {
   it('keeps the macOS Classic light surface hierarchy', () => {
-    expect(markflowyLightTheme).toMatchObject({
+    expect(zettelNotesLightTheme).toMatchObject({
       accentColor: '#1F6AE2',
       bgColor: '#FFFFFF',
       borderColor: '#D2D2D2',
@@ -23,7 +23,7 @@ describe('default MarkFlowy palettes', () => {
   })
 
   it('keeps the macOS Classic dark surface hierarchy', () => {
-    expect(markflowyDarkTheme).toMatchObject({
+    expect(zettelNotesDarkTheme).toMatchObject({
       bgColor: '#131313',
       borderColor: '#404040',
       contextMenuBgColor: '#1E1D1E',
@@ -39,7 +39,7 @@ describe('default MarkFlowy palettes', () => {
   })
 
   it('uses solid scrollbar thumbs so the reference colors remain discoverable', () => {
-    expect(markflowyLightTheme.scrollbarThumbColor).toBe('#C8C8C8')
-    expect(markflowyDarkTheme.scrollbarThumbColor).toBe('#4C4D4D')
+    expect(zettelNotesLightTheme.scrollbarThumbColor).toBe('#C8C8C8')
+    expect(zettelNotesDarkTheme.scrollbarThumbColor).toBe('#4C4D4D')
   })
 })

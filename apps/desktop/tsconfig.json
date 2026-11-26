@@ -13,16 +13,16 @@
       "@/*": [
         "./src/*"
       ],
-      "@markflowy/i18n/desktop": [
+      "@zettel-notes/i18n/desktop": [
         "../../packages/i18n/src/desktop.ts"
       ],
-      "@markflowy/interface": [
+      "@zettel-notes/interface": [
         "../../packages/interface/src/index.ts"
       ],
-      "@markflowy/theme/semantic": [
+      "@zettel-notes/theme/semantic": [
         "../../packages/theme/src/semantic/index.ts"
       ],
-      "@markflowy/theme": [
+      "@zettel-notes/theme": [
         "../../packages/theme/src/index.ts"
       ],
       "zens": [

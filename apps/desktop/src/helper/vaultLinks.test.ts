@@ -17,7 +17,7 @@ vi.mock('@/stores/useEditorStore', () => ({
  * opening the app: a link that cannot be placed fails here.
  *
  * Run it with an explicit folder:
- *   WINZETTEL_VAULT="E:/zettel-linkstyle-vault" yarn workspace @markflowy/desktop test vaultLinks
+ *   WINZETTEL_VAULT="E:/zettel-linkstyle-vault" yarn workspace @zettel-notes/desktop test vaultLinks
  */
 const vault = process.env.WINZETTEL_VAULT
 

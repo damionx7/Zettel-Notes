@@ -123,8 +123,8 @@ export default function ContributorGlobe({ contributors }: ContributorGlobeProps
 
       <Globe aria-hidden='true'>
         <TextureTrack $isAnimating={isAnimating}>
-          <WorldTexture idPrefix='markflowy-world-a' />
-          <WorldTexture idPrefix='markflowy-world-b' />
+          <WorldTexture idPrefix='zettel-notes-world-a' />
+          <WorldTexture idPrefix='zettel-notes-world-b' />
         </TextureTrack>
 
         <GridSvg viewBox='0 0 400 400' aria-hidden='true'>

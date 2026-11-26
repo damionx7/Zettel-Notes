@@ -84,7 +84,7 @@ export function UpdateDialogContent({
         )}
         data-slot='update-release-meta'
       >
-        <p className='min-w-0 break-words text-ui-control font-medium'>MarkFlowy {version}</p>
+        <p className='min-w-0 break-words text-ui-control font-medium'>Zettel Notes {version}</p>
         {formattedReleaseDate ? (
           <p className='flex flex-wrap items-baseline gap-x-1.5 text-ui-caption text-content-muted'>
             <span>{releaseDateLabel}</span>

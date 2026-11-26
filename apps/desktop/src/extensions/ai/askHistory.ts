@@ -9,7 +9,7 @@ import { ExportedMessageRepository as MessageRepository } from '@assistant-ui/re
 import { LazyStore } from '@tauri-apps/plugin-store'
 export { getAskWorkspaceKey } from './askWorkspaceKey'
 
-export const ASK_HISTORY_STORE_FILE = '.markflowy_ai_ask.dat'
+export const ASK_HISTORY_STORE_FILE = '.zettel_notes_ai_ask.dat'
 export const ASK_HISTORY_MAX_MESSAGES = 100
 export const ASK_HISTORY_MAX_BYTES = 5 * 1024 * 1024
 export const LEGACY_AI_STORAGE_KEY = 'ai-storage-v2'

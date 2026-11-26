@@ -1,0 +1,27 @@
+Zettel Notes
+Copyright (C) 2026-present damionx7
+https://github.com/damionx7/Zettel-Notes
+
+Zettel Notes is a desktop Markdown editor for notes written by the Zettel Notes app for
+Android. It is a modified version of other free software, and keeps their copyright notices
+as the GNU Affero General Public License v3 requires:
+
+- MarkFlowy, Copyright (C) 2023-2026 drl990114 and the MarkFlowy contributors.
+  https://github.com/drl990114/MarkFlowy
+  Licensed under the GNU Affero General Public License v3.0.
+
+- WinZettel, Copyright (C) 2026 zekabra, itself a modified version of MarkFlowy.
+  https://github.com/zekabra/WinZettel
+  Licensed under the GNU Affero General Public License v3.0.
+
+The Zettel Notes changes (the app name and identity, cross-platform builds, note encryption
+compatible with Zettel Notes for Android, the release and update pipeline, and everything
+described in FORK.md) are Copyright (C) 2026-present damionx7, under the same license.
+
+Some packages in this repository carry their own license file, which applies to that
+package:
+
+- packages/zens: MIT, Copyright (c) 2024 drl990114.
+- packages/theme/licenses: the licenses of the colour palettes the built-in themes use.
+
+The full license text is in LICENSE.

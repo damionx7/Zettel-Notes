@@ -1,1 +1,1 @@
-export * from '@markflowy/interface'
+export * from '@zettel-notes/interface'

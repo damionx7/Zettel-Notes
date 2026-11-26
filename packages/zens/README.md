@@ -1,6 +1,6 @@
 # Zens
 
-MarkFlowy's shared React 19 components, implemented with Radix primitives and Tailwind CSS. Generic implementations live in `src/components`; Desktop exposes them through its `components/ui` facade. The package has no application, Tauri, or host Tailwind configuration dependency.
+Zettel Notes' shared React 19 components, implemented with Radix primitives and Tailwind CSS. Generic implementations live in `src/components`; Desktop exposes them through its `components/ui` facade. The package has no application, Tauri, or host Tailwind configuration dependency.
 
 Import the stylesheet once at your application entry:
 

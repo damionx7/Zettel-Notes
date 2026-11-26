@@ -132,7 +132,7 @@ describe('appearance theme selection', () => {
     expect(useAppSettingStore.getState().settingData.light_theme).toBe('legacy-paper')
     fireEvent.click(screen.getByRole('button', { name: 'settings.display.theme.migration_guide' }))
     expect(mocks.openUrl).toHaveBeenCalledWith(
-      'https://www.markflowy.cc/zh/docs/Extension/CustomTheme',
+      'https://github.com/damionx7/Zettel-Notes/blob/main/docs/zh/Extension/CustomTheme.md',
     )
 
     act(() => {

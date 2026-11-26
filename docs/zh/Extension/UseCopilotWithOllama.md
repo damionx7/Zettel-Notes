@@ -1,24 +1,24 @@
 ---
-seoTitle: "在 MarkFlowy 中使用 Ollama 与 Copilot"
-description: "为 MarkFlowy 桌面版配置本地 Ollama 对话与 Copilot，了解文档上下文，并排查连接和模型问题。"
+seoTitle: "在 Zettel Notes 中使用 Ollama 与 Copilot"
+description: "为 Zettel Notes 桌面版配置本地 Ollama 对话与 Copilot，了解文档上下文，并排查连接和模型问题。"
 updatedAt: "2026-09-27"
 ---
 
-# 在 MarkFlowy 中使用 Ollama 与 Copilot
+# 在 Zettel Notes 中使用 Ollama 与 Copilot
 
-MarkFlowy 桌面版可以连接 Ollama，进行 AI 对话和 Copilot 补全。本地推理需要同时使用本地服务地址和已下载的本地模型；选择云端模型或远程地址时，请求会由对应服务处理。
+Zettel Notes 桌面版可以连接 Ollama，进行 AI 对话和 Copilot 补全。本地推理需要同时使用本地服务地址和已下载的本地模型；选择云端模型或远程地址时，请求会由对应服务处理。
 
 ## 1. 启动 Ollama 并检查模型
 
-按照 [Ollama 官方说明](https://docs.ollama.com/quickstart)完成安装，启动应用或服务，下载适合当前硬件的本地文本生成模型。先确认模型在 Ollama 中能够正常回答，再配置 MarkFlowy。
+按照 [Ollama 官方说明](https://docs.ollama.com/quickstart)完成安装，启动应用或服务，下载适合当前硬件的本地文本生成模型。先确认模型在 Ollama 中能够正常回答，再配置 Zettel Notes。
 
 ```sh
 ollama list
 ```
 
-记录列表中的完整模型名称，包括标签；在 MarkFlowy 中使用相同名称。速度和内存使用取决于硬件、模型及上下文长度。短补全可以先尝试较小的模型，再用自己的文本比较建议质量。
+记录列表中的完整模型名称，包括标签；在 Zettel Notes 中使用相同名称。速度和内存使用取决于硬件、模型及上下文长度。短补全可以先尝试较小的模型，再用自己的文本比较建议质量。
 
-本地默认地址为 `http://localhost:11434`。MarkFlowy 接受这个地址，也接受以 `/api` 结尾的地址，会统一处理请求路径。可检查模型列表接口：
+本地默认地址为 `http://localhost:11434`。Zettel Notes 接受这个地址，也接受以 `/api` 结尾的地址，会统一处理请求路径。可检查模型列表接口：
 
 ```sh
 curl http://localhost:11434/api/tags
@@ -28,7 +28,7 @@ curl http://localhost:11434/api/tags
 
 1. 打开 **设置 → AI**，找到 Ollama 配置。
 2. 使用默认本地地址，或填写自己的服务地址。普通本地 Ollama 不需要云端服务商的 API Key；有鉴权的远程网关可能需要请求头。
-3. 打开 AI 对话，选择 Ollama 和文本生成模型。MarkFlowy 会发现 Ollama 中的模型；发现不可用时，也可显式配置模型名称。
+3. 打开 AI 对话，选择 Ollama 和文本生成模型。Zettel Notes 会发现 Ollama 中的模型；发现不可用时，也可显式配置模型名称。
 4. 先发送一条不带文档上下文的短问题，再加入一份小文档，尝试生成摘要。
 
 例如，准备一份包含三项会议决定的示例文档，然后提问：“请将这些决定总结成三个 Markdown 列表项，保留负责人和日期。”使用回答前，与原文核对。
@@ -59,4 +59,4 @@ curl http://localhost:11434/api/tags
 
 当前桌面版的 AI 请求和模型发现使用 Tauri 原生 HTTP 客户端，无需先将 `OLLAMA_ORIGINS` 设为 `*` 或将 Ollama 暴露到所有网络接口。如果使用旧版浏览器客户端，且日志明确显示跨域错误，再按 Ollama 的[来源配置说明](https://docs.ollama.com/faq#how-can-i-allow-additional-web-origins-to-access-ollama)为该客户端配置。连接另一台机器上的 Ollama 属于独立网络配置，不是本地使用的前置步骤。
 
-继续阅读[产品介绍](../intro)，或下载[当前桌面发行版](https://github.com/drl990114/MarkFlowy/releases/latest)。
+继续阅读[产品介绍](../intro)，或下载[当前桌面发行版](https://github.com/damionx7/Zettel-Notes/releases/latest)。

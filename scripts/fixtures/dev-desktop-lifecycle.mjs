@@ -48,7 +48,7 @@ if (stage === 'worker') {
         ? assertRustToolchainAvailable(env, {
             ...options,
             runCommand: async (_command, _args, commandOptions) => {
-              const directory = await mkdtemp(join(tmpdir(), 'markflowy-preflight-'))
+              const directory = await mkdtemp(join(tmpdir(), 'zettel-notes-preflight-'))
               const metadataPath = join(directory, 'worker.json')
               try {
                 const completion = runToolchainCommand(

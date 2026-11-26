@@ -1,4 +1,4 @@
-const DATABASE_NAME = 'markflowy-demo-workspace'
+const DATABASE_NAME = 'zettel-notes-demo-workspace'
 const DATABASE_VERSION = 1
 const FILE_STORE_NAME = 'files'
 

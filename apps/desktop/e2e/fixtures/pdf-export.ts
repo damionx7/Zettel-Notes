@@ -10,7 +10,7 @@ const rows = Array.from({ length: 70 }, (_, index) => {
 
 export const fixtureValidation = {
   requiredText: [
-    '中文正文可选择', 'MarkFlowy PDF Prototype', 'DOCUMENT-END',
+    '中文正文可选择', 'Zettel Notes PDF Prototype', 'DOCUMENT-END',
     'MERGED-HEADER', 'MERGED-ROW', 'MERGED-TOTAL', 'MATH-END', 'MERMAID-END', 'TABLE-END',
   ],
   diagramLabels: ['中文起点', '中文终点', '客户端', '导出服务'],
@@ -32,9 +32,9 @@ export const fixtureValidation = {
   },
 }
 
-export const fixtureMarkdown = String.raw`# MarkFlowy PDF Prototype
+export const fixtureMarkdown = String.raw`# Zettel Notes PDF Prototype
 
-本验收文档复用 MarkFlowy 的静态预览和导出文档准备流程。中文正文可选择，Latin text 123、标点“引号”、粗体与链接用于检查字体和文字提取。
+本验收文档复用 Zettel Notes 的静态预览和导出文档准备流程。中文正文可选择，Latin text 123、标点“引号”、粗体与链接用于检查字体和文字提取。
 
 ## 中文与混排
 

@@ -29,17 +29,17 @@ import { PopoverRoot, PopoverTrigger, PopoverContent } from '@/components/ui/pop
 import { desktopVariables, legacyTokens } from '@/themes/runtime'
 import { InjectFonts } from '@/injectFonts'
 import { EDITOR_CSS_SCOPE_CLASS } from '@/themes/editorCssScope'
-import type { ResolvedTheme, ThemeTokenName } from '@markflowy/theme/semantic'
+import type { ResolvedTheme, ThemeTokenName } from '@zettel-notes/theme/semantic'
 import type { ThemePreviewState, ThemePreviewLabels } from './protocol'
 const markdown = [
   '# A place for ideas',
-  'Make room for **ideas**, *details*, and [connections](https://markflowy.com).',
+  'Make room for **ideas**, *details*, and [connections](https://zettelnotes.eu).',
   '> A theme should support the words.',
   '## A little structure',
   '- First thought\n- Another possibility',
   '### Small steps',
-  '- [x] Gather **ideas**, `notes`, and [references](https://markflowy.com).\n  - [ ] Explore one more possibility.\n- [ ] Shape the next draft.\n  - [x] Find a starting point.',
-  '```typescript\n// Keep your ideas close\nconst message = "Hello, MarkFlowy"\nfunction greet(name: string) {\n  return `${message}, ${name}`\n}\n```',
+  '- [x] Gather **ideas**, `notes`, and [references](https://zettelnotes.eu).\n  - [ ] Explore one more possibility.\n- [ ] Shape the next draft.\n  - [x] Find a starting point.',
+  '```typescript\n// Keep your ideas close\nconst message = "Hello, Zettel Notes"\nfunction greet(name: string) {\n  return `${message}, ${name}`\n}\n```',
   '| Detail | Value |\n| --- | --- |\n| Theme | Personal |',
   '',
 ].join('\n\n')
@@ -109,7 +109,7 @@ export function PreviewSurface({
             <FolderOpenIcon aria-hidden />
           </Button>
           <span className='text-ui-caption' data-theme-token='text.secondary'>
-            MarkFlowy
+            Zettel Notes
           </span>
           <ChevronDownIcon className='size-3.5' aria-hidden />
         </header>

@@ -5,7 +5,7 @@ export const useMockFiles = () => {
   const { t } = useTranslation('common')
 
   const markdownContent = `
-##### ${t('mock.intro.title', 'Welcome to MarkFlowy!')}
+##### ${t('mock.intro.title', 'Welcome to Zettel Notes!')}
 
 - [x] 🧠 **${t('mock.intro.ai_label', 'AI-Powered:')}** ${t('mock.intro.ai_desc', 'Built-in translation, summary, and DeepSeek/ChatGPT support.')}
 - [x] ⚡ **${t('mock.intro.lightweight_label', 'Lightweight:')}** ${t('mock.intro.lightweight_desc', 'Built with Tauri for macOS, Windows, and Linux. Package size varies by platform and installer.')}
@@ -21,7 +21,7 @@ ${t('mock.intro.footer', 'Enjoy experimenting with the editor!')}
 `
 
   const jsonContent = `{
-  "name": "MarkFlowy",
+  "name": "Zettel Notes",
   "description": "${t('mock.config.description', 'A local-first Markdown editor focused on large documents and optional AI.')}",
   "homepage": "${SITE_ORIGIN}",
   "author": {
@@ -31,7 +31,7 @@ ${t('mock.intro.footer', 'Enjoy experimenting with the editor!')}
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/drl990114/MarkFlowy"
+    "url": "https://github.com/damionx7/Zettel-Notes"
   },
   "license": "AGPL-3.0",
   "features": [

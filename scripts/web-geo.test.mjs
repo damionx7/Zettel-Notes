@@ -102,10 +102,10 @@ test('public document sources have unique URLs and complete metadata', () => {
 })
 
 test('document metadata accepts YAML quoting and folded values without changing the body', () => {
-  for (const title of ["'MarkFlowy themes'", '"MarkFlowy themes"', 'MarkFlowy themes']) {
+  for (const title of ["'Zettel Notes themes'", '"Zettel Notes themes"', 'Zettel Notes themes']) {
     const source = `---\nseoTitle: ${title}\ndescription: >-\n  Create themes\n  with JSON.\nupdatedAt: 2026-09-27\n---\n\n# Themes\n\n---\n`
     const document = parsePublicMarkdown(source, 'en/Extension/CustomTheme.md')
-    assert.equal(document.seoTitle, 'MarkFlowy themes')
+    assert.equal(document.seoTitle, 'Zettel Notes themes')
     assert.equal(document.description, 'Create themes with JSON.')
     assert.equal(document.updatedAt, '2026-09-27')
     assert.equal(document.body.raw, '\n# Themes\n\n---\n')

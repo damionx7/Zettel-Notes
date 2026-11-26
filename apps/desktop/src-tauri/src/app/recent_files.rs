@@ -184,7 +184,7 @@ fn read_or_migrate(app: &tauri::AppHandle, path: &Path) -> Result<Vec<String>, S
             .map_err(|error| error.to_string()),
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
             let cache = app
-                .store(".markflowy_workspaces.dat")
+                .store(".zettel_notes_workspaces.dat")
                 .map_err(|error| error.to_string())?;
             let last = cache
                 .get("window-session:last-active")

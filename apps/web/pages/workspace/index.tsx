@@ -2,7 +2,7 @@ import { githubService, type GitHubRepo } from 'features/githubWorkspace/service
 import { useGitHubWorkspaceImport } from 'features/githubWorkspace/hooks/useGitHubWorkspaceImport'
 import { getRemoteWorkspaceErrorMessage } from 'features/workspace/services/remoteWorkspaceService'
 import { useAuth } from 'hooks/useAuth'
-import type { GitHubConnectionStatus } from '@markflowy/types'
+import type { GitHubConnectionStatus } from '@zettel-notes/types'
 import Link from 'next/link'
 import type { GetStaticProps } from 'next'
 import { useTranslation } from 'next-i18next'
@@ -225,9 +225,9 @@ export default function WorkspaceListPage() {
     <Header>
       <HeaderInner>
         <HeaderNavigation aria-label='Workspace navigation'>
-          <BrandLink href='/' aria-label='Go to MarkFlowy home'>
+          <BrandLink href='/' aria-label='Go to Zettel Notes home'>
             <BrandLogo src='/logo.svg' alt='' />
-            <BrandName>MarkFlowy</BrandName>
+            <BrandName>Zettel Notes</BrandName>
           </BrandLink>
           <NavigationDivider aria-hidden='true' />
           <CurrentLocation aria-current='page'>
@@ -526,7 +526,7 @@ export default function WorkspaceListPage() {
           <SetupCopy>
             <SetupTitle>No authorized repositories found</SetupTitle>
             <SetupText>
-              Choose the GitHub repositories that MarkFlowy can import and edit.
+              Choose the GitHub repositories that Zettel Notes can import and edit.
             </SetupText>
           </SetupCopy>
           <ImportRepoButton
@@ -572,7 +572,7 @@ export default function WorkspaceListPage() {
 
   return (
     <Container>
-      <SeoHead title={`${t('workspace.title')} | MarkFlowy`} />
+      <SeoHead title={`${t('workspace.title')} | Zettel Notes`} />
       {renderHeader()}
 
       {renderWorkspaces()}

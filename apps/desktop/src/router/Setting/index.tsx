@@ -31,7 +31,7 @@ import {
 import { ThemeSetting } from './ThemeSetting'
 import { ThemeStore } from './ThemeStore'
 import { ThemeCustomization } from './ThemeStore/ThemeCustomization'
-import type { MfTheme } from '@markflowy/theme'
+import type { MfTheme } from '@zettel-notes/theme'
 
 function isSettingGroup(
   group: Setting.SettingGroup | Setting.SettingItem,

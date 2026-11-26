@@ -5,8 +5,8 @@ import {
   type AppContextValue,
   type FileSystemContextValue,
   type MoveFileInfo,
-} from '@markflowy/interface'
-import type { IFile } from '@markflowy/interface'
+} from '@zettel-notes/interface'
+import type { IFile } from '@zettel-notes/interface'
 
 const directFileMutationLease = {
   protectFileIds: () => {},

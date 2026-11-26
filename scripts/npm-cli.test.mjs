@@ -56,7 +56,7 @@ test('resolves Unix package-manager symlinks', () => {
 })
 
 test('runs the JS CLI preserving spaces and shell metacharacters in paths and arguments', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'markflowy npm & '))
+  const directory = await mkdtemp(join(tmpdir(), 'zettel-notes npm & '))
   try {
     const cli = join(directory, 'npm-cli.js')
     await writeFile(cli, 'console.log(JSON.stringify(process.argv.slice(2)))')

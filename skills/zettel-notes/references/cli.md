@@ -67,4 +67,4 @@ Failures include `invalid_arguments`, `app_not_running`, `window_not_found`, `fi
 
 - [Tauri CLI](https://v2.tauri.app/plugin/cli/): existing argument/launcher integration.
 - [Tauri single instance](https://v2.tauri.app/plugin/single-instance/): forwarding requests to the running app.
-- [VS Code CLI](https://code.visualstudio.com/docs/configure/command-line): familiar CLI discovery conventions. MarkFlowy's `--wait applied` waits for displayed content; VS Code's `--wait` waits for files to close.
+- [VS Code CLI](https://code.visualstudio.com/docs/configure/command-line): familiar CLI discovery conventions. Zettel Notes' `--wait applied` waits for displayed content; VS Code's `--wait` waits for files to close.

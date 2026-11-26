@@ -1,4 +1,4 @@
-import { desktopLightTheme } from '@markflowy/theme'
+import { desktopLightTheme } from '@zettel-notes/theme'
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useState, type ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
@@ -16,7 +16,7 @@ import {
 import { FileTreeContext } from '../../../../../packages/interface/src/contexts/FileTreeContext'
 import type { IFile } from '../../../../../packages/interface/src/types/file'
 
-vi.mock('@markflowy/i18n', () => ({ useTranslation: () => ({ t: (key: string) => key }) }))
+vi.mock('@zettel-notes/i18n', () => ({ useTranslation: () => ({ t: (key: string) => key }) }))
 vi.mock('zens', async (importOriginal) => ({
   ...(await importOriginal<typeof Zens>()),
   Input: (await import('../../../../../packages/zens/src/Input')).default,

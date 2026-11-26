@@ -60,7 +60,7 @@ export function pdfPreviewAssets(): Plugin {
     }
   }
   return {
-    name: 'markflowy-pdf-preview-assets',
+    name: 'zettel-notes-pdf-preview-assets',
     resolveId: (id) => (id === styleId ? resolvedStyleId : null),
     load(id) {
       if (id !== resolvedStyleId) return null

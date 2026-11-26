@@ -5,7 +5,7 @@
   "docs": {
     "tableOfContents": "Trên trang này",
     "content": {
-      "description": "Bắt đầu với MarkFlowy: cài đặt ứng dụng, chỉnh sửa tệp Markdown trên máy, chuyển đổi giữa chỉnh sửa trực quan và chỉnh sửa mã nguồn, và thiết lập trợ lý AI tùy chọn.",
+      "description": "Bắt đầu với Zettel Notes: cài đặt ứng dụng, chỉnh sửa tệp Markdown trên máy, chuyển đổi giữa chỉnh sửa trực quan và chỉnh sửa mã nguồn, và thiết lập trợ lý AI tùy chọn.",
       "fallback": "Các hướng dẫn này hiện có bằng tiếng Anh."
     },
     "sidebar": {
@@ -14,7 +14,7 @@
   },
   "mock": {
     "intro": {
-      "title": "Chào mừng bạn đến với MarkFlowy!",
+      "title": "Chào mừng bạn đến với Zettel Notes!",
       "ai_label": "Tích hợp AI:",
       "ai_desc": "Copilot tích hợp sẵn, dịch, tóm tắt, cùng hỗ trợ DeepSeek/ChatGPT và các mô hình phổ biến khác.",
       "lightweight_label": "Nhẹ:",
@@ -41,11 +41,11 @@
   },
   "home": {
     "hero": {
-      "title": "MarkFlowy",
+      "title": "Zettel Notes",
       "subtitle": "Trình soạn thảo Markdown ưu tiên lưu trữ cục bộ, tập trung vào tài liệu lớn và AI tùy chọn.",
-      "description": "Tìm lại dòng chảy khi viết với MarkFlowy, trình soạn thảo Markdown ưu tiên lưu trữ cục bộ dành cho macOS, Windows và Linux. Chỉnh sửa trực quan và mã nguồn, kèm trợ lý AI tùy chọn.",
+      "description": "Tìm lại dòng chảy khi viết với Zettel Notes, trình soạn thảo Markdown ưu tiên lưu trữ cục bộ dành cho macOS, Windows và Linux. Chỉnh sửa trực quan và mã nguồn, kèm trợ lý AI tùy chọn.",
       "download": "Tải xuống ngay",
-      "metaTitle": "MarkFlowy — Trình soạn thảo Markdown ưu tiên lưu trữ cục bộ"
+      "metaTitle": "Zettel Notes — Trình soạn thảo Markdown ưu tiên lưu trữ cục bộ"
     },
     "statRings": {
       "platforms": "Nền tảng",
@@ -91,10 +91,10 @@
       "title": "Được xây dựng bởi nhiều người đóng góp",
       "titleLead": "Được xây dựng bởi nhiều",
       "titleAccent": "người đóng góp",
-      "description": "Cảm ơn tất cả các nhà phát triển đã đóng góp cho MarkFlowy",
+      "description": "Cảm ơn tất cả các nhà phát triển đã đóng góp cho Zettel Notes",
       "count": "{{count}} người đóng góp trên quỹ đạo",
       "viewAll": "Xem tất cả người đóng góp",
-      "globeLabel": "Quả địa cầu người đóng góp toàn cầu của MarkFlowy",
+      "globeLabel": "Quả địa cầu người đóng góp toàn cầu của Zettel Notes",
       "orbitLabel": "Liên kết hồ sơ người đóng góp bay quanh quả địa cầu"
     },
     "guides": {
@@ -104,8 +104,8 @@
   },
   "releases": {
     "title": "Bản phát hành",
-    "meta_description": "Khám phá các bản phát hành của MarkFlowy, tính năng chỉnh sửa mới, cải tiến và bản sửa lỗi. Tải xuống trình soạn thảo Markdown cho macOS, Windows và Linux.",
-    "description_before_link": "Đây là các bản phát hành mới nhất của MarkFlowy. Nhấp vào một phiên bản để xem chi tiết các thay đổi và cập nhật. Tải xuống từ",
+    "meta_description": "Khám phá các bản phát hành của Zettel Notes, tính năng chỉnh sửa mới, cải tiến và bản sửa lỗi. Tải xuống trình soạn thảo Markdown cho macOS, Windows và Linux.",
+    "description_before_link": "Đây là các bản phát hành mới nhất của Zettel Notes. Nhấp vào một phiên bản để xem chi tiết các thay đổi và cập nhật. Tải xuống từ",
     "github_link": "GitHub Releases",
     "description_after_link": ".",
     "see_details": "Xem chi tiết"
@@ -186,7 +186,7 @@
       "start": "Bắt đầu",
       "downloadDescription": "Dành cho macOS, Windows và Linux",
       "webDescription": "Không gian làm việc của bạn trên trình duyệt · Beta",
-      "featuresDescription": "Khám phá những gì MarkFlowy có thể làm",
+      "featuresDescription": "Khám phá những gì Zettel Notes có thể làm",
       "quickstart": "Bắt đầu nhanh",
       "explore": "Khám phá thêm",
       "support": "Trợ giúp và hỗ trợ",
@@ -196,14 +196,14 @@
       "contributeDescription": "Bắt đầu với một issue hoặc một cải tiến",
       "feedbackDescription": "Báo cáo sự cố và chia sẻ ý tưởng",
       "contributors": "Người đóng góp",
-      "contributorsDescription": "Gặp gỡ những người xây dựng MarkFlowy",
+      "contributorsDescription": "Gặp gỡ những người xây dựng Zettel Notes",
       "back": "Quay lại"
     },
     "hero": {
       "eyebrow": "ƯU TIÊN CỤC BỘ. Ý TƯỞNG DẪN ĐƯỜNG.",
       "title": "Ý tưởng của bạn, tuôn chảy trọn vẹn.",
       "lead": "Trình soạn thảo Markdown được chế tác để chỉnh sửa mượt mà và viết tập trung.",
-      "description": "Ưu tiên lưu trữ cục bộ, với chỉnh sửa trực quan và mã nguồn. Trợ lý AI của bạn có thể dùng Skill chính thức để mở, lưu và xuất tài liệu trong MarkFlowy.",
+      "description": "Ưu tiên lưu trữ cục bộ, với chỉnh sửa trực quan và mã nguồn. Trợ lý AI của bạn có thể dùng Skill chính thức để mở, lưu và xuất tài liệu trong Zettel Notes.",
       "try": "Dùng thử trực tuyến",
       "platforms": "Được tạo ra cho cách bạn làm việc"
     },
@@ -211,8 +211,8 @@
       "eyebrow": "KHÔNG GIAN LÀM VIỆC CỤC BỘ CỦA BẠN",
       "title": "Một thư mục cho mọi thứ đang thành hình.",
       "description": "Mở một thư mục trên máy để tập hợp ghi chú, bản nháp và tệp dự án lại với nhau. Duyệt tệp, theo dõi dàn ý tài liệu và tiếp tục viết trong cùng một cửa sổ.",
-      "note": "MarkFlowy Desktop · Không gian làm việc cục bộ",
-      "screenshotAlt": "MarkFlowy Desktop ở chế độ sáng, hiển thị tệp trên máy, trình soạn thảo trực quan và dàn ý tài liệu"
+      "note": "Zettel Notes Desktop · Không gian làm việc cục bộ",
+      "screenshotAlt": "Zettel Notes Desktop ở chế độ sáng, hiển thị tệp trên máy, trình soạn thảo trực quan và dàn ý tài liệu"
     },
     "singleFile": {
       "eyebrow": "CHẾ ĐỘ TỆP ĐƠN",
@@ -231,8 +231,8 @@
         "body": "Mở một thư mục trên máy khi một ghi chú trở thành dự án. Các công cụ viết quen thuộc vẫn đồng hành cùng bạn."
       },
       "link": "Khám phá chế độ viết tệp đơn",
-      "note": "MarkFlowy Desktop · Chế độ tệp đơn",
-      "screenshotAlt": "MarkFlowy Desktop ở chế độ tệp đơn, với một tài liệu Markdown và tên tệp trên thanh tiêu đề gọn gàng"
+      "note": "Zettel Notes Desktop · Chế độ tệp đơn",
+      "screenshotAlt": "Zettel Notes Desktop ở chế độ tệp đơn, với một tài liệu Markdown và tên tệp trên thanh tiêu đề gọn gàng"
     },
     "features": {
       "eyebrow": "KẾT NỐI CHU ĐÁO",
@@ -242,7 +242,7 @@
         "title": "Markdown, theo cách bạn suy nghĩ.",
         "body": "Viết trực quan hoặc làm việc gần hơn với mã nguồn. Làm việc với Markdown, JSON và văn bản thuần trong một không gian quen thuộc.",
         "link": "Khám phá trình soạn thảo",
-        "alt": "Trình soạn thảo MarkFlowy Desktop hiển thị một bài viết mẫu"
+        "alt": "Trình soạn thảo Zettel Notes Desktop hiển thị một bài viết mẫu"
       },
       "local": {
         "title": "Hiệu năng cao cho bản nháp dài.",
@@ -251,7 +251,7 @@
       "ai": {
         "title": "Một chút trợ giúp, khi bạn cần.",
         "body": "Dùng dịch vụ AI của riêng bạn để trò chuyện, tóm tắt và dịch, hoặc kết nối một mô hình cục bộ với Ollama.",
-        "alt": "Trình soạn thảo MarkFlowy Desktop với bảng trợ lý AI tùy chọn"
+        "alt": "Trình soạn thảo Zettel Notes Desktop với bảng trợ lý AI tùy chọn"
       },
       "personal": {
         "title": "Thoải mái như ở nhà.",
@@ -286,7 +286,7 @@
     "stats": {
       "eyebrow": "Xây dựng công khai, cùng nhau phát triển",
       "title": "Những đóng góp nhỏ. Tiến bộ lâu dài.",
-      "body": "Một ngôi sao, một lượt tải xuống, một đóng góp. MarkFlowy phát triển cùng những người quan tâm đến việc viết và mã nguồn mở.",
+      "body": "Một ngôi sao, một lượt tải xuống, một đóng góp. Zettel Notes phát triển cùng những người quan tâm đến việc viết và mã nguồn mở.",
       "stars": "Sao GitHub",
       "forks": "Fork mã nguồn mở",
       "downloads": "Lượt tải gói phát hành",
@@ -297,7 +297,7 @@
     "community": {
       "eyebrow": "XÂY DỰNG CÔNG KHAI",
       "title": "Cùng nhau, tốt hơn.",
-      "body": "MarkFlowy phát triển cùng những người sử dụng nó. Đọc mã nguồn, chia sẻ ý tưởng, báo lỗi hoặc giúp định hình những gì sắp tới.",
+      "body": "Zettel Notes phát triển cùng những người sử dụng nó. Đọc mã nguồn, chia sẻ ý tưởng, báo lỗi hoặc giúp định hình những gì sắp tới.",
       "thanks": "Được hiện thực hóa nhờ những người đóng góp"
     },
     "cta": {
@@ -338,7 +338,7 @@
     "shared": "Đã chia sẻ",
     "synced": "Đã đồng bộ",
     "signInRequired": "Đăng nhập để kết nối",
-    "connectTitle": "Đưa các kho lưu trữ của bạn vào MarkFlowy",
+    "connectTitle": "Đưa các kho lưu trữ của bạn vào Zettel Notes",
     "connectDescription": "Kết nối GitHub, chọn một kho lưu trữ và giữ các tài liệu của bạn ở cùng một nơi.",
     "localShared": "Cục bộ và đã chia sẻ",
     "count": "{{count}} không gian làm việc",

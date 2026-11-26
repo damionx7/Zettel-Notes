@@ -1,6 +1,6 @@
 import { common } from '../common'
 
-export const markflowyLightTheme = {
+export const zettelNotesLightTheme = {
   ...common,
 
   primaryFontColor: '#000000',
@@ -48,7 +48,7 @@ export const markflowyLightTheme = {
   scrollbarTrackColor: '#FFFFFF',
 }
 
-export const markflowyDarkTheme = {
+export const zettelNotesDarkTheme = {
   ...common,
 
   primaryFontColor: '#CACCCA',

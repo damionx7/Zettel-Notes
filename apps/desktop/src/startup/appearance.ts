@@ -1,6 +1,6 @@
 export const STARTUP_APPEARANCE_SCHEMA_VERSION = 1 as const
-export const STARTUP_APPEARANCE_STORAGE_KEY = 'markflowy:startup-appearance:v1'
-export const STARTUP_APPEARANCE_SESSION_STORAGE_KEY = 'markflowy:startup-appearance:session:v1'
+export const STARTUP_APPEARANCE_STORAGE_KEY = 'zettel-notes:startup-appearance:v1'
+export const STARTUP_APPEARANCE_SESSION_STORAGE_KEY = 'zettel-notes:startup-appearance:session:v1'
 
 export type StartupAppearancePreference = 'light' | 'dark' | 'system'
 export type ResolvedAppearanceMode = Exclude<StartupAppearancePreference, 'system'>
@@ -128,7 +128,7 @@ export const restoreOpenedUrls = (
 
 const normalizeThemeId = (value: unknown, mode: ResolvedAppearanceMode) => {
   if (typeof value !== 'string') {
-    return mode === 'dark' ? 'MarkFlowy Dark' : 'MarkFlowy Light'
+    return mode === 'dark' ? 'Zettel Notes Dark' : 'Zettel Notes Light'
   }
 
   const themeId = value.trim()
@@ -137,7 +137,7 @@ const normalizeThemeId = (value: unknown, mode: ResolvedAppearanceMode) => {
     themeId.length > MAX_THEME_ID_LENGTH ||
     INVALID_THEME_ID_RE.test(themeId)
   ) {
-    return mode === 'dark' ? 'MarkFlowy Dark' : 'MarkFlowy Light'
+    return mode === 'dark' ? 'Zettel Notes Dark' : 'Zettel Notes Light'
   }
 
   return themeId
@@ -238,7 +238,7 @@ export const readWindowBootstrap = (
 ): StartupAppearance => {
   if (!targetWindow) return normalizeStartupAppearance(undefined, 'light')
 
-  const bootstrap = targetWindow.__MARKFLOWY_BOOTSTRAP__
+  const bootstrap = targetWindow.__ZETTEL_NOTES_BOOTSTRAP__
   const rawBootstrapAppearance = isRecord(bootstrap) ? bootstrap.appearance : undefined
   const bootstrapAppearance =
     isRecord(rawBootstrapAppearance) &&
@@ -264,7 +264,7 @@ export const readWindowBootstrap = (
       : targetWindow.openedUrls
   const openedUrls = normalizeOpenedUrls(rawOpenedUrls)
 
-  targetWindow.__MARKFLOWY_BOOTSTRAP__ = {
+  targetWindow.__ZETTEL_NOTES_BOOTSTRAP__ = {
     ...(isRecord(bootstrap) &&
     (typeof bootstrap.restoreSessionLabel === 'string' || bootstrap.restoreSessionLabel === null)
       ? { restoreSessionLabel: bootstrap.restoreSessionLabel }
@@ -358,8 +358,8 @@ export const cacheStartupAppearance = (
     }
   }
 
-  const bootstrap = targetWindow.__MARKFLOWY_BOOTSTRAP__
-  targetWindow.__MARKFLOWY_BOOTSTRAP__ = {
+  const bootstrap = targetWindow.__ZETTEL_NOTES_BOOTSTRAP__
+  targetWindow.__ZETTEL_NOTES_BOOTSTRAP__ = {
     ...(isRecord(bootstrap) &&
     (typeof bootstrap.restoreSessionLabel === 'string' || bootstrap.restoreSessionLabel === null)
       ? { restoreSessionLabel: bootstrap.restoreSessionLabel }
