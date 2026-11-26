@@ -4,8 +4,7 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "apps/*",
-    "docs"
+    "apps/*"
   ],
   "scripts": {
     "postinstall": "patch-package",
@@ -16,10 +15,8 @@
     "test:dev-desktop": "node --test scripts/dev-desktop.test.mjs",
     "test:security-dependencies": "node --test scripts/security-dependencies.test.mjs",
     "test:release-workflows": "node --test scripts/release-workflows.test.mjs scripts/tauri-updater.test.mjs",
-    "install:capricorn-runtime": "node --env-file-if-exists=.env scripts/install-capricorn-runtime.mjs",
     "build": "turbo build --concurrency=2",
-    "build:web": "yarn turbo build --filter=!@zettel-notes/desktop",
-    "build:desktop": "yarn turbo build --filter=!@zettel-notes/web && yarn workspace @zettel-notes/desktop tauri:build",
+    "build:desktop": "yarn turbo build && yarn workspace @zettel-notes/desktop tauri:build",
     "use-offline-bundle": "node scripts/use-offline-bundle.js",
     "delete": "turbo delete",
     "release": "node scripts/release.js",
@@ -29,13 +26,9 @@
     "test": "turbo test",
     "updater": "yarn workspace @zettel-notes/desktop updater",
     "lint": "eslint --fix --ext .tsx ./",
-    "translate:locals": "node --env-file=.env scripts/translate-locals.js",
     "translate:check": "node scripts/translate-check.js"
   },
   "devDependencies": {
-    "@alicloud/alimt20181012": "^1.3.0",
-    "@alicloud/openapi-client": "^0.4.13",
-    "@alicloud/tea-util": "^1.4.10",
     "@babel/core": "^7.26.0",
     "@babel/eslint-parser": "^7.25.9",
     "@babel/eslint-plugin": "^7.25.9",
@@ -74,13 +67,10 @@
     "turbo": "^2.9.14"
   },
   "resolutions": {
-    "@opentelemetry/sdk-trace-node/@opentelemetry/propagator-jaeger": "2.11.0",
     "@tauri-release/cli/@actions/github": "6.0.1",
     "@xmldom/xmldom@npm:0.9.10": "0.9.12",
-    "mdx-bundler/uuid": "11.1.1",
     "nanoid@npm:3.3.12": "3.3.19",
     "postcss@npm:8.4.49": "8.5.28",
-    "remark-mdx-frontmatter/toml": "4.3.0",
     "undici@npm:^5.25.4": "6.28.1",
     "undici@npm:^5.28.5": "6.28.1",
     "undici@npm:^5.29.0": "6.28.1",

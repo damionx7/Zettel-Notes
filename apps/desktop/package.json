@@ -48,8 +48,6 @@
     "@tauri-apps/plugin-shell": "2.5.0",
     "@tauri-apps/plugin-store": "2.5.0",
     "@tauri-apps/plugin-updater": "2.14.0",
-    "@zettel-notes/api-client": "workspace:*",
-    "@zettel-notes/github-api": "workspace:*",
     "@zettel-notes/i18n": "workspace:*",
     "@zettel-notes/interface": "workspace:*",
     "@zettel-notes/theme": "workspace:*",

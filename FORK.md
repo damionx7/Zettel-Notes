@@ -138,6 +138,15 @@ answer is "keep our version".
   service, connection probes, `probe_ssh_banner` command and every `sync_*` config field
   are gone. If a rebase resurrects any of it, delete it.
 - **Attachment destinations** that were not wanted: absolute paths and Base64 embedding.
+- **MarkFlowy's website and docs** (`apps/web`, `docs/en`, `docs/zh`, `public/` screenshots)
+  and their scripts and tests. `docs/CLI.md`, the custom theme guide
+  (`docs/*/Extension/CustomTheme.md`, linked from Settings) and its `skills/zettel-notes-dev` stay.
+- **Unused packages and dead code**: `packages/api-client`, `packages/github-api`,
+  `packages/runtime-api`, and the desktop cloud/GitHub API services nothing called.
+- **Capricorn tooling**: the runtime installer, editor-opening benchmarks, startup
+  performance report and the old Capricorn E2E reports.
+- **Machine translation script** (`translate:locals`, Alibaba Cloud). `translate:check` stays.
+- `file-type-icons.html`, a stray preview page.
 
 ## Where rebase conflicts are most likely
 

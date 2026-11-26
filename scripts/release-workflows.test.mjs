@@ -42,10 +42,8 @@ test('the shared gate requires real runtime, type, Rust and content validation',
     'yarn workspace @zettel-notes/desktop build:types',
     'yarn workspace @zettel-notes/desktop test:e2e:types',
     'yarn workspace @zettel-notes/desktop test:e2e:runner',
-    'yarn workspace @zettel-notes/web build:types',
     'yarn test',
     'cargo test --workspace --lib --tests --locked',
-    'yarn workspace @zettel-notes/web test:content',
     'yarn test:security-dependencies',
     'yarn test:release-workflows',
     'yarn test:dev-desktop',
@@ -54,11 +52,6 @@ test('the shared gate requires real runtime, type, Rust and content validation',
     assert.ok(commands.includes(command), `Missing release gate: ${command}`)
   }
   for (const step of steps) assert.notEqual(step['continue-on-error'], true, step.name)
-  const generation = steps.findIndex((step) => step.run === 'yarn build')
-  const verification = steps.findIndex(
-    (step) => step.run === 'yarn workspace @zettel-notes/web test:content',
-  )
-  assert.ok(generation >= 0 && verification > generation)
 })
 
 test('the gate runs on Linux; macOS and Windows tests run only by hand', () => {
@@ -580,7 +573,7 @@ test('Test CI cancels superseded branch runs and skips document-only pushes', as
     assert.ok(skips(file), `${file} should not start Test CI`)
   }
   for (const file of [
-    'docs/en/Extension/index.md',
+    'docs/CLI.md',
     'packages/editor/src/playground/test-md/basic.md',
     'apps/desktop/src/main.tsx',
     '.github/workflows/test-ci.yml',
