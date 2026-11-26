@@ -542,7 +542,8 @@ jobs:
           name: Zettel Notes v${{ env.version }}
           body_path: release.txt
           draft: false
-          prerelease: true
+          # Plain tags (v1.2.3) are full releases; tags with a suffix (v1.2.3-beta.1) are pre-releases.
+          prerelease: ${{ contains(github.ref_name, '-') }}
           files: ./artifacts/**/*
 
       - name: Setup Node.js

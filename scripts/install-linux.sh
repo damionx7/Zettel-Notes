@@ -4,8 +4,8 @@ set -eu
 APP_NAME="Zettel Notes"
 PACKAGE_NAME="zettel-notes"
 RELEASE_BASE_URL="https://github.com/damionx7/Zettel-Notes/releases"
-# Releases are published as prereleases, so `releases/latest` does not resolve: GitHub Pages
-# serves the current install.json first.
+# GitHub Pages serves the current install.json. `releases/latest` is the fallback; it skips
+# pre-releases (tags with a suffix such as v1.2.3-beta.1).
 DEFAULT_MANIFEST_URL="https://damionx7.github.io/Zettel-Notes/install.json"
 FALLBACK_MANIFEST_URL="$RELEASE_BASE_URL/latest/download/install.json"
 
