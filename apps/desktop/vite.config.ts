@@ -148,6 +148,8 @@ export default defineConfig(async ({ command, mode }) => {
       // Hosted Intel Mac runners run the whole suite several times slower than a laptop, and
       // interaction tests that take under half a second locally passed 5 s there.
       testTimeout: process.env.CI ? 30_000 : 5_000,
+      // Also raises waitFor/findBy* timeouts on CI (see the setup file).
+      setupFiles: ['./src/test/setup-ci-timeouts.ts'],
       exclude: [...configDefaults.exclude],
       // Use the theme's ESM entry so real RME tests share CodeMirror's classes
       // instead of mixing the externalized CommonJS and ESM state packages.
