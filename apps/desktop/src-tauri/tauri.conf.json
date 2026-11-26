@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Zettel Notes",
-  "version": "1.0.4",
+  "version": "0.0.9",
   "identifier": "org.eu.thedoc.zettelnotes.desktop",
   "build": {
     "beforeDevCommand": "yarn dev",
@@ -10,8 +10,8 @@
   },
   "plugins": {
     "cli": {
-      "description": "Zettel Notes - AI-Native Markdown Editor",
-      "longDescription": "A modern, lightweight Markdown editor with built-in AI capabilities.\n\nUsage: zettel-notes [COMMAND] [OPTIONS]\n       zn [COMMAND] [OPTIONS]\n\nYou can create a symlink or alias 'zn' to 'zettel-notes' for shorter invocation.",
+      "description": "Zettel Notes - Markdown notes for a Zettelkasten",
+      "longDescription": "Markdown notes for a Zettelkasten, compatible with Zettel Notes for Android.\n\nUsage: zettel-notes [COMMAND] [OPTIONS]\n       zn [COMMAND] [OPTIONS]\n\nYou can create a symlink or alias 'zn' to 'zettel-notes' for shorter invocation.",
       "subcommands": {
         "open": {
           "description": "Open a file or folder in Zettel Notes",
@@ -330,8 +330,8 @@
   "bundle": {
     "active": true,
     "copyright": "Copyright (c) 2023-present drl990114 (MarkFlowy); 2026-present damionx7 (Zettel Notes)",
-    "shortDescription": "AI-Powered Markdown Editor",
-    "longDescription": "Zettel Notes is a modern, lightweight Markdown editor with built-in AI capabilities. Features include AI-powered translation, summarization, multiple editing modes (WYSIWYG and source code), custom themes, keyboard shortcuts, and support for multiple file formats. Built with Tauri for optimal performance.",
+    "shortDescription": "Markdown notes, compatible with Zettel Notes for Android",
+    "longDescription": "Zettel Notes is a desktop Markdown editor for a Zettelkasten: notes linked by name, source and preview panes, gocryptfs-encrypted note folders and end-to-end encrypted notes, all compatible with Zettel Notes for Android. Custom themes, keyboard shortcuts and PDF export included.",
     "fileAssociations": [
       {
         "ext": [

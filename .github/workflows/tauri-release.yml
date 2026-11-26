@@ -6,7 +6,21 @@ on:
       - 'v*'
 
 jobs:
+  # A tag builds only the version that is committed: fail in seconds, before the tests run,
+  # when someone tags without bumping first (`node scripts/bump-version.mjs`).
+  version:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Check that the tag matches the committed version
+        run: node scripts/bump-version.mjs --check "$GITHUB_REF_NAME"
+
   quality:
+    needs: version
     permissions:
       contents: read
       packages: read
@@ -87,11 +101,6 @@ jobs:
 
       - name: Install rust target
         run: rustup target add ${{ matrix.target }}
-
-      # The release is named after the tag, so the app and its installers take the tag's version.
-      - name: Use the tag's version
-        shell: bash
-        run: node -e "const fs=require('fs');const f='apps/desktop/src-tauri/tauri.conf.json';const c=JSON.parse(fs.readFileSync(f,'utf8'));c.version=process.env.GITHUB_REF_NAME.replace(/^v/,'');fs.writeFileSync(f,JSON.stringify(c,null,2)+'\\n')"
 
       - name: Skip updater signatures when no signing key is configured
         if: env.HAS_SIGNING_KEY != 'true'
@@ -323,11 +332,6 @@ jobs:
 
       - name: Install rust target
         run: rustup target add ${{ matrix.target }}
-
-      # The release is named after the tag, so the app and its installers take the tag's version.
-      - name: Use the tag's version
-        shell: bash
-        run: node -e "const fs=require('fs');const f='apps/desktop/src-tauri/tauri.conf.json';const c=JSON.parse(fs.readFileSync(f,'utf8'));c.version=process.env.GITHUB_REF_NAME.replace(/^v/,'');fs.writeFileSync(f,JSON.stringify(c,null,2)+'\\n')"
 
       - name: Skip updater signatures when no signing key is configured
         if: env.HAS_SIGNING_KEY != 'true'

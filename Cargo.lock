@@ -939,7 +939,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2df961d8c8a0d08aa9945718ccf584145eee3f3aa06cddbeac12933781102e04"
 dependencies = [
  "clap_builder",
- "clap_derive",
 ]
 
 [[package]]
@@ -952,18 +951,6 @@ dependencies = [
  "anstyle",
  "clap_lex",
  "strsim",
-]
-
-[[package]]
-name = "clap_derive"
-version = "4.5.32"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "09176aae279615badda0765c0c0b3f6ed53f4709118af73cf4655d85d1530cd7"
-dependencies = [
- "heck 0.5.0",
- "proc-macro2",
- "quote",
- "syn 2.0.119",
 ]
 
 [[package]]
@@ -1706,29 +1693,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.119",
-]
-
-[[package]]
-name = "env_filter"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4f2c92ceda6ceec50f43169f9ee8424fe2db276791afde7b2cd8bc084cb376ab"
-dependencies = [
- "log",
- "regex",
-]
-
-[[package]]
-name = "env_logger"
-version = "0.11.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e13fa619b91fb2381732789fc5de83b45675e882f66623b7d8cb4f643017018d"
-dependencies = [
- "anstream",
- "anstyle",
- "env_filter",
- "humantime",
- "log",
 ]
 
 [[package]]
@@ -2795,12 +2759,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df3b46402a9d5adb4c86a0cf463f42e19994e3ee891101b1841f30a545cb49a9"
 
 [[package]]
-name = "humantime"
-version = "2.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9a3a5bfb195931eeb336b2a7b4d761daec841b97f947d34394601737a7bba5e4"
-
-[[package]]
 name = "hybrid-array"
 version = "0.4.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3596,87 +3554,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "zettel-notes"
-version = "1.0.4"
-dependencies = [
- "anyhow",
- "arboard",
- "async-channel",
- "async-trait",
- "base64 0.21.7",
- "bincode",
- "chromiumoxide",
- "chrono",
- "core-foundation 0.10.0",
- "core-foundation-sys",
- "dark-light",
- "dotenv",
- "downcast-rs",
- "download_npm",
- "etcetera",
- "font-kit",
- "futures",
- "futures-concurrency",
- "gtk",
- "lazy_static",
- "lending-stream",
- "log",
- "lopdf",
- "mf-utils",
- "mf_file_search",
- "mf_gocryptfs",
- "mf_local_history",
- "mf_text_encoding",
- "natural-sort-rs",
- "objc2 0.6.4",
- "objc2-app-kit",
- "objc2-foundation 0.3.2",
- "objc2-web-kit",
- "pin-project-lite",
- "rand 0.9.5",
- "regex",
- "rmp-serde",
- "same-file",
- "serde",
- "serde_json",
- "sha2 0.10.8",
- "tauri",
- "tauri-build",
- "tauri-plugin-cli",
- "tauri-plugin-clipboard-manager",
- "tauri-plugin-dialog",
- "tauri-plugin-fs",
- "tauri-plugin-http",
- "tauri-plugin-notification",
- "tauri-plugin-opener",
- "tauri-plugin-os",
- "tauri-plugin-persisted-scope",
- "tauri-plugin-shell",
- "tauri-plugin-single-instance",
- "tauri-plugin-store",
- "tauri-plugin-updater",
- "tauri-plugin-wdio-webdriver",
- "tauri-plugin-window-state",
- "tempfile",
- "thiserror 2.0.12",
- "tokio",
- "tokio-stream",
- "tracing",
- "tracing-subscriber",
- "tracing-test",
- "trash",
- "url",
- "urlencoding",
- "uuid",
- "webkit2gtk",
- "webview2-com",
- "window-vibrancy",
- "windows 0.62.2",
- "windows-sys 0.59.0",
- "winreg 0.52.0",
-]
-
-[[package]]
 name = "markup5ever"
 version = "0.39.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3800,21 +3677,6 @@ dependencies = [
  "encoding_rs",
  "serde",
  "thiserror 2.0.12",
-]
-
-[[package]]
-name = "mfdev"
-version = "3.0.0"
-dependencies = [
- "anyhow",
- "clap",
- "env_logger",
- "log",
- "os_pipe",
- "serde",
- "serde_json",
- "tempfile",
- "toml 0.8.23",
 ]
 
 [[package]]
@@ -5688,7 +5550,6 @@ version = "1.0.150"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e8014e44b4736ed0538adeecded0fce2a272f22dc9578a7eb6b2d9993c74cfb9"
 dependencies = [
- "indexmap 2.14.0",
  "itoa",
  "memchr",
  "serde",
@@ -9015,6 +8876,87 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 3.0.9",
+]
+
+[[package]]
+name = "zettel-notes"
+version = "0.0.9"
+dependencies = [
+ "anyhow",
+ "arboard",
+ "async-channel",
+ "async-trait",
+ "base64 0.21.7",
+ "bincode",
+ "chromiumoxide",
+ "chrono",
+ "core-foundation 0.10.0",
+ "core-foundation-sys",
+ "dark-light",
+ "dotenv",
+ "downcast-rs",
+ "download_npm",
+ "etcetera",
+ "font-kit",
+ "futures",
+ "futures-concurrency",
+ "gtk",
+ "lazy_static",
+ "lending-stream",
+ "log",
+ "lopdf",
+ "mf-utils",
+ "mf_file_search",
+ "mf_gocryptfs",
+ "mf_local_history",
+ "mf_text_encoding",
+ "natural-sort-rs",
+ "objc2 0.6.4",
+ "objc2-app-kit",
+ "objc2-foundation 0.3.2",
+ "objc2-web-kit",
+ "pin-project-lite",
+ "rand 0.9.5",
+ "regex",
+ "rmp-serde",
+ "same-file",
+ "serde",
+ "serde_json",
+ "sha2 0.10.8",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-cli",
+ "tauri-plugin-clipboard-manager",
+ "tauri-plugin-dialog",
+ "tauri-plugin-fs",
+ "tauri-plugin-http",
+ "tauri-plugin-notification",
+ "tauri-plugin-opener",
+ "tauri-plugin-os",
+ "tauri-plugin-persisted-scope",
+ "tauri-plugin-shell",
+ "tauri-plugin-single-instance",
+ "tauri-plugin-store",
+ "tauri-plugin-updater",
+ "tauri-plugin-wdio-webdriver",
+ "tauri-plugin-window-state",
+ "tempfile",
+ "thiserror 2.0.12",
+ "tokio",
+ "tokio-stream",
+ "tracing",
+ "tracing-subscriber",
+ "tracing-test",
+ "trash",
+ "url",
+ "urlencoding",
+ "uuid",
+ "webkit2gtk",
+ "webview2-com",
+ "window-vibrancy",
+ "windows 0.62.2",
+ "windows-sys 0.59.0",
+ "winreg 0.52.0",
 ]
 
 [[package]]

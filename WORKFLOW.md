@@ -1,7 +1,7 @@
 # Working on Zettel Notes
 
 How a change travels from "I want X" to a tested release. Written for whoever picks this up
-next, human or agent. `FORK.md` lists what differs from upstream MarkFlowy; this file is
+next, human or agent. `FORK.md` lists what differs from MarkFlowy, which this app forked from; this file is
 about the day-to-day loop.
 
 ## The loop
@@ -13,9 +13,16 @@ about the day-to-day loop.
    (`yarn workspace @zettel-notes/desktop test`, `cargo test -p zettel-notes --lib`) and
    ESLint on the changed files only.
 4. **Open a pull request** against `main`. Test CI runs on every push and pull request.
-5. **Release** by pushing a `v*` tag: `tauri-release.yml` builds the installers for
-   Windows, macOS and Linux, publishes a prerelease and updates `install.json` on GitHub
-   Pages for the in-app updater.
+5. **Release** in two steps:
+   1. Bump the version with `node scripts/bump-version.mjs patch` (or `minor`, `major`,
+      `X.Y.Z`). It rewrites `tauri.conf.json`, `src-tauri/Cargo.toml`, `Cargo.lock` and
+      `apps/desktop/package.json` and nothing else; it never commits, tags or pushes.
+      Merge that change into `main`.
+   2. Tag the merged commit and push the tag: `git tag vX.Y.Z && git push origin vX.Y.Z`.
+      `tauri-release.yml` first checks that the tag matches the committed version (and stops
+      within a minute if it does not), then builds the installers for Windows, macOS and
+      Linux, publishes the release and updates `install.json` on GitHub Pages for the in-app
+      updater.
 
 Full installer builds run only on tags, or by hand (`nodejs.yml` and `test-bundle.yml` are
 `workflow_dispatch`). Never generate an installer during ordinary iteration.
@@ -32,11 +39,14 @@ Full installer builds run only on tags, or by hand (`nodejs.yml` and `test-bundl
 | Do not edit `dist/`, `lib/`, `esm/` | Generated output |
 | Node 24 | Node 26 shadows `localStorage` in happy-dom and breaks ~130 tests |
 
-## Synchronising with upstream
+## Taking a feature from MarkFlowy
 
-Upstream is [MarkFlowy](https://github.com/drl990114/MarkFlowy). Changes are brought over
-by hand, as ordinary pull requests: cherry-pick or port the upstream commit, then use
-`FORK.md` as the tie-breaker for anything it lists as removed or added.
+Zettel Notes no longer synchronises with [MarkFlowy](https://github.com/drl990114/MarkFlowy):
+the code bases have diverged too far. When a MarkFlowy feature is wanted, port it by hand
+as an ordinary pull request (cherry-pick the commit if it applies, otherwise rewrite it),
+use `FORK.md` as the tie-breaker for anything it lists as removed or added, and run its
+"After cherry-picking" checks. Upstream credit stays in `LICENSE`, `NOTICE`, `README.md`
+and Settings → About, as the AGPL requires.
 
 ## Environment notes
 

@@ -45,3 +45,6 @@ apps/desktop/e2e/reports/
 /release-notes/
 /release.txt
 /apps/desktop/release-notes.md
+
+# Website build output (MarkFlowy site, removed)
+apps/web/
