@@ -1,0 +1,26 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "test": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/docs/**",
+        "$TURBO_ROOT$/scripts/web-*.test.mjs",
+        "$TURBO_ROOT$/scripts/web-document-sources.mjs"
+      ]
+    },
+    "build": {
+      "outputs": ["$TURBO_EXTENDS$", ".contentlayer/generated/**", ".contentlayer/package.json"],
+      "env": ["MARKFLOWY_CLOUD_API_URL", "NEXT_PUBLIC_API_URL"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/docs/**",
+        "!$TURBO_ROOT$/docs/**/.DS_Store",
+        "!.contentlayer/**",
+        "$TURBO_ROOT$/yarn.lock",
+        "$TURBO_ROOT$/.yarnrc.yml"
+      ]
+    }
+  }
+}
