@@ -463,6 +463,12 @@ test('all release packages retain matching signatures through collection and pub
   }
 })
 
+test('plain version tags publish full releases; suffixed tags publish pre-releases', () => {
+  const create = release.jobs.release.steps.find((step) => step.name === 'Create Release')
+  assert.equal(create.with.draft, false)
+  assert.equal(create.with.prerelease, "${{ contains(github.ref_name, '-') }}")
+})
+
 test('workflows use only actions that run on Node 24', async () => {
   // GitHub is retiring the Node 20 runtime for actions. These are the first majors of each
   // action that run on Node 24; anything older, or not listed here, must be checked first.
