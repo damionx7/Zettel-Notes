@@ -1,0 +1,63 @@
+import { useTranslation } from 'next-i18next'
+import { useRouter } from 'next/router'
+import type { CSSProperties } from 'react'
+import PreferenceMenu from '../PreferenceMenu'
+
+interface LanguageSwitcherProps {
+  className?: string
+  style?: CSSProperties
+}
+
+const TransIcon = () => {
+  return (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      style={{ width: '20px' }}
+      viewBox='0 0 24 24'
+      fill='currentColor'
+      aria-hidden='true'
+    >
+      <path d='M18.5 10L22.9 21H20.745L19.544 18H15.454L14.255 21H12.101L16.5 10H18.5ZM10 2V4H16V6L14.0322 6.0006C13.2425 8.36616 11.9988 10.5057 10.4115 12.301C11.1344 12.9457 11.917 13.5176 12.7475 14.0079L11.9969 15.8855C10.9237 15.2781 9.91944 14.5524 8.99961 13.7249C7.21403 15.332 5.10914 16.5553 2.79891 17.2734L2.26257 15.3442C4.2385 14.7203 6.04543 13.6737 7.59042 12.3021C6.46277 11.0281 5.50873 9.57985 4.76742 8.00028L7.00684 8.00037C7.57018 9.03885 8.23979 10.0033 8.99967 10.877C10.2283 9.46508 11.2205 7.81616 11.9095 6.00101L2 6V4H8V2H10ZM17.5 12.8852L16.253 16H18.745L17.5 12.8852Z'></path>
+    </svg>
+  )
+}
+
+const languages = [
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'zh', name: '中文', flag: '🇨🇳' },
+  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+]
+
+export default function LanguageSwitcher({ className, style }: LanguageSwitcherProps) {
+  const { t } = useTranslation()
+  const router = useRouter()
+  const currentLocale = router.locale || 'en'
+
+  const handleLanguageChange = (locale: string) => {
+    const { pathname, asPath, query } = router
+    // Keep the explicit choice ahead of Accept-Language on later visits to /.
+    document.cookie = `NEXT_LOCALE=${encodeURIComponent(locale)}; Path=/; Max-Age=31536000; SameSite=Lax`
+    // Russian guides are not translated yet; the localized index links to available guides.
+    if (locale === 'ru' && pathname === '/docs/[...slug]') {
+      void router.push('/docs', '/docs', { locale })
+      return
+    }
+    void router.push({ pathname, query }, asPath, { locale })
+  }
+
+  return (
+    <PreferenceMenu
+      className={className}
+      style={style}
+      label={t('navigation.language')}
+      icon={<TransIcon />}
+      value={currentLocale}
+      onValueChange={handleLanguageChange}
+      options={languages.map((language) => ({
+        value: language.code,
+        label: language.name,
+        icon: language.flag,
+      }))}
+    />
+  )
+}

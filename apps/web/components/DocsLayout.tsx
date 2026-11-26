@@ -1,0 +1,86 @@
+import { useRouter } from 'next/router'
+import React from 'react'
+import Footer from './Footer'
+import { Container, Content, Title } from './Layout'
+import Nav, { type NavProps } from './Nav'
+import Head from './SeoHead'
+import type { SeoHeadProps } from './SeoHead'
+
+export interface DocsLayoutProps {
+  description?: string
+  hasTableOfContents?: boolean
+  pages?: NavProps['pages']
+  title?: string
+  useDocsSidebarMenu?: boolean
+  seo?: Pick<SeoHeadProps, 'title' | 'canonical' | 'markdownUrl' | 'availableLocales'>
+}
+
+export default function DocsLayout({
+  children,
+  title = '',
+  description = '',
+  hasTableOfContents = false,
+  useDocsSidebarMenu = true,
+  pages,
+  seo,
+}: React.PropsWithChildren<DocsLayoutProps>) {
+  const router = useRouter()
+  const [isSideFolded, setIsSideFolded] = React.useState(true)
+  const [isMobileNavFolded, setIsMobileNavFolded] = React.useState(true)
+
+  const onSideToggle = React.useCallback(() => {
+    setIsMobileNavFolded(true)
+    setIsSideFolded((x) => !x)
+  }, [])
+
+  const onMobileNavToggle = React.useCallback(() => {
+    setIsMobileNavFolded((x) => !x)
+    setIsSideFolded(true)
+  }, [])
+
+  React.useEffect(() => {
+    setIsMobileNavFolded(true)
+    setIsSideFolded(true)
+  }, [router.asPath])
+
+  React.useEffect(() => {
+    if (isSideFolded) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsSideFolded(true)
+        document.querySelector<HTMLButtonElement>('[aria-controls="docs-sidebar"]')?.focus()
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [isSideFolded])
+
+  return (
+    <Container>
+      <Head title={`MarkFlowy${title ? `: ${title}` : ''}`} description={description} {...seo} />
+
+      <Nav
+        useDocsSidebarMenu={useDocsSidebarMenu}
+        isSideFolded={isSideFolded}
+        isMobileNavFolded={isMobileNavFolded}
+        pages={pages}
+        onSideToggle={onSideToggle}
+        onMobileNavToggle={onMobileNavToggle}
+      />
+
+      <Content
+        as='main'
+        id='main-content'
+        $hasTableOfContents={hasTableOfContents}
+        $moveRight={!isSideFolded}
+        data-e2e-id='content'
+      >
+        {title && <Title>{title}</Title>}
+
+        {children}
+      </Content>
+
+      <Footer />
+    </Container>
+  )
+}

@@ -33,6 +33,8 @@
     "@emotion/is-prop-valid": "^1.3.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@markflowy/api-client": "workspace:*",
+    "@markflowy/github-api": "workspace:*",
     "@markflowy/i18n": "workspace:*",
     "@markflowy/interface": "workspace:*",
     "@markflowy/theme": "workspace:*",
