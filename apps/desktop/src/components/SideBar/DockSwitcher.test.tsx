@@ -117,7 +117,7 @@ describe('Dock layout interactions', () => {
     const files = screen.getByRole('button', { name: 'Files' })
     fireEvent.contextMenu(files, { clientX: 8, clientY: 8 })
     await user.click(await screen.findByRole('menuitem', { name: 'sidebar.move_right' }))
-    expect(useLayoutStore.getState().panelOrder.right).toEqual(['toc', 'ai', 'explorer'])
+    expect(useLayoutStore.getState().panelOrder.right).toEqual(['toc', 'explorer'])
     expect(useLayoutStore.getState().rightBar.activePanelId).toBe('explorer')
     await waitFor(() => expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Files' })))
   })
@@ -133,7 +133,7 @@ describe('Dock layout interactions', () => {
     expect(useLayoutStore.getState().panelOrder.left).toContain('toc')
     fireEvent.contextMenu(screen.getByRole('button', { name: 'Table of Contents' }))
     await user.click(await screen.findByRole('menuitem', { name: 'sidebar.reset_layout' }))
-    expect(useLayoutStore.getState().panelOrder.right).toEqual(['toc', 'ai'])
+    expect(useLayoutStore.getState().panelOrder.right).toEqual(['toc'])
   })
 
   it('shows insertion feedback and reorders only on drop, without toggling the active panel', () => {
@@ -181,7 +181,7 @@ describe('Dock layout interactions', () => {
     expect(outline.closest('[data-drop-edge="after"]')).toBeTruthy()
     expect(view.container.querySelectorAll('[data-drop-edge]')).toHaveLength(1)
     fireEvent.drop(outline, { dataTransfer })
-    expect(useLayoutStore.getState().panelOrder.right).toEqual(['toc', 'bookmarks', 'explorer', 'ai'])
+    expect(useLayoutStore.getState().panelOrder.right).toEqual(['toc', 'bookmarks', 'explorer'])
   })
 
   it('cancels without changing layout and clears indicators on dragend or loss of window focus', () => {
@@ -220,7 +220,7 @@ describe('Dock layout interactions', () => {
     vi.spyOn(Date, 'now').mockReturnValue(Number.MAX_SAFE_INTEGER)
     act(() => fireEvent.click(screen.getByRole('button', { name: 'Search' })))
     expect(useLayoutStore.getState().leftBar.activePanelId).toBe('search')
-    act(() => fireEvent.click(screen.getByRole('button', { name: 'AI' })))
-    expect(useLayoutStore.getState().rightBar.activePanelId).toBe('ai')
+    act(() => fireEvent.click(screen.getByRole('button', { name: 'Table of Contents' })))
+    expect(useLayoutStore.getState().rightBar.activePanelId).toBe('toc')
   })
 })

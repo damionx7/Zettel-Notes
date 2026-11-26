@@ -24,7 +24,7 @@ vi.mock('@/services/local-history', () => ({
   useHistoryProtection: () => 0,
 }))
 vi.mock('@/services/restore-history', () => ({ restoreHistory: mocks.restoreHistory }))
-vi.mock('@/services/error-reporting', () => ({ captureException: mocks.captureException }))
+vi.mock('@/helper/logger', () => ({ logger: { error: mocks.captureException, warn: vi.fn(), info: vi.fn(), debug: vi.fn() } }))
 vi.mock('./historyDiffLoader', () => ({ loadHistoryDiff: mocks.loadHistoryDiff }))
 
 const entry: HistoryEntry = {

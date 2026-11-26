@@ -3,7 +3,6 @@ import {
   BookmarkIcon,
   FilesIcon,
   SearchIcon,
-  SparklesIcon,
   TableOfContentsIcon,
 } from 'lucide-react'
 import {
@@ -45,12 +44,6 @@ export const dockPanels: readonly DockPanelDefinition[] = [
     labelKey: 'sidebar.table_of_contents',
     fallbackLabel: 'Table of Contents',
     icon: TableOfContentsIcon,
-  },
-  {
-    id: 'ai',
-    labelKey: 'ai.assistant',
-    fallbackLabel: 'AI',
-    icon: SparklesIcon,
   },
 ]
 

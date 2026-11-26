@@ -19,10 +19,6 @@ const OutlineExtension = lazy(async () => {
   const { default: extension } = await import('@/extensions/table-of-content')
   return { default: () => <>{extension.components}</> }
 })
-const AIExtension = lazy(async () => {
-  const { default: extension } = await import('@/extensions/ai')
-  return { default: () => <>{extension.components}</> }
-})
 
 export function DockPanelRenderer({ side }: { side: DockSide }) {
   const { t } = useTranslation()
@@ -65,10 +61,8 @@ export function DockPanelRenderer({ side }: { side: DockSide }) {
                 <SearchExtension />
               ) : panelId === 'bookmarks' ? (
                 <BookmarksExtension />
-              ) : panelId === 'toc' ? (
-                <OutlineExtension />
               ) : (
-                <AIExtension />
+                <OutlineExtension />
               )}
             </Suspense>
           </DeferredMount>

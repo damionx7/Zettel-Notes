@@ -6,7 +6,7 @@ describe('workspace switch service', () => {
   beforeEach(() => {
     useLayoutStore.setState({
       leftBar: { activePanelId: 'search', size: 304, visible: false },
-      rightBar: { activePanelId: 'ai', size: 336, visible: false },
+      rightBar: { activePanelId: 'toc', size: 336, visible: false },
       zenModeActive: false,
     })
   })
@@ -73,7 +73,7 @@ describe('workspace switch service', () => {
       visible: true,
     })
     expect(useLayoutStore.getState().rightBar).toEqual({
-      activePanelId: 'ai',
+      activePanelId: 'toc',
       size: 336,
       visible: false,
     })
@@ -110,6 +110,6 @@ describe('workspace switch service', () => {
       activePanelId: 'explorer',
       visible: true,
     })
-    expect(useLayoutStore.getState().rightBar).toMatchObject({ activePanelId: 'ai', visible: true })
+    expect(useLayoutStore.getState().rightBar).toMatchObject({ activePanelId: 'toc', visible: true })
   })
 })

@@ -15,10 +15,6 @@ const translations: Record<string, string> = {
   'settings.general.autosave.label': 'Auto Save',
   'settings.general.autosave.autosaveInterval.label': 'Save interval',
   'settings.general.autosave.autosaveInterval.desc': 'How often files are saved',
-  'settings.ai.label': 'AI',
-  'settings.ai.model.label': 'Provider',
-  'settings.ai.Google.label': 'Google',
-  'settings.ai.Google.api_key.label': 'API key',
   'settings.display.theme.dark_theme.label': 'Dark theme',
   'settings.display.theme.dark_theme.desc': 'Theme used in dark mode',
   'settings.themeStore.label': 'Theme Store',
@@ -44,17 +40,6 @@ describe('settings search index', () => {
     expect(titleResult).toBeDefined()
     expect(descriptionResult).toBeDefined()
     expect(getSettingSearchPath(titleResult!, translate)).toEqual(['General', 'Auto Save'])
-  })
-
-  it('keeps provider identity so a result can open and focus the right AI tab', () => {
-    const result = entries.find((entry) => entry.settingKey === 'extensions_google_apikey')
-
-    expect(result).toMatchObject({
-      categoryKey: 'ai',
-      childId: 'google',
-      settingKey: 'extensions_google_apikey',
-    })
-    expect(getSettingSearchPath(result!, translate)).toEqual(['AI', 'Provider', 'Google'])
   })
 
   it('includes fields rendered outside the declarative setting map', () => {

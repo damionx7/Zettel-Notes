@@ -4,7 +4,7 @@ import { HistorySetting } from './HistorySetting'
 import Logo from '@/assets/logo.svg?react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import type { OpenSettingTarget } from '@/extensions/ai/aiProvidersService'
+import type { OpenSettingTarget } from '@/router/Setting/types'
 import { installUpdate } from '@/helper/updater'
 import { useTranslation } from '@/i18n'
 import useAppInfoStore from '@/stores/useAppInfoStore'
@@ -15,7 +15,6 @@ import { memo, useDeferredValue, useEffect, useMemo, useRef, useState } from 're
 import { SettingDialog } from './component/SettingDialog'
 import SettingGroup from './component/SettingGroup'
 import { SettingNavigation } from './component/SettingNavigation'
-import { CopilotSetting } from './CopilotSetting'
 import { ExportSetting } from './ExportSetting'
 import { ImageSetting } from './ImageSetting'
 import { KeyboardTable } from './KeyboardTable'
@@ -70,9 +69,7 @@ function Setting({ navigationRequest }: SettingProps) {
   const isInstalling = useUpdaterStore((state) => state.isInstalling)
   const [searchQuery, setSearchQuery] = useState('')
   const [curGroupKey, setCurGroupKey] = useState<SettingCategoryKey>(initialCategory)
-  const [activeChildId, setActiveChildId] = useState<string | undefined>(
-    navigationRequest?.target?.providerId,
-  )
+  const [activeChildId, setActiveChildId] = useState<string | undefined>()
   const [pendingFocusTarget, setPendingFocusTarget] = useState<SettingFocusTarget>()
   const [selectedSearchEntryId, setSelectedSearchEntryId] = useState<string>()
   const [themeSelection, setThemeSelection] = useState<{ mode?: MfTheme['mode'] }>()
@@ -100,12 +97,8 @@ function Setting({ navigationRequest }: SettingProps) {
     setSelectedSearchEntryId(undefined)
     setThemeSelection(undefined)
     setCurGroupKey(target.category)
-    setActiveChildId(target.providerId)
-    setPendingFocusTarget({
-      categoryKey: target.category,
-      groupKey: target.providerId ? 'model' : undefined,
-      childId: target.providerId,
-    })
+    setActiveChildId(undefined)
+    setPendingFocusTarget({ categoryKey: target.category })
   }, [navigationRequest])
 
   useEffect(() => {
@@ -187,7 +180,6 @@ function Setting({ navigationRequest }: SettingProps) {
     if (curGroupKey === 'updates') return <UpdateSetting />
     if (curGroupKey === 'about') return <AboutSetting />
     if (curGroupKey === 'export') return <ExportSetting />
-    if (curGroupKey === 'copilot') return <CopilotSetting />
 
     return (
       <>
@@ -209,11 +201,11 @@ function Setting({ navigationRequest }: SettingProps) {
             if (isSettingGroup(group)) {
               return (
                 <SettingGroup
-                  activeChildId={curGroupKey === 'ai' ? activeChildId : undefined}
+                  activeChildId={activeChildId}
                   categoryKey={contentGroupKey}
                   group={group}
                   groupKey={key}
-                  key={`${key}:${curGroupKey === 'ai' ? (activeChildId ?? '') : ''}`}
+                  key={`${key}:${activeChildId ?? ''}`}
                 />
               )
             }

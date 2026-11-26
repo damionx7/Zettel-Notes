@@ -5,7 +5,7 @@ import {
   type EditorFocusSnapshot,
 } from '@/components/EditorArea/focusActiveEditor'
 import { EVENT } from '@/constants'
-import type { OpenSettingTarget } from '@/extensions/ai/aiProvidersService'
+import type { OpenSettingTarget } from '@/router/Setting/types'
 import type { SettingNavigationRequest } from '@/router/Setting'
 import { useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router'

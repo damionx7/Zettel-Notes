@@ -22,10 +22,6 @@ vi.mock('@/extensions/table-of-content', () => ({
   default: { components: <div data-testid='toc-panel' /> },
 }))
 
-vi.mock('@/extensions/ai', () => ({
-  default: { components: <div data-testid='ai-panel' /> },
-}))
-
 vi.mock('@/i18n', () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }))
@@ -88,7 +84,7 @@ describe('left Dock composition', () => {
 })
 
 
-const allPanels: DockPanelId[] = ['explorer', 'search', 'bookmarks', 'toc', 'ai']
+const allPanels: DockPanelId[] = ['explorer', 'search', 'bookmarks', 'toc']
 
 describe.each(['left', 'right'] satisfies DockSide[])('%s Dock configurable content', (side) => {
   it.each(allPanels)('renders %s in its assigned side after relocation', async (panelId) => {

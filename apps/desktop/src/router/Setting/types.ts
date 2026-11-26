@@ -1,5 +1,3 @@
-import type { AIProviderId } from '@/extensions/ai/aiProvidersService'
+import type { SettingCategoryKey } from './settingSearch'
 
-export type OpenSettingTarget =
-  | { category: 'ai'; providerId?: AIProviderId }
-
+export type OpenSettingTarget = { category: SettingCategoryKey }

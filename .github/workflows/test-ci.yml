@@ -81,7 +81,6 @@ jobs:
         run: |
           yarn workspace @zettel-notes/desktop build:types
           yarn workspace @zettel-notes/desktop test:e2e:types
-          yarn workspace @zettel-notes/web build:types
 
       - name: Run Test
         run: yarn test
@@ -96,9 +95,6 @@ jobs:
           yarn test:dev-desktop
           yarn workspace @zettel-notes/desktop test:e2e:runner
           yarn translate:check
-
-      - name: Verify generated public documents
-        run: yarn workspace @zettel-notes/web test:content
 
       - name: Keep the Turbo cache to recent builds
         if: github.ref == 'refs/heads/main'

@@ -41,7 +41,7 @@ describe('useLayoutStore Zen Mode state', () => {
   it('ignores the temporary zero-width resize while Zen Mode hides both sidebars', () => {
     useLayoutStore.setState({
       leftBar: { activePanelId: 'search', size: 304, visible: true },
-      rightBar: { activePanelId: 'ai', size: 336, visible: true },
+      rightBar: { activePanelId: 'toc', size: 336, visible: true },
     })
 
     useLayoutStore.getState().setZenModeActive(true)
@@ -55,7 +55,7 @@ describe('useLayoutStore Zen Mode state', () => {
       visible: true,
     })
     expect(useLayoutStore.getState().rightBar).toEqual({
-      activePanelId: 'ai',
+      activePanelId: 'toc',
       size: 336,
       visible: true,
     })
@@ -69,7 +69,7 @@ describe('useLayoutStore Dock state', () => {
       JSON.stringify({
         version: 1,
         left: { activePanelId: 'search', size: 304 },
-        right: { activePanelId: 'ai', size: 336 },
+        right: { activePanelId: 'toc', size: 336 },
       }),
     )
     vi.resetModules()
@@ -82,7 +82,7 @@ describe('useLayoutStore Dock state', () => {
       visible: true,
     })
     expect(reloadedLayoutStore.getState().rightBar).toEqual({
-      activePanelId: 'ai',
+      activePanelId: 'toc',
       size: 336,
       visible: true,
     })
@@ -102,10 +102,11 @@ describe('useLayoutStore Dock state', () => {
   })
 
   it('keeps both docks open when switching their active panels independently', () => {
-    useLayoutStore.getState().toggleDockPanel('right', 'ai')
+    useLayoutStore.getState().setRightBarVisible(false)
+    useLayoutStore.getState().toggleDockPanel('right', 'toc')
     expect(useLayoutStore.getState().leftBar.visible).toBe(true)
     expect(useLayoutStore.getState().rightBar).toMatchObject({
-      activePanelId: 'ai',
+      activePanelId: 'toc',
       visible: true,
     })
 
@@ -207,12 +208,13 @@ describe('Dock restart preferences', () => {
   it('applies explicit startup panels on the next load without changing this session', async () => {
     useLayoutStore.getState().setLeftBarVisible(false)
     useLayoutStore.getState().setStartupPanel('left', 'search')
-    useLayoutStore.getState().setStartupPanel('right', 'ai')
+    useLayoutStore.getState().moveDockPanel('bookmarks', 'right')
+    useLayoutStore.getState().setStartupPanel('right', 'bookmarks')
     expect(useLayoutStore.getState().leftBar.activePanelId).toBe('explorer')
     vi.resetModules()
     const restored = (await import('./useLayoutStore')).default.getState()
     expect(restored.leftBar).toMatchObject({ activePanelId: 'search', visible: true })
-    expect(restored.rightBar.activePanelId).toBe('ai')
+    expect(restored.rightBar.activePanelId).toBe('bookmarks')
   })
 
   it('falls back for corrupt state and tolerates denied storage writes', async () => {
@@ -234,12 +236,12 @@ describe('document and workspace dock preferences', () => {
     useLayoutStore.getState().setWorkspaceContext(false)
     expect(useLayoutStore.getState().leftBar).toMatchObject({ activePanelId: 'bookmarks', visible: false })
     expect(useLayoutStore.getState().rightBar.visible).toBe(false)
-    useLayoutStore.getState().toggleDockPanel('right', 'ai')
+    useLayoutStore.getState().toggleDockPanel('right', 'toc')
     useLayoutStore.getState().setWorkspaceContext(true)
     expect(useLayoutStore.getState().leftBar).toMatchObject({ activePanelId: 'explorer', visible: true })
     expect(useLayoutStore.getState().rightBar).toMatchObject({ activePanelId: 'toc', visible: true })
     useLayoutStore.getState().setWorkspaceContext(false)
-    expect(useLayoutStore.getState().rightBar).toMatchObject({ activePanelId: 'ai', visible: true })
+    expect(useLayoutStore.getState().rightBar).toMatchObject({ activePanelId: 'toc', visible: true })
     useLayoutStore.getState().openExplorer()
     expect(useLayoutStore.getState().leftBar).toMatchObject({ activePanelId: 'bookmarks', visible: false })
     useLayoutStore.getState().setWorkspaceContext(true)
@@ -253,9 +255,9 @@ describe('custom Dock layout', () => {
     useLayoutStore.getState().setDockSize('right', 330)
     useLayoutStore.getState().moveDockPanel('toc', 'left', 1)
     const state = useLayoutStore.getState()
-    expect(state.panelOrder).toEqual({ left: ['explorer', 'toc', 'search', 'bookmarks'], right: ['ai'] })
+    expect(state.panelOrder).toEqual({ left: ['explorer', 'toc', 'search', 'bookmarks'], right: [] })
     expect(state.leftBar).toEqual({ activePanelId: 'toc', visible: true, size: 300 })
-    expect(state.rightBar).toEqual({ activePanelId: 'ai', visible: true, size: 330 })
+    expect(state.rightBar).toEqual({ activePanelId: null, visible: false, size: 330 })
   })
 
   it('interprets same-side insertion boundaries before removing the source', () => {
@@ -289,7 +291,6 @@ describe('custom Dock layout', () => {
 
   it('closes an emptied side, prevents empty reopening and accepts a later return', () => {
     useLayoutStore.getState().moveDockPanel('toc', 'left')
-    useLayoutStore.getState().moveDockPanel('ai', 'left')
     expect(useLayoutStore.getState().rightBar).toEqual({ activePanelId: null, visible: false, size: 280 })
     useLayoutStore.getState().toggleDockPanel('right', null)
     useLayoutStore.getState().setRightBarVisible(true)
@@ -333,15 +334,15 @@ describe('custom Dock layout', () => {
     expect(useLayoutStore.getState().leftBar).toMatchObject({ activePanelId: 'toc', visible: true })
     useLayoutStore.getState().setWorkspaceContext(true)
     expect(useLayoutStore.getState().leftBar.activePanelId).toBe('explorer')
-    expect(useLayoutStore.getState().rightBar).toEqual({ activePanelId: 'ai', visible: true, size: 350 })
+    expect(useLayoutStore.getState().rightBar).toEqual({ activePanelId: null, visible: false, size: 350 })
   })
 
   it('clears a startup selection moved away and leaves the destination preference alone', () => {
     useLayoutStore.getState().setStartupPanel('left', 'bookmarks')
-    useLayoutStore.getState().setStartupPanel('right', 'ai')
+    useLayoutStore.getState().setStartupPanel('right', 'toc')
     useLayoutStore.getState().moveDockPanel('bookmarks', 'right')
     expect(useLayoutStore.getState().leftStartup).toBe('restore')
-    expect(useLayoutStore.getState().rightStartup).toBe('ai')
+    expect(useLayoutStore.getState().rightStartup).toBe('toc')
     useLayoutStore.getState().setStartupPanel('left', 'bookmarks')
     expect(useLayoutStore.getState().leftStartup).toBe('restore')
     useLayoutStore.getState().setStartupPanel('right', 'bookmarks')
@@ -366,22 +367,22 @@ describe('custom Dock layout', () => {
       version: 2,
       state: {
         leftBar: { activePanelId: 'bookmarks', visible: false, size: 302 },
-        rightBar: { activePanelId: 'ai', visible: true, size: 350 },
+        rightBar: { activePanelId: 'toc', visible: true, size: 350 },
         documentDocks: {
           leftBar: { activePanelId: 'bookmarks', visible: true, size: 190 },
-          rightBar: { activePanelId: 'ai', visible: false, size: 230 },
+          rightBar: { activePanelId: 'toc', visible: false, size: 230 },
         },
-        leftStartup: 'restore', rightStartup: 'ai',
+        leftStartup: 'restore', rightStartup: 'toc',
       },
     }))
     vi.resetModules()
     const restored = (await import('./useLayoutStore')).default.getState()
     expect(restored.panelOrder).toEqual(DEFAULT_DOCK_PANEL_ORDER)
     expect(restored.leftBar).toEqual({ activePanelId: 'bookmarks', visible: false, size: 302 })
-    expect(restored.rightBar).toEqual({ activePanelId: 'ai', visible: true, size: 350 })
+    expect(restored.rightBar).toEqual({ activePanelId: 'toc', visible: true, size: 350 })
     expect(restored.documentDocks).toEqual({
       leftBar: { activePanelId: 'bookmarks', visible: true, size: 190 },
-      rightBar: { activePanelId: 'ai', visible: false, size: 230 },
+      rightBar: { activePanelId: 'toc', visible: false, size: 230 },
     })
     expect(JSON.parse(localStorage.getItem(DOCK_PREFERENCES_STORAGE_KEY) ?? '{}').version).toBe(3)
   })
@@ -392,9 +393,9 @@ describe('custom Dock layout', () => {
     useLayoutStore.getState().setDockSize('left', 310)
     vi.resetModules()
     const store = (await import('./useLayoutStore')).default
-    expect(store.getState().panelOrder).toEqual({ left: ['explorer', 'search', 'bookmarks', 'toc'], right: ['ai'] })
+    expect(store.getState().panelOrder).toEqual({ left: ['explorer', 'search', 'bookmarks', 'toc'], right: [] })
     expect(store.getState().leftBar).toMatchObject({ activePanelId: 'explorer', visible: true, size: 240 })
-    expect(store.getState().rightBar.activePanelId).toBe('ai')
+    expect(store.getState().rightBar.activePanelId).toBeNull()
     store.getState().setWorkspaceContext(false)
     expect(store.getState().leftBar).toEqual({ activePanelId: 'toc', visible: true, size: 310 })
   })
@@ -404,14 +405,14 @@ describe('custom Dock layout', () => {
       version: 3,
       state: {
         panelOrder: { left: ['toc', 'unknown', 'toc'], right: ['toc', 'bookmarks'] },
-        leftBar: { activePanelId: 'ai', visible: true, size: -5 },
+        leftBar: { activePanelId: 'unknown', visible: true, size: -5 },
         rightBar: { activePanelId: 'bookmarks', visible: false, size: 999 },
-        leftStartup: 'ai', rightStartup: 'bookmarks',
+        leftStartup: 'unknown', rightStartup: 'bookmarks',
       },
     }))
     vi.resetModules()
     const restored = (await import('./useLayoutStore')).default.getState()
-    expect(restored.panelOrder).toEqual({ left: ['toc', 'explorer', 'search'], right: ['bookmarks', 'ai'] })
+    expect(restored.panelOrder).toEqual({ left: ['toc', 'explorer', 'search'], right: ['bookmarks'] })
     expect(restored.leftBar).toEqual({ activePanelId: 'toc', visible: true, size: 180 })
     expect(restored.rightBar).toEqual({ activePanelId: 'bookmarks', visible: true, size: 420 })
     expect(restored.leftStartup).toBe('restore')
@@ -419,7 +420,6 @@ describe('custom Dock layout', () => {
 
   it('preserves a deliberately empty side across restarts', async () => {
     useLayoutStore.getState().moveDockPanel('toc', 'left')
-    useLayoutStore.getState().moveDockPanel('ai', 'left')
     vi.resetModules()
     const restored = (await import('./useLayoutStore')).default.getState()
     expect(restored.panelOrder.right).toEqual([])

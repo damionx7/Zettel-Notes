@@ -4,7 +4,7 @@ import { immer } from 'zustand/middleware/immer'
 import { isRecord, localStateStorage } from './persistStorage'
 
 export type DockSide = 'left' | 'right'
-export type DockPanelId = 'explorer' | 'search' | 'bookmarks' | 'toc' | 'ai'
+export type DockPanelId = 'explorer' | 'search' | 'bookmarks' | 'toc'
 // Retain the aliases for existing settings consumers; panels are no longer side-specific.
 export type LeftDockPanelId = DockPanelId
 export type RightDockPanelId = DockPanelId
@@ -15,7 +15,7 @@ export type RightDockStartup = DockStartup
 
 export const DEFAULT_DOCK_PANEL_ORDER: DockPanelOrder = {
   left: ['explorer', 'search', 'bookmarks'],
-  right: ['toc', 'ai'],
+  right: ['toc'],
 }
 export const DEFAULT_LEFT_DOCK_SIZE = 240
 export const DEFAULT_RIGHT_DOCK_SIZE = 280
@@ -35,7 +35,7 @@ type DockPreferences = Pick<LayoutStore, 'panelOrder' | 'leftBar' | 'rightBar' |
 const dockSides: readonly DockSide[] = ['left', 'right']
 
 export function isDockPanelId(value: unknown): value is DockPanelId {
-  return value === 'explorer' || value === 'search' || value === 'bookmarks' || value === 'toc' || value === 'ai'
+  return value === 'explorer' || value === 'search' || value === 'bookmarks' || value === 'toc'
 }
 
 export function isDockPanelAvailable(panelId: DockPanelId, hasWorkspace: boolean): boolean {

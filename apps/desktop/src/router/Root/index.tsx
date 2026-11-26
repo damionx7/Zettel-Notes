@@ -8,7 +8,6 @@ import RightBar from '@/components/SideBar/RightBar'
 import { DockDragLifecycle } from '@/components/SideBar/DockDragLifecycle'
 import { useDockDragStore } from '@/components/SideBar/dockDragData'
 import { getDockPanelDefinition } from '@/components/SideBar/dockPanels'
-import { AskRuntimeHost } from '@/extensions/ai/AskRuntimeHost'
 import StatusBar from '@/components/StatusBar'
 import { BookMarkDialog } from '@/extensions/bookmarks/BookMarkDialog'
 import { subscribeBookmarkLibrary } from '@/extensions/bookmarks/store'
@@ -337,5 +336,5 @@ function Root() {
 }
 
 export default memo(function RootWithRuntime() {
-  return <AskRuntimeHost><Root /></AskRuntimeHost>
+  return <Root />
 })

@@ -47,9 +47,6 @@ pub_struct!(AppConf {
     encryption_passphrase: Option<String>,
     webview_zoom: Option<String>,
     pdf_browser_executable_path: Option<String>,
-    copilot_provider: Option<String>,
-    copilot_model: Option<String>,
-    copilot_enabled: Option<bool>,
     editor_full_width: Option<bool>,
     editor_enable_preview_tabs: Option<bool>,
     editor_typewriter_scroll: Option<bool>,
@@ -73,21 +70,6 @@ pub_struct!(AppConf {
     embedded_code_editor_line_wrap: Option<String>,
     embedded_code_editor_line_numbers: Option<String>,
     embedded_code_editor_highlight_active_line: Option<String>,
-    extensions_chatgpt_apibase: Option<String>,
-    extensions_chatgpt_apikey: Option<String>,
-    extensions_chatgpt_models: Option<String>,
-    extensions_chatgpt_request_headers: Option<HashMap<String, String>>,
-    extensions_deepseek_apibase: Option<String>,
-    extensions_deepseek_apikey: Option<String>,
-    extensions_deepseek_models: Option<String>,
-    extensions_deepseek_request_headers: Option<HashMap<String, String>>,
-    extensions_ollama_apibase: Option<String>,
-    extensions_ollama_models: Option<String>,
-    extensions_ollama_request_headers: Option<HashMap<String, String>>,
-    extensions_google_apibase: Option<String>,
-    extensions_google_models: Option<String>,
-    extensions_google_apikey: Option<String>,
-    extensions_google_request_headers: Option<HashMap<String, String>>,
     autosave: Option<bool>,
     local_history_enabled: Option<bool>,
     autosave_interval: Option<u32>,
@@ -747,9 +729,6 @@ impl AppConf {
             encryption_passphrase: None,
             webview_zoom: Some("1.0".to_string()),
             pdf_browser_executable_path: None,
-            copilot_provider: Some("".to_string()),
-            copilot_model: Some("".to_string()),
-            copilot_enabled: Some(false),
             editor_full_width: Some(false),
             editor_enable_preview_tabs: Some(true),
             editor_typewriter_scroll: Some(false),
@@ -782,21 +761,6 @@ impl AppConf {
             wysiwyg_editor_spellcheck: Some(false),
             source_code_editor_spellcheck: Some(false),
             file_exclude_patterns: Some(DEFAULT_EXCLUDE_PATTERNS.to_string()),
-            extensions_chatgpt_apibase: Some("".to_string()),
-            extensions_chatgpt_models: Some("gpt-3.5-turbo,gpt-4-32k,gpt-4".to_string()),
-            extensions_chatgpt_apikey: Some("".to_string()),
-            extensions_chatgpt_request_headers: Some(HashMap::new()),
-            extensions_deepseek_models: Some("deepseek-chat,deepseek-reasoner".to_string()),
-            extensions_deepseek_apibase: Some("".to_string()),
-            extensions_deepseek_apikey: Some("".to_string()),
-            extensions_deepseek_request_headers: Some(HashMap::new()),
-            extensions_ollama_models: Some(String::new()),
-            extensions_ollama_apibase: Some("".to_string()),
-            extensions_ollama_request_headers: Some(HashMap::new()),
-            extensions_google_models: Some("gemini-2.5-flash".to_string()),
-            extensions_google_apibase: Some("".to_string()),
-            extensions_google_apikey: Some("".to_string()),
-            extensions_google_request_headers: Some(HashMap::new()),
             when_paste_image: Some("save_to_local_relative".to_string()),
             paste_image_save_relative_path: Some("assets".to_string()),
             paste_image_save_relative_path_rule: Some("${documentPath}/assets/".to_string()),
@@ -904,9 +868,6 @@ impl AppConf {
             encryption_passphrase,
             webview_zoom,
             pdf_browser_executable_path,
-            copilot_provider,
-            copilot_model,
-            copilot_enabled,
             editor_full_width,
             editor_enable_preview_tabs,
             editor_typewriter_scroll,
@@ -937,21 +898,6 @@ impl AppConf {
             source_code_editor_spellcheck,
             file_exclude_patterns,
             autosave_interval,
-            extensions_chatgpt_apibase,
-            extensions_chatgpt_apikey,
-            extensions_chatgpt_models,
-            extensions_chatgpt_request_headers,
-            extensions_deepseek_models,
-            extensions_deepseek_apibase,
-            extensions_deepseek_apikey,
-            extensions_deepseek_request_headers,
-            extensions_ollama_models,
-            extensions_ollama_apibase,
-            extensions_ollama_request_headers,
-            extensions_google_models,
-            extensions_google_apibase,
-            extensions_google_apikey,
-            extensions_google_request_headers,
             when_paste_image,
             paste_image_save_relative_path,
             paste_image_save_relative_path_rule,
@@ -1470,7 +1416,7 @@ mod tests {
         let current = empty_conf().amend(serde_json::json!({
             "language": "en",
             "theme_mode": "dark",
-            "extensions_chatgpt_apikey": "new-key",
+            "pdf_browser_executable_path": "/opt/browser",
             "dialog_preferences": { "close": "save", "export": "replace" }
         }));
         let updated = current.amend(serde_json::json!({
@@ -1480,8 +1426,8 @@ mod tests {
         assert_eq!(updated.language.as_deref(), Some("zh"));
         assert_eq!(updated.theme_mode.as_deref(), Some("dark"));
         assert_eq!(
-            updated.extensions_chatgpt_apikey.as_deref(),
-            Some("new-key")
+            updated.pdf_browser_executable_path.as_deref(),
+            Some("/opt/browser")
         );
         let cleared = updated.amend(serde_json::json!({
             "dialog_preferences": { "close": null, "missing": null }
@@ -1707,7 +1653,7 @@ mod tests {
         let current = empty_conf();
         let unrelated = current
             .clone()
-            .amend(serde_json::json!({ "extensions_chatgpt_apikey": "secret" }));
+            .amend(serde_json::json!({ "pdf_browser_executable_path": "/opt/browser" }));
         assert!(!startup_theme_identity_changed(&current, &unrelated));
 
         let changed = current
