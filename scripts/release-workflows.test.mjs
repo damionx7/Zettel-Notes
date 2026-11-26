@@ -42,8 +42,6 @@ test('the shared gate requires real runtime, type, Rust and content validation',
     'yarn workspace @markflowy/desktop build:types',
     'yarn workspace @markflowy/desktop test:e2e:types',
     'yarn workspace @markflowy/desktop test:e2e:runner',
-    'yarn workspace @markflowy/desktop tauri:build:e2e',
-    'yarn workspace @markflowy/desktop test:e2e',
     'yarn workspace @markflowy/web build:types',
     'yarn test',
     'cargo test --workspace --lib --tests --locked',
@@ -63,22 +61,23 @@ test('the shared gate requires real runtime, type, Rust and content validation',
   assert.ok(generation >= 0 && verification > generation)
 })
 
-test('unit and Rust tests also run on Linux and Windows, except for tag releases', () => {
-  const unit = quality.jobs.unit
-  assert.equal(unit.if, "${{ !startsWith(github.ref, 'refs/tags/') }}")
-  assert.equal(unit['runs-on'], '${{ matrix.os }}')
-  assert.deepEqual(unit.strategy.matrix.os, ['ubuntu-22.04', 'windows-latest'])
-  assert.equal(unit.strategy['fail-fast'], false)
-  const commands = unit.steps.map((step) => step.run).filter(Boolean)
+test('the gate runs on Linux; macOS and Windows tests run only by hand', () => {
+  assert.equal(quality.jobs.test['runs-on'], 'ubuntu-22.04')
+  assert.ok('workflow_dispatch' in quality.on)
+  const platforms = quality.jobs.platforms
+  assert.equal(platforms.if, "${{ github.event_name == 'workflow_dispatch' }}")
+  assert.equal(platforms['runs-on'], '${{ matrix.os }}')
+  assert.deepEqual(platforms.strategy.matrix.os, ['macos-26-intel', 'windows-latest'])
+  assert.equal(platforms.strategy['fail-fast'], false)
+  const commands = platforms.steps.map((step) => step.run).filter(Boolean)
   for (const command of ['yarn test', 'cargo test --workspace --lib --tests --locked']) {
-    assert.ok(commands.includes(command), `Missing cross-platform gate: ${command}`)
+    assert.ok(commands.includes(command), `Missing platform check: ${command}`)
   }
-  for (const step of unit.steps) assert.notEqual(step['continue-on-error'], true, step.name)
+  for (const step of platforms.steps) assert.notEqual(step['continue-on-error'], true, step.name)
 })
 
-test('native E2E is a required macOS gate and always retains diagnostics', () => {
-  assert.equal(quality.jobs.test['runs-on'], 'macos-26-intel')
-  const steps = quality.jobs.test.steps
+test('the manual macOS run includes native E2E and always retains diagnostics', () => {
+  const steps = quality.jobs.platforms.steps
   const frontend = steps.findIndex((step) => step.run === 'yarn build')
   const native = steps.findIndex(
     (step) => step.run === 'yarn workspace @markflowy/desktop tauri:build:e2e',
@@ -88,12 +87,12 @@ test('native E2E is a required macOS gate and always retains diagnostics', () =>
   )
   assert.ok(frontend >= 0 && native > frontend && execution > native)
   for (const step of [steps[native], steps[execution]]) {
-    assert.equal(step.if, undefined, 'Native E2E must not be optional on a passing CI run')
+    assert.equal(step.if, "runner.os == 'macOS'", 'Native E2E must run on every manual Mac run')
     assert.equal(step['continue-on-error'], undefined)
   }
   assert.equal(steps[execution]['timeout-minutes'], 20)
   const artifact = steps.find((step) => step.uses?.startsWith('actions/upload-artifact@'))
-  assert.equal(artifact.if, 'always()')
+  assert.equal(artifact.if, "always() && runner.os == 'macOS'")
   assert.equal(artifact.with.path, 'apps/desktop/e2e/reports/')
   assert.equal(artifact.with['retention-days'], 7)
   assert.ok(steps.indexOf(artifact) > execution)
@@ -404,11 +403,18 @@ test('workflows use only actions that run on Node 24', async () => {
 
 test('CI reuses caches that only main saves, and releases never replay Turbo builds', async (t) => {
   const index = (steps, name) => steps.findIndex((step) => step.name === name)
-  for (const id of ['unit', 'test']) {
+  for (const id of ['test', 'platforms']) {
     const steps = quality.jobs[id].steps
     const install = index(steps, 'Install dependencies')
     for (const name of ['Restore the Yarn package cache', 'Restore the Turbo build cache']) {
       assert.ok(index(steps, name) >= 0 && index(steps, name) < install, `${id}: ${name}`)
+    }
+    const rust = steps.find((step) => step.uses?.startsWith('Swatinem/rust-cache'))
+    if (id === 'platforms') {
+      // Manual runs only restore what main saved.
+      assert.ok(!steps.some((step) => step.uses?.startsWith('actions/cache/save')), id)
+      assert.equal(rust.with['save-if'], false, id)
+      continue
     }
     for (const name of [
       'Keep the Turbo cache to recent builds',
@@ -423,7 +429,6 @@ test('CI reuses caches that only main saves, and releases never replay Turbo bui
         `${id}: ${name} saves before the tests`,
       )
     }
-    const rust = steps.find((step) => step.uses?.startsWith('Swatinem/rust-cache'))
     assert.equal(rust.with['save-if'], "${{ github.ref == 'refs/heads/main' }}", id)
   }
 
@@ -443,7 +448,7 @@ test('CI reuses caches that only main saves, and releases never replay Turbo bui
   }
 
   const trim =
-    quality.jobs.unit.steps[index(quality.jobs.unit.steps, 'Keep the Turbo cache to recent builds')]
+    quality.jobs.test.steps[index(quality.jobs.test.steps, 'Keep the Turbo cache to recent builds')]
       .run
   const directory = await mkdtemp(path.join(tmpdir(), 'turbo-trim-'))
   t.after(() => rm(directory, { recursive: true, force: true }))
@@ -463,9 +468,8 @@ test('CI reuses caches that only main saves, and releases never replay Turbo bui
   })
 })
 
-test('Test CI cancels superseded branch runs, skips document-only pushes and tests on Intel Macs', async () => {
-  assert.equal(quality.jobs.test['runs-on'], 'macos-26-intel')
-  assert.equal(quality.concurrency.group, 'test-ci-${{ github.ref }}')
+test('Test CI cancels superseded branch runs and skips document-only pushes', async () => {
+  assert.equal(quality.concurrency.group, 'test-ci-${{ github.event_name }}-${{ github.ref }}')
   const cancel = quality.concurrency['cancel-in-progress']
   assert.match(cancel, /github\.ref != 'refs\/heads\/main'/)
   assert.match(cancel, /!startsWith\(github\.ref, 'refs\/tags\/'\)/)
@@ -484,7 +488,7 @@ test('Test CI cancels superseded branch runs, skips document-only pushes and tes
     assert.ok(!skips(file), `${file} must still start Test CI`)
   }
 
-  // The translation check runs inside the Mac job, so it has no workflow of its own.
+  // The translation check runs inside the gate job, so it has no workflow of its own.
   const files = await glob('.github/workflows/*.yml', {
     cwd: fileURLToPath(new URL('..', import.meta.url)),
   })
