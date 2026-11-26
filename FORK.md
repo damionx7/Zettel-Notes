@@ -147,6 +147,9 @@ answer is "keep our version".
   performance report and the old Capricorn E2E reports.
 - **Machine translation script** (`translate:locals`, Alibaba Cloud). `translate:check` stays.
 - `file-type-icons.html`, a stray preview page.
+- **AI assistant** (the Ask panel, Copilot and AI provider settings, `extensions/ai`, the
+  `ai`/`@ai-sdk`/`@assistant-ui`/Ollama packages and the `copilot_*`/`extensions_*_api*`
+  settings). The right dock holds the table of contents only.
 
 ## Where rebase conflicts are most likely
 
