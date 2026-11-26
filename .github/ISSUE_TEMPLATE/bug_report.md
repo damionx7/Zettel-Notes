@@ -3,7 +3,7 @@ name: Bug report
 about: Create a report to help us improve
 title: "a bug"
 labels: "status: needs triage"
-assignees: 'drl990114'
+assignees: 'damionx7'
 
 ---
 <!-- Language suggestions / 语言建议 -->
