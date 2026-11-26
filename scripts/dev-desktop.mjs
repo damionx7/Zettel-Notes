@@ -16,9 +16,7 @@ const ARTIFACT_POLL_INTERVAL_MS = 100
 const isWindows = process.platform === 'win32'
 
 const requiredArtifacts = [
-  'packages/api-client/dist/index.mjs',
   'packages/editor/dist/index.mjs',
-  'packages/github-api/dist/index.mjs',
   'packages/interface/dist/index.mjs',
   'packages/theme/dist/index.mjs',
 ].map((path) => resolve(ROOT_DIR, path))
