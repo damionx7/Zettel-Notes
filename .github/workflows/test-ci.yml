@@ -10,11 +10,14 @@ on:
       - 'LICENSE'
       - '.github/ISSUE_TEMPLATE/**'
   workflow_call:
+  # Run by hand (Actions > Test CI > Run workflow) to also test on macOS and Windows.
+  workflow_dispatch:
 
-# A new push to a branch cancels that branch's run still in progress. Main and tags are never
-# cancelled: main saves the caches, and tags gate releases.
+# A new push to a branch cancels that branch's run still in progress. Manual runs have their own
+# group, so they never cancel a push run. Main and tags are never cancelled: main saves the
+# caches, and tags gate releases.
 concurrency:
-  group: test-ci-${{ github.ref }}
+  group: test-ci-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/tags/') }}
 
 permissions:
@@ -22,22 +25,12 @@ permissions:
   packages: read
 
 jobs:
-  # Unit and Rust tests on the platforms the macOS gate below does not cover.
-  # Windows runs the CNG crypto backend of crates/gocryptfs, Linux the portable one.
-  # Branch pushes only: tag releases call this workflow too, and skip this job.
-  unit:
-    name: unit (${{ matrix.os }})
-    if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-22.04, windows-latest]
-    runs-on: ${{ matrix.os }}
+  # The gate for every commit, PR and tag release. Linux is several times faster than the
+  # hosted Intel Macs. macOS and Windows run in `platforms` below, by hand.
+  test:
+    runs-on: ubuntu-22.04
 
     steps:
-      - name: Keep line endings as committed
-        run: git config --global core.autocrlf false
-
       - name: Checkout repository
         uses: actions/checkout@v5
 
@@ -66,97 +59,13 @@ jobs:
           key: turbo-${{ runner.os }}-${{ github.job }}-${{ github.sha }}
           restore-keys: turbo-${{ runner.os }}-${{ github.job }}-
 
-      - name: Install system libraries (Linux)
-        if: runner.os == 'Linux'
+      - name: Install system libraries
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev librsvg2-dev libsoup-3.0-dev libjavascriptcoregtk-4.1-dev
 
       - name: Rust setup
         uses: dtolnay/rust-toolchain@stable
-
-      - uses: Swatinem/rust-cache@2201cc584a476d1b508be977bbe4b7d1c7a52e9c # v2.9.3
-        with:
-          save-if: ${{ github.ref == 'refs/heads/main' }}
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Build workspaces
-        run: yarn build
-
-      - name: Check application types
-        run: yarn workspace @markflowy/desktop build:types
-
-      - name: Run Test
-        run: yarn test
-
-      - name: Test Rust workspaces
-        run: cargo test --workspace --lib --tests --locked
-
-      - name: Keep the Turbo cache to recent builds
-        if: github.ref == 'refs/heads/main'
-        shell: bash
-        run: |
-          # Each run adds entries to the restored cache. Keep the newest 600 files.
-          [ -d .turbo/cache ] || exit 0
-          ls -1t .turbo/cache | tail -n +601 | while read -r entry; do rm -f ".turbo/cache/$entry"; done
-
-      - name: Save the Turbo build cache
-        if: github.ref == 'refs/heads/main'
-        uses: actions/cache/save@v5
-        with:
-          path: .turbo/cache
-          key: turbo-${{ runner.os }}-${{ github.job }}-${{ github.sha }}
-
-      - name: Save the Yarn package cache
-        if: github.ref == 'refs/heads/main'
-        uses: actions/cache/save@v5
-        with:
-          path: .yarn/cache
-          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-
-  test:
-    # Intel: hosted Apple Silicon runners are often unavailable, which cancels this job
-    # and blocks releases that use it as their quality gate.
-    runs-on: macos-26-intel
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version-file: .node-version
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      # Branches and tag releases reuse the caches that main saves, so a branch push never
-      # evicts main's caches. The Yarn cache skips package downloads, and the Turbo cache
-      # replays builds and tests of packages whose sources did not change.
-      - name: Restore the Yarn package cache
-        uses: actions/cache/restore@v5
-        with:
-          path: .yarn/cache
-          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-          restore-keys: yarn-${{ runner.os }}-
-
-      - name: Restore the Turbo build cache
-        uses: actions/cache/restore@v5
-        with:
-          path: .turbo/cache
-          key: turbo-${{ runner.os }}-${{ github.job }}-${{ github.sha }}
-          restore-keys: turbo-${{ runner.os }}-${{ github.job }}-
-
-      - name: Rust setup
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: x86_64-apple-darwin
-
-      - name: Install rust target
-        run: rustup target add x86_64-apple-darwin
 
       - uses: Swatinem/rust-cache@2201cc584a476d1b508be977bbe4b7d1c7a52e9c # v2.9.3
         with:
@@ -213,15 +122,81 @@ jobs:
           path: .yarn/cache
           key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
 
+  # Unit and Rust tests on macOS and Windows, plus the native macOS E2E, only when Test CI is
+  # run by hand. Windows covers the CNG crypto backend of crates/gocryptfs.
+  platforms:
+    name: platforms (${{ matrix.os }})
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Intel: hosted Apple Silicon runners are often never acquired.
+        os: [macos-26-intel, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Keep line endings as committed
+        run: git config --global core.autocrlf false
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .node-version
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      # Reuse the caches that main saves. This job never saves its own.
+      - name: Restore the Yarn package cache
+        uses: actions/cache/restore@v5
+        with:
+          path: .yarn/cache
+          key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: yarn-${{ runner.os }}-
+
+      - name: Restore the Turbo build cache
+        uses: actions/cache/restore@v5
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ github.job }}-${{ github.sha }}
+          restore-keys: turbo-${{ runner.os }}-${{ github.job }}-
+
+      - name: Rust setup
+        uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@2201cc584a476d1b508be977bbe4b7d1c7a52e9c # v2.9.3
+        with:
+          save-if: false
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build workspaces
+        run: yarn build
+
+      - name: Check application types
+        run: yarn workspace @markflowy/desktop build:types
+
+      - name: Run Test
+        run: yarn test
+
+      - name: Test Rust workspaces
+        run: cargo test --workspace --lib --tests --locked
+
       - name: Build isolated native E2E app
+        if: runner.os == 'macOS'
         run: yarn workspace @markflowy/desktop tauri:build:e2e
 
       - name: Run native desktop E2E
+        if: runner.os == 'macOS'
         timeout-minutes: 20
         run: yarn workspace @markflowy/desktop test:e2e
 
       - name: Upload native E2E diagnostics
-        if: always()
+        if: always() && runner.os == 'macOS'
         uses: actions/upload-artifact@v6
         with:
           name: native-e2e-${{ github.run_id }}-${{ github.run_attempt }}
