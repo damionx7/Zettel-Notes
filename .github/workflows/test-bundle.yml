@@ -58,15 +58,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev patchelf libgtk-3-dev librsvg2-dev libxcb-shape0-dev libxcb-xfixes0-dev libsoup-3.0 javascriptcoregtk-4.1 webkit2gtk-4.1 pkg-config libfreetype6-dev libfontconfig1-dev
 
-      - name: Write env file
-        run: |
-          echo VITE_FIREBASE_APIKEY=${{ secrets.VITE_FIREBASE_APIKEY }}  >> ./apps/desktop/.env
-          echo VITE_FIREBASE_APPID=${{ secrets.VITE_FIREBASE_APPID }}  >> ./apps/desktop/.env
-          echo VITE_FIREBASE_MESSAGINGSENDERID=${{ secrets.VITE_FIREBASE_MESSAGINGSENDERID }}  >> ./apps/desktop/.env
-          echo VITE_FIREBASE_MEASUREMENTID=${{ secrets.VITE_FIREBASE_MEASUREMENTID }}  >> ./apps/desktop/.env
-          echo VITE_UMENG_APPKEY=${{ secrets.VITE_UMENG_APPKEY }}  >> ./apps/desktop/.env
-          echo VITE_SENTRY_DSN=${{ secrets.VITE_SENTRY_DSN }}  >> ./apps/desktop/.env
-
       - name: Rust setup
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -192,15 +183,6 @@ jobs:
           path: .yarn/cache
           key: yarn-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
           restore-keys: yarn-${{ runner.os }}-
-
-      - name: Write env file
-        run: |
-          echo VITE_FIREBASE_APIKEY=${{ secrets.VITE_FIREBASE_APIKEY }}  >> ./apps/desktop/.env
-          echo VITE_FIREBASE_APPID=${{ secrets.VITE_FIREBASE_APPID }}  >> ./apps/desktop/.env
-          echo VITE_FIREBASE_MESSAGINGSENDERID=${{ secrets.VITE_FIREBASE_MESSAGINGSENDERID }}  >> ./apps/desktop/.env
-          echo VITE_FIREBASE_MEASUREMENTID=${{ secrets.VITE_FIREBASE_MEASUREMENTID }}  >> ./apps/desktop/.env
-          echo VITE_UMENG_APPKEY=${{ secrets.VITE_UMENG_APPKEY }}  >> ./apps/desktop/.env
-          echo VITE_SENTRY_DSN=${{ secrets.VITE_SENTRY_DSN }}  >> ./apps/desktop/.env
 
       - name: Rust setup
         uses: dtolnay/rust-toolchain@stable

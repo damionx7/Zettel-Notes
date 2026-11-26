@@ -81,7 +81,6 @@ import {
 import { useEditorKeybindingStore } from '@/hooks/useKeyboard'
 import { normalizeClonedExportColors } from './exportColors'
 import { i18n, useTranslation } from '@/i18n'
-import { captureException } from '@/services/error-reporting'
 import { useEditorStateStore, useEditorStore } from '@/stores'
 import useRecentFilesStore from '@/stores/useRecentFilesStore'
 import useAppSettingStore from '@/stores/useAppSettingStore'
@@ -2077,7 +2076,7 @@ function TextEditor(props: TextEditorProps) {
       errorHandler: {
         onError(params) {
           if (params.error) {
-            captureException(params.error)
+            logger.error(params.error)
           }
         },
       },
@@ -2124,7 +2123,7 @@ function TextEditor(props: TextEditorProps) {
         }
         return true
       } catch (error) {
-        captureException(error)
+        logger.error(error)
         return false
       }
     })

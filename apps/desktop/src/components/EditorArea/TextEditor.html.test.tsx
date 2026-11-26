@@ -57,7 +57,6 @@ vi.mock('@/i18n', () => ({
   i18n: { dir: () => 'ltr', language: 'en', t: mocks.t, on: vi.fn(), off: vi.fn() },
   useTranslation: () => ({ t: mocks.t }),
 }))
-vi.mock('@/services/error-reporting', () => ({ captureException: mocks.error }))
 vi.mock('@/stores', async () => ({
   useEditorStateStore: (await import('@/stores/useEditorStateStore')).default,
   useEditorStore: Object.assign(

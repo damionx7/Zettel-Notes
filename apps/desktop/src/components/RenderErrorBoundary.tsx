@@ -1,4 +1,4 @@
-import { captureException } from '@/services/error-reporting'
+import { logger } from '@/helper/logger'
 import { Component, type ErrorInfo, type ReactNode } from 'react'
 
 export interface RenderErrorFallbackProps {
@@ -29,7 +29,7 @@ export class RenderErrorBoundary extends Component<
   }
 
   componentDidCatch(error: unknown, info: ErrorInfo) {
-    captureException(error)
+    logger.error(error)
     this.props.onError?.(error, info)
   }
 

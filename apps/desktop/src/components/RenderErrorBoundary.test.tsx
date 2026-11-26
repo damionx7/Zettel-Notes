@@ -4,7 +4,7 @@ import { RenderErrorBoundary } from './RenderErrorBoundary'
 
 const { captureException } = vi.hoisted(() => ({ captureException: vi.fn() }))
 
-vi.mock('@/services/error-reporting', () => ({ captureException }))
+vi.mock('@/helper/logger', () => ({ logger: { error: captureException, warn: vi.fn(), info: vi.fn(), debug: vi.fn() } }))
 
 describe('RenderErrorBoundary', () => {
   beforeEach(() => {

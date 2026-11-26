@@ -525,8 +525,8 @@ test('CI reuses caches that only main saves, and releases never replay Turbo bui
     assert.equal(rust.with['save-if'], "${{ github.ref == 'refs/heads/main' }}", id)
   }
 
-  // Release builds write the Sentry DSN to an ignored .env file that Turbo does not hash,
-  // so a Turbo cache from main would ship a frontend built without it.
+  // Release builds compile the frontend fresh: they restore only the Yarn cache and never
+  // save a cache of their own.
   for (const name of ['tauri-release', 'nodejs', 'test-bundle']) {
     const jobs = Object.entries((await workflow(name)).jobs)
     for (const [id, job] of jobs.filter(([, job]) => job.steps)) {

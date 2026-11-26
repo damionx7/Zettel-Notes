@@ -150,6 +150,8 @@ answer is "keep our version".
 - **AI assistant** (the Ask panel, Copilot and AI provider settings, `extensions/ai`, the
   `ai`/`@ai-sdk`/`@assistant-ui`/Ollama packages and the `copilot_*`/`extensions_*_api*`
   settings). The right dock holds the table of contents only.
+- **Sentry error reporting** (`@sentry/react`, `startup/sentry.ts`, `services/error-reporting*`)
+  and the release workflows' `.env` step. Errors are written to the console log instead.
 
 ## Where rebase conflicts are most likely
 
