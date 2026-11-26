@@ -211,3 +211,51 @@ index 883f7fa..f7ad46b 100644
 +  }
 +  return signature;
  }
+diff --git a/node_modules/@tauri-release/cli/dist/updatelog.cjs b/node_modules/@tauri-release/cli/dist/updatelog.cjs
+index 0000000..0000000 100644
+--- a/node_modules/@tauri-release/cli/dist/updatelog.cjs
++++ b/node_modules/@tauri-release/cli/dist/updatelog.cjs
+@@ -15,7 +15,8 @@
+   }
+   if (!fs.existsSync(filePath) && !fs.existsSync(utils.UPDATE_LOG_PATH)) {
+     console.log(utils.$.red("[\u{1F4A2} updater]"), `Could not found ${utils.$.yellow("UPDATE_LOG.md")}`);
+-    process.exit(0);
++    // Zettel Notes: release without notes instead of quitting before install.json is written.
++    return { filename: "", content: "" };
+   }
+   let _tag;
+   const tagMap = {};
+@@ -41,7 +42,8 @@
+       utils.$.yellow(utils.relativePath(filePath)),
+       `Tag ${tag} does not exist.`
+     );
+-    process.exit(0);
++    // Zettel Notes: release without notes instead of quitting before install.json is written.
++    return { filename: utils.relativePath(filePath), content: "" };
+   }
+   return {
+     filename: utils.relativePath(filePath),
+diff --git a/node_modules/@tauri-release/cli/dist/updatelog.mjs b/node_modules/@tauri-release/cli/dist/updatelog.mjs
+index 0000000..0000000 100644
+--- a/node_modules/@tauri-release/cli/dist/updatelog.mjs
++++ b/node_modules/@tauri-release/cli/dist/updatelog.mjs
+@@ -13,7 +13,8 @@
+   }
+   if (!fs.existsSync(filePath) && !fs.existsSync(UPDATE_LOG_PATH)) {
+     console.log($.red("[\u{1F4A2} updater]"), `Could not found ${$.yellow("UPDATE_LOG.md")}`);
+-    process.exit(0);
++    // Zettel Notes: release without notes instead of quitting before install.json is written.
++    return { filename: "", content: "" };
+   }
+   let _tag;
+   const tagMap = {};
+@@ -39,7 +40,8 @@
+       $.yellow(relativePath(filePath)),
+       `Tag ${tag} does not exist.`
+     );
+-    process.exit(0);
++    // Zettel Notes: release without notes instead of quitting before install.json is written.
++    return { filename: relativePath(filePath), content: "" };
+   }
+   return {
+     filename: relativePath(filePath),

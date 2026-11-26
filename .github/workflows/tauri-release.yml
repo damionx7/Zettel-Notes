@@ -471,7 +471,10 @@ jobs:
 
       - name: Updater JSON
         if: env.HAS_SIGNING_KEY == 'true'
-        run: yarn updater --token=${{ secrets.GITHUB_TOKEN }}
+        run: |
+          yarn updater --token=${{ secrets.GITHUB_TOKEN }}
+          # The updater CLI can exit 0 without writing the manifest; stop here with a clear error.
+          test -s apps/desktop/updater/install.json || { echo "::error::yarn updater did not write apps/desktop/updater/install.json"; exit 1; }
 
       - name: Upload Additional File to Same Release
         if: env.HAS_SIGNING_KEY == 'true'
@@ -481,7 +484,8 @@ jobs:
         with:
           tag_name: v${{ env.version }}
           files: ./apps/desktop/updater/install.json
-          overwrite: true
+          overwrite_files: true
+          fail_on_unmatched_files: true
 
       # GitHub Pages serves the gh-pages branch: the README as the home page, and install.json
       # for the updater endpoint in tauri.conf.json. Each release replaces both.
