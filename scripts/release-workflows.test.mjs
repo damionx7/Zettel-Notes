@@ -15,6 +15,22 @@ const workflow = async (name) =>
 const release = await workflow('tauri-release')
 const quality = await workflow('test-ci')
 
+// actions/upload-artifact stores each file relative to the deepest folder shared by the
+// patterns' non-wildcard parts. One pattern under bundle/macos/ therefore drops "macos/".
+export function artifactRoot(patterns) {
+  const roots = patterns.map((pattern) => {
+    const parts = path.posix.normalize(pattern).split('/')
+    const wildcard = parts.findIndex((part) => /[*?[]/.test(part))
+    return wildcard < 0 ? parts.slice(0, -1) : parts.slice(0, wildcard)
+  })
+  const shared = []
+  for (let index = 0; roots.every((root) => index < root.length); index++) {
+    if (!roots.every((root) => root[index] === roots[0][index])) break
+    shared.push(roots[0][index])
+  }
+  return shared.join('/') || '.'
+}
+
 function prerequisites(jobs, id, visiting = new Set()) {
   assert.ok(jobs[id], `Unknown prerequisite job: ${id}`)
   assert.ok(!visiting.has(id), `Circular job dependency: ${id}`)
@@ -399,8 +415,9 @@ test('all release packages retain matching signatures through collection and pub
     const download = steps.find((step) => step.name === scenario.download)
     const artifactName = upload.with.name.replaceAll('${{ matrix.target }}', matrix.target)
     assert.ok(path.matchesGlob(artifactName, download.with.pattern), `${label} is not downloaded`)
+    const root = artifactRoot(patterns)
     for (const filename of collected) {
-      const destination = path.join(directory, download.with.path, path.relative(bundle, filename))
+      const destination = path.join(directory, download.with.path, path.relative(root, filename))
       await mkdir(path.dirname(destination), { recursive: true })
       await copyFile(path.join(buildDirectory, filename), destination)
     }

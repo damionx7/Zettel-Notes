@@ -463,11 +463,12 @@ jobs:
 
           mv "artifacts/universal/Zettel Notes_${{ env.version }}_universal.dmg" "artifacts/Zettel-Notes_v${{ env.version }}_macOS_universal.dmg"
 
-          mv "artifacts/aarch64/macos/Zettel Notes.app.tar.gz" "artifacts/Zettel-Notes_aarch64.app.tar.gz"
-          mv_sig "artifacts/aarch64/macos/Zettel Notes.app.tar.gz.sig" "artifacts/Zettel-Notes_aarch64.app.tar.gz.sig"
+          # Each macOS artifact holds only bundle/macos/, so upload-artifact stores its files at the top.
+          mv "artifacts/aarch64/Zettel Notes.app.tar.gz" "artifacts/Zettel-Notes_aarch64.app.tar.gz"
+          mv_sig "artifacts/aarch64/Zettel Notes.app.tar.gz.sig" "artifacts/Zettel-Notes_aarch64.app.tar.gz.sig"
 
-          mv "artifacts/x86_64/macos/Zettel Notes.app.tar.gz" "artifacts/Zettel-Notes_x64.app.tar.gz"
-          mv_sig "artifacts/x86_64/macos/Zettel Notes.app.tar.gz.sig" "artifacts/Zettel-Notes_x64.app.tar.gz.sig"
+          mv "artifacts/x86_64/Zettel Notes.app.tar.gz" "artifacts/Zettel-Notes_x64.app.tar.gz"
+          mv_sig "artifacts/x86_64/Zettel Notes.app.tar.gz.sig" "artifacts/Zettel-Notes_x64.app.tar.gz.sig"
 
           mv "artifacts/x86_64/deb/Zettel Notes_${{ env.version }}_amd64.deb" "artifacts/Zettel-Notes_v${{ env.version }}_amd64.deb"
           mv_sig "artifacts/x86_64/deb/Zettel Notes_${{ env.version }}_amd64.deb.sig" "artifacts/Zettel-Notes_v${{ env.version }}_amd64.deb.sig"
