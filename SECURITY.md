@@ -1,21 +1,34 @@
 # Security Policy
 
-## Supported Versions
+## Supported versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Only the latest release on the [Releases page](https://github.com/damionx7/Zettel-Notes/releases)
+gets security fixes. Update through **Settings → Updates** or by downloading it again.
 
-| Version | Supported          |
-| ------- | ------------------ |
+## Reporting a vulnerability
 
-## Reporting a Vulnerability
+Report it privately through GitHub's
+[security advisory form](https://github.com/damionx7/Zettel-Notes/security/advisories/new).
+Please don't open a public issue for anything that could expose someone's notes or
+passwords. Include the version, the operating system and the steps to reproduce.
 
-People are welcomed to report a vulnerability by PR or Issues.
+## What the encryption protects
 
-Vulnerability will be fixed and publish in shorter time.
+- **Encrypted repositories** (gocryptfs v2) protect file contents and file names. They don't
+  hide the number of files, their approximate sizes, the folder structure or modification
+  times. The password is kept in memory only, while the repository is open.
+- **End-to-end encrypted notes** protect the content of each note. File names stay readable.
+  The passphrase for automatic encryption is currently saved in the app's settings file in
+  plain text, so anyone who can read your user profile or a backup of it can read it.
+- Neither scheme protects notes while they are open in the app, or against software running
+  as your user.
 
 ## Dependency maintenance
 
-Keep dependency overrides scoped to their existing callers. The Jaeger propagator pin preserves Contentlayer's tracing SDK, UUID 11 preserves CommonJS callers, and the Undici and TOML pins retain the existing APIs. Reassess these overrides when upgrading parent packages. Run `yarn test:security-dependencies` after changing overrides or dependency patches; this regression suite also runs in CI.
+Keep dependency overrides (`resolutions` in `package.json`) and `patches/` scoped to their
+existing callers, and reassess them when upgrading the parent packages. Run
+`yarn test:security-dependencies` after changing overrides or patches; it also runs in CI.
 
-Historical audits left follow-ups for Contentlayer's OpenTelemetry Core 1 and the Linux GTK dependency on glib 0.18.5. These versions remain in the local lockfiles. Review them through compatible parent upgrades rather than forcing major versions across SDK or GTK types. Recheck advisory status during that work; this note is not a current remote vulnerability audit.
+A known follow-up is the Linux GTK stack's dependency on glib 0.18.5, which comes in through
+Tauri's WebKitGTK bindings. Review it through compatible Tauri upgrades rather than forcing
+major versions across GTK types. This note is not a current vulnerability audit.

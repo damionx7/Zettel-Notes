@@ -205,8 +205,7 @@ export const ThemeSetting = memo(({ onBrowse }: ThemeSettingProps) => {
             size='sm'
             className='px-0'
             onClick={() => {
-              const docsLocale = String(settingData.language).startsWith('zh') ? 'zh' : 'en'
-              void openUrl(`https://github.com/damionx7/Zettel-Notes/blob/main/docs/${docsLocale}/Extension/CustomTheme.md`).catch(
+              void openUrl('https://github.com/damionx7/Zettel-Notes/blob/main/docs/en/Extension/CustomTheme.md').catch(
                 (error: unknown) => {
                   logger.error('Failed to open theme migration guide:', error)
                 },

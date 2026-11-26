@@ -7,7 +7,9 @@ export const cssSnippetTemplates = [
   {
     id: 'completed-tasks',
     label: 'cssTemplateCompletedTasks',
-    css: `${scope} li:has(> input[type='checkbox']:checked) {
+    // Only the task's own first line: a completed parent can hold open nested tasks, and
+    // text-decoration on the whole <li> would strike them too.
+    css: `${scope} li[data-checked='true'] > [data-rme-list-item-content] > :first-child {
   text-decoration: line-through;
 }`,
   },

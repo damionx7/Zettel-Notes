@@ -22,7 +22,7 @@ Choose the smallest artifact that matches the user's intent:
 
 Do not turn a small CSS request into a new theme or embed personal snippets in a theme merely because both use this skill. If the user explicitly chooses an artifact type, preserve it; ask only when a missing choice materially affects the result. Use the requested palette, mode, typography, existing customization, and output location. Reply in the user's language.
 
-Identify whether this is a standalone theme project or work inside a Zettel Notes checkout. Theme authors need only JSON and the installed application; do not require Node, a repository clone, a private Capricorn runtime, or a build. In a checkout, inspect its `AGENTS.md`, relevant source, and package versions before changing implementation code. All source paths in the reference are relative to that checkout, not the installed skill directory.
+Identify whether this is a standalone theme project or work inside a Zettel Notes checkout. Theme authors need only JSON and the installed application; do not require Node, a repository clone, or a build. In a checkout, inspect its `AGENTS.md`, relevant source, and package versions before changing implementation code. All source paths in the reference are relative to that checkout, not the installed skill directory.
 
 ## Develop a customization
 

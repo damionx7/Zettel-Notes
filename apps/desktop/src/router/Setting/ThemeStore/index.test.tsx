@@ -350,8 +350,8 @@ describe('declarative theme manager', () => {
     expect(useThemeLibrary.getState().snippets[0].css).toBe('body{}')
   })
 
-  it.each(['cn', 'zh-CN'])(
-    'opens the %s selector reference without saving a draft',
+  it.each(['en', 'pt-BR'])(
+    'opens the English selector reference for %s without saving a draft',
     async (language) => {
       useAppSettingStore.setState({ settingData: { language } })
       render(<ThemeCustomization />)
@@ -360,7 +360,7 @@ describe('declarative theme manager', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Selector reference' }))
       await waitFor(() =>
         expect(mocks.openUrl).toHaveBeenCalledExactlyOnceWith(
-          'https://github.com/damionx7/Zettel-Notes/blob/main/docs/zh/Extension/CustomTheme.md#editor-css-selectors',
+          'https://github.com/damionx7/Zettel-Notes/blob/main/docs/en/Extension/CustomTheme.md#editor-css-selectors',
         ),
       )
       expect(mocks.mutate).not.toHaveBeenCalled()

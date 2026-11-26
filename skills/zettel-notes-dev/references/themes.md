@@ -14,7 +14,7 @@ With a Zettel Notes checkout, consult these sources as needed:
 | Personal accent and typography overrides | `apps/desktop/src/AppThemeProvider.tsx`, `apps/desktop/src/themes/preferences.ts` |
 | Theme and snippet state | `apps/desktop/src/themes/library.ts` |
 | Import, duplicate IDs, catalog checks, editor UI | `apps/desktop/src/router/Setting/ThemeStore/` |
-| Author documentation | `docs/en/Extension/CustomTheme.md`, `docs/zh/Extension/CustomTheme.md` |
+| Author documentation | `docs/en/Extension/CustomTheme.md` |
 
 Use the installed version's export or the target checkout's parser as the authority if it differs from this guide. No checkout is needed for the application workflow below.
 

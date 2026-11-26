@@ -4,71 +4,53 @@ Use a personal `.css` snippet for local presentation that should remain independ
 
 ## Scope and compatibility
 
-The public `.mf-editor-content` root is shared by the Capricorn document host and the theme/CSS preview. Prefix document rules with this root and `[data-cap-content]` for the runtime surface inside it so they do not style the settings controls or the CSS editor itself. The public root is available in the version that introduces CSS templates and snippet previews; for older installed versions, verify the available root before claiming compatibility.
+Prefix document rules with `.mf-editor-content .mf-preview-content`. `.mf-editor-content` is the public root shared by the document view and the theme/CSS preview, and `.mf-preview-content` is the rendered note inside it, so the rules do not style settings controls or the CSS editor itself.
 
-The internal selectors below were checked against Capricorn runtime **0.5.12**. They target its live-editing and reading surfaces, not the Markdown source editor or the separate PDF/print renderer. Internal classes are a versioned reference, not a promise that every internal DOM node will remain unchanged. Do not depend on node IDs, document indexes, virtualization spacers, caret overlays, or layout wrappers for presentation.
+The preview renders ordinary HTML. The task-list attributes below were checked against the renderer in `packages/editor` (`rmeProsemirrorNodeToHtml`); they are a versioned reference, not a promise that every node stays unchanged. They do not apply to the Markdown source editor (CodeMirror) or the separate PDF/print renderer. Do not depend on generated IDs or document indexes for presentation.
 
-| Element | Selector within `.mf-editor-content [data-cap-content]` |
+| Element | Selector inside `.mf-editor-content .mf-preview-content` |
 | --- | --- |
-| Heading | `h1`, `h2`, `h3`, `h4`, `h5`, `h6` |
-| List item | `.capricorn-markdown-list-item` |
-| Task item | `.capricorn-markdown-list-item[data-markdown-task]` |
-| Task checkbox | `.capricorn-markdown-task-checkbox` |
-| List item's text | `.capricorn-markdown-list-content` |
-| Simple blockquote | `blockquote.capricorn-markdown-blockquote` |
-| Other blocks inside a quote | `.capricorn-markdown-quoted-block` |
-| Table row | `.capricorn-markdown-table-row` |
-| Header row | `.capricorn-markdown-table-row[data-markdown-table-header='true']` |
-| Table cell | `.capricorn-markdown-table-cell`, `.capricorn-markdown-inline-table-cell` |
-| Code editor inside a code block | `.cm-editor` |
+| Headings | `h1` through `h6` |
+| List item | `li` |
+| Task item | `li[data-checked]` (`'true'` when done, `'false'` when open) |
+| Task checkbox | `li[data-checked] > input[type='checkbox']` |
+| Task item's own content | `li[data-checked] > [data-rme-list-item-content]` |
+| Quote | `blockquote` |
+| Table cells | `th`, `td` |
 
-Do not assume list items are HTML `<li>` elements or table cells are `<td>` elements. A code block can contain a CodeMirror editor rather than only `<pre><code>`. Avoid replacing these components' layout, positioning, overflow, or content-editable behavior. A table can virtualize rows, so `nth-child` does not guarantee persistent document row parity.
+Rendered task item: `<li data-checked="true"><input type="checkbox" checked disabled><div data-rme-list-item-content><p>…</p><ul>…nested…</ul></div></li>`.
 
 Semantic variables such as `var(--mf-theme-border-default)` and `var(--mf-theme-accent-background)` follow the active theme. Prefer them over hard-coded palette colors. Read the theme reference only if the task also needs token changes.
 
 ## Completed-task strikethrough
 
-This rule checks the task's own checkbox and styles only its own content:
+This rule checks the task's own state and styles only its own first line:
 
 ```css
-.mf-editor-content [data-cap-content] .capricorn-markdown-list-item:has(
-  > .capricorn-markdown-task-prefix > .capricorn-markdown-task-checkbox:checked
-) > .capricorn-markdown-list-content {
+.mf-editor-content .mf-preview-content
+  li[data-checked='true'] > [data-rme-list-item-content] > :first-child {
   text-decoration: line-through;
 }
 ```
 
-Keep the direct-child combinators. A broad `:has(...:checked)` or descendant `.capricorn-markdown-list-content *` can select additional content when lists are nested. Do not change Markdown task state to achieve a visual effect.
+Keep the direct-child combinators. A broad `li:has(input:checked)` or a descendant selector also strikes nested items, because `text-decoration` reaches everything inside the matched element. Do not change Markdown task state to achieve a visual effect.
 
-## Heading separators
+## Heading separators, compact tables and quote lines
 
 ```css
-.mf-editor-content [data-cap-content] :is(h1, h2) {
+/* Heading separators */
+.mf-editor-content .mf-preview-content :is(h1, h2) {
   border-bottom: 1px solid var(--mf-theme-border-default);
   padding-bottom: 0.3em;
 }
-```
 
-## Compact table cells
-
-```css
-.mf-editor-content [data-cap-content] :is(
-  .capricorn-markdown-table-cell,
-  .capricorn-markdown-inline-table-cell
-) {
+/* Compact table cells */
+.mf-editor-content .mf-preview-content :is(th, td) {
   padding: 2px 8px;
 }
-```
 
-## Accent quote lines
-
-Quote lines use a repeating background rather than a border, including nested quote depths. Keep that geometry and replace only the color:
-
-```css
-.mf-editor-content [data-cap-content] :is(
-  blockquote.capricorn-markdown-blockquote,
-  .capricorn-markdown-quoted-block
-) {
+/* Accent quote lines, preserving nested quote depth */
+.mf-editor-content .mf-preview-content blockquote {
   background-image: repeating-linear-gradient(
     to right,
     var(--mf-theme-accent-background) 0,
@@ -78,6 +60,8 @@ Quote lines use a repeating background rather than a border, including nested qu
   );
 }
 ```
+
+Quote lines use a repeating background rather than a border, including nested quote depths; keep that geometry and replace only the color.
 
 ## Preview, import, and deliver
 
@@ -90,4 +74,4 @@ Deliver only the intended `.css` file, its target mode/version, and import/enabl
 
 For externally maintained snippets, **Open CSS folder** opens the fixed `css-snippets` directory beside `themes-v1.json`. Direct UTF-8 `.css` files are discovered automatically and start disabled. Enabled files refresh after external saves; enable state and ordering persist. **External file** entries use **Show in folder** for editing/removal instead of the in-app editor. Deletion removes the entry; renaming creates a new disabled identity. Subdirectories, symlinks and non-CSS files are ignored. Unreadable, binary, non-UTF-8 or over-1-MiB files show an error and apply no styles until repaired. Old legacy CSS directories are not scanned.
 
-For a checkout, inspect `apps/desktop/src/themes/editorCssScope.ts`, `apps/desktop/src/themes/cssSnippetTemplates.ts`, and the installed runtime when confirming a selector. No repository clone, Node installation, private runtime installation, or build is required merely to author and import a snippet.
+For a checkout, inspect `apps/desktop/src/themes/editorCssScope.ts`, `apps/desktop/src/themes/cssSnippetTemplates.ts` and `packages/editor/src/editor/utils/prosemirrorNodeToHtml.ts` when confirming a selector. No repository clone, Node installation or build is required merely to author and import a snippet.

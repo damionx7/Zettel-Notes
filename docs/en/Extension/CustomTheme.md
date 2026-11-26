@@ -1,7 +1,7 @@
 ---
 seoTitle: 'Custom Zettel Notes themes'
 description: 'Create JSON themes and scoped CSS snippets with templates, selector guidance and live previews.'
-updatedAt: '2026-11-06'
+updatedAt: '2026-11-26'
 ---
 
 # Custom themes
@@ -76,60 +76,49 @@ The live preview shows the draft together with other enabled snippets. Editing a
 
 ### Editor selector reference {#editor-css-selectors}
 
-Prefix document styles with **`.mf-editor-content`**. This public root is shared by the document editor and the theme/CSS preview, keeping these rules away from settings controls. This root is available in the version introducing snippet templates and previews; older app releases may not contain it. CSS is not automatically scoped, so include the prefix in each rule. The examples also use `[data-cap-content]` to target the Capricorn rendering surface inside this root.
+Prefix document styles with **`.mf-editor-content .mf-preview-content`**. `.mf-editor-content` is the public root shared by the document view and the theme/CSS preview, which keeps rules away from settings controls; `.mf-preview-content` is the rendered note inside it. CSS is not automatically scoped, so include the prefix in each rule.
 
-The following internal selectors are a reference for **Capricorn 0.5.12**, used by live editing and reading modes when that runtime is installed. Internal classes may change with an editor upgrade. Markdown source mode and PDF/print output use different renderers; these rules do not promise equivalent styling there.
+The preview pane renders notes as ordinary HTML, so most elements are plain tags. The task-list attributes below come from the app's Markdown renderer and may change with an editor upgrade. The Markdown source pane (CodeMirror) and PDF/print output use different renderers; these rules do not promise equivalent styling there.
 
-| Element | Selector inside `.mf-editor-content [data-cap-content]` |
+| Element | Selector inside `.mf-editor-content .mf-preview-content` |
 | --- | --- |
 | Headings | `h1` through `h6` |
-| List item | `.capricorn-markdown-list-item` |
-| Task item | `.capricorn-markdown-list-item[data-markdown-task]` |
-| Task checkbox | `.capricorn-markdown-task-checkbox` |
-| List item's text | `.capricorn-markdown-list-content` |
-| Simple quote | `blockquote.capricorn-markdown-blockquote` |
-| Other blocks inside a quote | `.capricorn-markdown-quoted-block` |
-| Table row | `.capricorn-markdown-table-row` |
-| Table header row | `.capricorn-markdown-table-row[data-markdown-table-header='true']` |
-| Table cell | `.capricorn-markdown-table-cell`, `.capricorn-markdown-inline-table-cell` |
-| Code editor inside a code block | `.cm-editor` |
+| List item | `li` |
+| Task item | `li[data-checked]` (`'true'` when done, `'false'` when open) |
+| Task checkbox | `li[data-checked] > input[type='checkbox']` |
+| Task item's own content | `li[data-checked] > [data-rme-list-item-content]` |
+| Quote | `blockquote` |
+| Table cells | `th`, `td` |
 
-List items and table cells are not necessarily `<li>` or `<td>` elements. Code blocks can contain a CodeMirror editor. Avoid changing their layout or editable behavior. Do not use document indexes, generated node IDs, or virtualization spacers as styling hooks. Virtualized table rows also make `nth-child` unreliable for persistent document row stripes.
+The checkbox and the item's content are direct children of the task's `li`; nested lists live inside the content. Do not use generated IDs or document indexes as styling hooks.
 
 ### Completed-task strikethrough
 
 ```css
-.mf-editor-content [data-cap-content] .capricorn-markdown-list-item:has(
-  > .capricorn-markdown-task-prefix > .capricorn-markdown-task-checkbox:checked
-) > .capricorn-markdown-list-content {
+.mf-editor-content .mf-preview-content
+  li[data-checked='true'] > [data-rme-list-item-content] > :first-child {
   text-decoration: line-through;
 }
 ```
 
-The direct-child relationships test the item's own checkbox and style its own content. Keep them when adapting the example: broad descendant selectors can include additional content in nested lists. Check both completed parents with incomplete children and incomplete parents with completed children.
+The direct-child relationships style only the task's own first line, not the nested items inside it: a completed parent can hold open children. Check both completed parents with open children and open parents with completed children.
 
 ### Other starter rules
 
 ```css
 /* Heading separators */
-.mf-editor-content [data-cap-content] :is(h1, h2) {
+.mf-editor-content .mf-preview-content :is(h1, h2) {
   border-bottom: 1px solid var(--mf-theme-border-default);
   padding-bottom: 0.3em;
 }
 
 /* Compact table cells */
-.mf-editor-content [data-cap-content] :is(
-  .capricorn-markdown-table-cell,
-  .capricorn-markdown-inline-table-cell
-) {
+.mf-editor-content .mf-preview-content :is(th, td) {
   padding: 2px 8px;
 }
 
 /* Accent quote lines, preserving nested quote depth */
-.mf-editor-content [data-cap-content] :is(
-  blockquote.capricorn-markdown-blockquote,
-  .capricorn-markdown-quoted-block
-) {
+.mf-editor-content .mf-preview-content blockquote {
   background-image: repeating-linear-gradient(
     to right,
     var(--mf-theme-accent-background) 0,

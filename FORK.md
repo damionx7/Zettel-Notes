@@ -142,8 +142,9 @@ our version.
   are gone. If a cherry-pick brings any of it back, delete it.
 - **Attachment destinations** that were not wanted: absolute paths and Base64 embedding.
 - **MarkFlowy's website and docs** (`apps/web`, `docs/en`, `docs/zh`, `public/` screenshots)
-  and their scripts and tests. `docs/CLI.md`, the custom theme guide
-  (`docs/*/Extension/CustomTheme.md`, linked from Settings) and its `skills/zettel-notes-dev` stay.
+  and their scripts and tests. `docs/CLI.md`, the English custom theme guide
+  (`docs/en/Extension/CustomTheme.md`, linked from Settings) and its `skills/zettel-notes-dev`
+  stay. The Chinese guide went with the `zh-CN` locale; Settings always links the English one.
 - **Unused packages and dead code**: `packages/api-client`, `packages/github-api`,
   `packages/runtime-api`, and the desktop cloud/GitHub API services nothing called.
 - **Capricorn tooling**: the runtime installer, editor-opening benchmarks, startup
