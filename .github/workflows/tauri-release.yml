@@ -188,7 +188,6 @@ jobs:
         with:
           name: aarch64artifacts-${{ matrix.target }}
           path: |
-            ./target/${{ matrix.target }}/release/bundle/dmg/**.dmg
             ./target/${{ matrix.target }}/release/bundle/macos/**.app.*
 
       - uses: actions/upload-artifact@v6
@@ -196,7 +195,6 @@ jobs:
         with:
           name: artifacts-${{ matrix.target }}
           path: |
-            ./target/${{ matrix.target }}/release/bundle/dmg/**.dmg
             ./target/${{ matrix.target }}/release/bundle/macos/**.app.*
 
       - uses: actions/upload-artifact@v6
@@ -207,6 +205,67 @@ jobs:
             ./target/${{ matrix.target }}/release/bundle/msi/**
             ./target/${{ matrix.target }}/release/bundle/nsis/**
             ./target/${{ matrix.target }}/release/bundle/portable/**.zip
+
+  # One disk image for every Mac. Per-architecture images let Apple Silicon users install the
+  # Intel build by mistake, which then fails with "bad CPU type in executable". The
+  # per-architecture .app.tar.gz files stay for the updater, which picks one per architecture.
+  macos-universal:
+    needs: build
+    permissions:
+      contents: read
+    runs-on: macos-26-intel
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Download the macOS apps
+        uses: actions/download-artifact@v7
+        with:
+          pattern: '*artifacts-*-apple-darwin'
+          path: macos-apps
+
+      # Hosted macOS runners intermittently fail `hdiutil create` with "Resource busy" while
+      # XProtect scans new disk images, which fails the DMG after a full build. Stop XProtect
+      # and retry that one command on this error.
+      - name: Retry disk image creation when macOS reports it busy
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          sudo pkill -9 XProtect >/dev/null 2>&1 || true
+          shim="$RUNNER_TEMP/hdiutil-retry"
+          mkdir -p "$shim"
+          cat > "$shim/hdiutil" <<'SHIM'
+          #!/bin/bash
+          [ "$1" = create ] || exec /usr/bin/hdiutil "$@"
+          for attempt in 1 2 3 4 5; do
+            errors=$(mktemp)
+            /usr/bin/hdiutil "$@" 2> "$errors"
+            status=$?
+            cat "$errors" >&2
+            if [ $status -eq 0 ] || ! grep -q 'Resource busy' "$errors"; then rm -f "$errors"; exit $status; fi
+            rm -f "$errors"
+            image="${@: -1}"
+            rm -f "$image" "$image.dmg"
+            echo "hdiutil create: resource busy, retrying ($attempt/5)" >&2
+            sleep $((attempt * 10))
+          done
+          exit $status
+          SHIM
+          chmod +x "$shim/hdiutil"
+          echo "$shim" >> "$GITHUB_PATH"
+
+      - name: Build the universal disk image
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          scripts/macos-universal-dmg.sh \
+            "macos-apps/artifacts-x86_64-apple-darwin/Zettel Notes.app.tar.gz" \
+            "macos-apps/aarch64artifacts-aarch64-apple-darwin/Zettel Notes.app.tar.gz" \
+            "universal/Zettel Notes_${version}_universal.dmg"
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: macos-universal
+          path: ./universal/*.dmg
 
   build-offline-installer:
     needs: quality
@@ -335,7 +394,7 @@ jobs:
   release:
     permissions:
       contents: write
-    needs: [build, build-offline-installer]
+    needs: [build, macos-universal, build-offline-installer]
     runs-on: ubuntu-24.04
     env:
       HAS_SIGNING_KEY: ${{ secrets.TAURI_PRIVATE_KEY != '' }}
@@ -392,6 +451,12 @@ jobs:
           path: artifacts/aarch64
           merge-multiple: true
 
+      - name: Download the universal macOS disk image
+        uses: actions/download-artifact@v7
+        with:
+          name: macos-universal
+          path: artifacts/universal
+
       - name: Download offline installer artifacts
         uses: actions/download-artifact@v7
         with:
@@ -404,11 +469,11 @@ jobs:
           # Updater signatures exist only when TAURI_PRIVATE_KEY is configured.
           mv_sig() { if [ -f "$1" ]; then mv "$1" "$2"; elif [ "$HAS_SIGNING_KEY" = "true" ]; then echo "Missing signature: $1" >&2; return 1; fi; }
 
-          mv "artifacts/aarch64/dmg/Zettel Notes_${{ env.version }}_aarch64.dmg" "artifacts/Zettel-Notes_v${{ env.version }}_aarch64.dmg"
+          mv "artifacts/universal/Zettel Notes_${{ env.version }}_universal.dmg" "artifacts/Zettel-Notes_v${{ env.version }}_macOS_universal.dmg"
+
           mv "artifacts/aarch64/macos/Zettel Notes.app.tar.gz" "artifacts/Zettel-Notes_aarch64.app.tar.gz"
           mv_sig "artifacts/aarch64/macos/Zettel Notes.app.tar.gz.sig" "artifacts/Zettel-Notes_aarch64.app.tar.gz.sig"
 
-          mv "artifacts/x86_64/dmg/Zettel Notes_${{ env.version }}_x64.dmg" "artifacts/Zettel-Notes_v${{ env.version }}_x64.dmg"
           mv "artifacts/x86_64/macos/Zettel Notes.app.tar.gz" "artifacts/Zettel-Notes_x64.app.tar.gz"
           mv_sig "artifacts/x86_64/macos/Zettel Notes.app.tar.gz.sig" "artifacts/Zettel-Notes_x64.app.tar.gz.sig"
 
@@ -450,8 +515,9 @@ jobs:
           - The Portable ZIP can be extracted and run without installation. It uses the system WebView2 Runtime and keeps Zettel Notes' existing user-level data location. In-app updates currently launch an installer; to remain portable, download and extract the new ZIP manually.
 
           ### macOS users
-          - ​​macOS x86_64 version​​: When you launch the app for the first time, you may see a prompt saying "Cannot open the application" because the app is from an unidentified developer. Please go to "System Preferences" > "Security & Privacy", and click "Open Anyway" in the "General" tab.
-          - ​​macOS aarch64 (Apple Silicon) users​​: If you see a prompt saying "The application is damaged" when you launch it for the first time, it is usually due to system security restrictions. Please open the terminal and run the following command to fix the permission issue, and then you can open the app normally:
+          - Download `Zettel-Notes_v${{ env.version }}_macOS_universal.dmg`. It runs natively on both Apple Silicon and Intel Macs.
+          - The app is not signed with an Apple Developer ID yet. If macOS says it "cannot be opened" because it is from an unidentified developer, go to System Settings > Privacy & Security and click "Open Anyway".
+          - If macOS says the app "is damaged", open Terminal and run the following command, then open the app again:
             xattr -cr "/Applications/Zettel Notes.app"
 
           ## 常见问题：
@@ -461,8 +527,9 @@ jobs:
           - Portable ZIP 解压后即可运行，无需安装；它使用系统 WebView2 Runtime，并继续使用 Zettel Notes 现有的用户级数据目录。应用内更新目前会启动安装器；如需继续使用便携版，请手动下载并解压新版 ZIP。
 
           ### macOS 用户
-          - ​​macOS x86_64 版本​​：首次启动应用时，系统可能会提示“无法打开应用程序”，这是因为应用来自未识别的开发者。请前往“系统偏好设置” > “安全性与隐私”，在“通用”标签页中点击“仍要打开”即可.
-          - ​​macOS aarch64 (Apple Silicon) 用户​​：首次启动若提示“应用程序已损坏”，通常是由于系统的安全限制。请打开终端，执行以下命令来修复权限问题，之后即可正常打开应用
+          - 请下载 `Zettel-Notes_v${{ env.version }}_macOS_universal.dmg`，它可在 Apple Silicon 和 Intel Mac 上原生运行。
+          - 首次启动若提示“无法打开应用程序”（来自未识别的开发者），请前往“系统设置” > “隐私与安全性”，点击“仍要打开”。
+          - 若提示“应用程序已损坏”，请打开终端执行以下命令，之后即可正常打开应用：
             xattr -cr "/Applications/Zettel Notes.app"
 
           </details>

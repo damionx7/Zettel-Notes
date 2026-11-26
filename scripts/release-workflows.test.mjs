@@ -27,7 +27,7 @@ function prerequisites(jobs, id, visiting = new Set()) {
 
 test('every release build and publication depends on the shared quality gate', () => {
   assert.equal(release.jobs.quality.uses, './.github/workflows/test-ci.yml')
-  for (const id of ['build', 'build-offline-installer', 'release']) {
+  for (const id of ['build', 'macos-universal', 'build-offline-installer', 'release']) {
     assert.ok(prerequisites(release.jobs, id).has('quality'), `${id} bypasses quality checks`)
     assert.notEqual(release.jobs[id]['continue-on-error'], true, id)
     assert.doesNotMatch(release.jobs[id].if ?? '', /always\(\)/, id)
@@ -229,6 +229,83 @@ test('both macOS packages build on Intel runners', async () => {
   }
 })
 
+test('releases publish one macOS disk image that holds both architectures', async (t) => {
+  const job = release.jobs['macos-universal']
+  assert.deepEqual([job.needs].flat(), ['build'])
+  assert.equal(job['runs-on'], 'macos-26-intel')
+  assert.ok([release.jobs.release.needs].flat().includes('macos-universal'))
+  const names = job.steps.map((step) => step.name)
+  const retry = names.indexOf('Retry disk image creation when macOS reports it busy')
+  const image = names.indexOf('Build the universal disk image')
+  assert.ok(retry >= 0 && retry < image, 'the hdiutil retry must be installed first')
+  const download = job.steps.find((step) => step.name === 'Download the macOS apps')
+  for (const target of ['x86_64-apple-darwin', 'aarch64-apple-darwin']) {
+    const upload = release.jobs.build.steps.find(
+      (step) =>
+        step.uses?.startsWith('actions/upload-artifact@') &&
+        step.if === `matrix.target == '${target}'`,
+    )
+    const artifact = upload.with.name.replaceAll('${{ matrix.target }}', target)
+    assert.ok(path.matchesGlob(artifact, download.with.pattern), `${artifact} is not downloaded`)
+    assert.ok(job.steps[image].run.includes(`${download.with.path}/${artifact}/`), artifact)
+    assert.doesNotMatch(upload.with.path, /\.dmg/, 'per-architecture images are not published')
+  }
+
+  // Run the script with stand-ins for the macOS tools. A fake executable's bytes name its
+  // architectures, which the fake lipo reads and joins.
+  const directory = await mkdtemp(path.join(tmpdir(), 'markflowy-universal-'))
+  t.after(() => rm(directory, { recursive: true, force: true }))
+  const bin = path.join(directory, 'bin')
+  const log = path.join(directory, 'calls')
+  await mkdir(bin)
+  const tools = {
+    lipo: `if [ "$1" = -archs ]; then cat "$2"; echo; exit 0; fi
+[ "$1" = -create ] || exit 9
+printf '%s %s' "$(cat "$2")" "$(cat "$3")" > "$5"`,
+    codesign: 'exit 0',
+    hdiutil: 'touch "${@: -1}"',
+  }
+  for (const [tool, body] of Object.entries(tools)) {
+    await writeFile(
+      path.join(bin, tool),
+      `#!/bin/bash\necho "${tool} $*" >> "${log}"\n${body}\n`,
+      { mode: 0o755 },
+    )
+  }
+  const app = async (label, arch) => {
+    const root = path.join(directory, label)
+    const macos = path.join(root, 'Zettel Notes.app', 'Contents', 'MacOS')
+    await mkdir(macos, { recursive: true })
+    await writeFile(path.join(macos, 'zettel-notes'), arch)
+    await writeFile(path.join(root, 'Zettel Notes.app', 'Contents', 'Info.plist'), 'plist')
+    const archive = path.join(directory, `${label}.app.tar.gz`)
+    await execFileAsync('tar', ['-czf', archive, '-C', root, 'Zettel Notes.app'])
+    return archive
+  }
+  const script = fileURLToPath(new URL('./macos-universal-dmg.sh', import.meta.url))
+  const env = { ...process.env, PATH: `${bin}:${process.env.PATH}` }
+  const output = path.join(directory, 'out', 'Zettel Notes_1.2.3_universal.dmg')
+  const x64 = await app('x64', 'x86_64')
+  const arm64 = await app('arm64', 'arm64')
+
+  await execFileAsync('bash', [script, x64, arm64, output], { env })
+  const calls = (await readFile(log, 'utf8')).trim().split('\n')
+  assert.ok(calls.some((call) => call.startsWith('lipo -create ')))
+  assert.ok(calls.some((call) => /^codesign --force --sign - .*Zettel Notes\.app$/.test(call)))
+  const create = calls.find((call) => call.startsWith('hdiutil create '))
+  assert.ok(create?.endsWith(output), create)
+  await readFile(output)
+
+  // An "Apple Silicon" app that is really an Intel build must stop the release.
+  await rm(log)
+  const wrong = await app('wrong', 'x86_64')
+  await assert.rejects(execFileAsync('bash', [script, x64, wrong, output], { env }), (error) => {
+    assert.match(error.stderr, /not arm64/)
+    return true
+  })
+  assert.ok(!(await readFile(log, 'utf8')).includes('hdiutil create'))
+})
+
 test('all release packages retain matching signatures through collection and publication', async (t) => {
   const directory = await mkdtemp(path.join(tmpdir(), 'markflowy-release-artifacts-'))
   t.after(() => rm(directory, { recursive: true, force: true }))
@@ -260,12 +337,10 @@ test('all release packages retain matching signatures through collection and pub
       job: 'build',
       uploadIf: `matrix.target == '${arch}-apple-darwin'`,
       download,
-      fixtures: [
-        [`dmg/Zettel Notes_1.2.3_${filenameArch}.dmg`, `Zettel-Notes_v1.2.3_${filenameArch}.dmg`],
-        ...withSignatures([
-          ['macos/Zettel Notes.app.tar.gz', `Zettel-Notes_${filenameArch}.app.tar.gz`],
-        ]),
-      ],
+      // Per-architecture disk images are not published: see the universal one below.
+      fixtures: withSignatures([
+        ['macos/Zettel Notes.app.tar.gz', `Zettel-Notes_${filenameArch}.app.tar.gz`],
+      ]),
     })),
     {
       build: 'windows',
@@ -337,6 +412,24 @@ test('all release packages retain matching signatures through collection and pub
       await copyFile(path.join(buildDirectory, filename), destination)
     }
   }
+  // The universal disk image comes from its own job, not from a build matrix entry.
+  const universal = release.jobs['macos-universal']
+  const universalUpload = universal.steps.find((step) =>
+    step.uses?.startsWith('actions/upload-artifact@'),
+  )
+  const universalDownload = steps.find(
+    (step) => step.name === 'Download the universal macOS disk image',
+  )
+  assert.equal(universalDownload.with.name, universalUpload.with.name)
+  const universalImage = path.join(
+    directory,
+    universalDownload.with.path,
+    `Zettel Notes_${version}_universal.dmg`,
+  )
+  await mkdir(path.dirname(universalImage), { recursive: true })
+  await writeFile(universalImage, 'fixture:macos-universal')
+  const universalAsset = `Zettel-Notes_v${version}_macOS_universal.dmg`
+
   const rename = steps
     .find((step) => step.name === 'Rename artifacts')
     .run.replaceAll('${{ env.version }}', version)
@@ -346,8 +439,15 @@ test('all release packages retain matching signatures through collection and pub
   const published = await glob(publication.with.files, { cwd: directory })
   assert.deepEqual(
     published.map((filename) => path.relative('artifacts', filename)).sort(),
-    cases.flatMap(({ fixtures }) => fixtures.map(([, destination]) => destination)).sort(),
+    [
+      universalAsset,
+      ...cases.flatMap(({ fixtures }) => fixtures.map(([, destination]) => destination)),
+    ].sort(),
     'Release assets must preserve adjacent package/signature names after renaming',
+  )
+  assert.equal(
+    await readFile(path.join(directory, 'artifacts', universalAsset), 'utf8'),
+    'fixture:macos-universal',
   )
   for (const { build, arch, fixtures } of cases) {
     for (const [source, destination] of fixtures) {
