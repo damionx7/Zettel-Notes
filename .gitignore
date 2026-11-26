@@ -40,3 +40,8 @@ html
 
 # Native E2E diagnostics (may include document contents).
 apps/desktop/e2e/reports/
+
+# Written by the release workflow
+/release-notes/
+/release.txt
+/apps/desktop/release-notes.md

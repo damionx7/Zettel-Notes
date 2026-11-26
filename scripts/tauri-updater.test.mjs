@@ -210,7 +210,7 @@ for (const format of ['mjs', 'cjs']) {
   }
 }
 
-// A tag without an UPDATE_LOG.md section must still produce install.json, with empty notes.
+// A tag without a section in the release-notes log must still produce install.json, with empty notes.
 // Upstream calls process.exit(0) here, which ended the v0.0.5 release before the manifest existed.
 for (const format of ['cjs', 'mjs']) {
   for (const [name, log] of [

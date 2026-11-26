@@ -491,3 +491,18 @@ test('Test CI cancels superseded branch runs, skips document-only pushes and tes
   assert.ok(!files.includes('.github/workflows/translate-check.yml'))
   assert.ok(quality.jobs.test.steps.some((step) => step.run?.includes('yarn translate:check')))
 })
+
+test('release notes list the commits since the previous tag, for both the release and the updater', () => {
+  const steps = release.jobs.release.steps
+  const checkout = steps.findIndex((step) => step.uses?.startsWith('actions/checkout@'))
+  const notes = steps.findIndex((step) => step.name?.startsWith('Write release notes'))
+  const create = steps.findIndex((step) => step.name === 'Create Release')
+  const updater = steps.find((step) => step.name === 'Updater JSON')
+  assert.equal(steps[checkout].with['fetch-depth'], 0, 'notes need the full history and tags')
+  assert.ok(checkout < notes && notes < create)
+  assert.match(steps[notes].run, /git describe --tags --abbrev=0 --match 'v\*'/)
+  assert.match(steps[notes].run, /> apps\/desktop\/release-notes\.md/)
+  assert.equal(steps[create].with.name, 'Zettel Notes v${{ env.version }}')
+  assert.equal(steps[create].with.body_path, 'release.txt')
+  assert.match(updater.run, /yarn updater .*--logfile=release-notes\.md/)
+})

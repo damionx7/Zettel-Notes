@@ -343,6 +343,41 @@ jobs:
       - name: Query version number
         run: echo "version=${GITHUB_REF:11}" >> $GITHUB_ENV
 
+      # Full history, so the release notes can list the commits since the previous tag.
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      # Writes release-notes/body.md (the GitHub release text) and apps/desktop/release-notes.md
+      # (the same list under "## vX.Y.Z", which `yarn updater` puts in install.json; the CLI
+      # only reads a log file inside apps/desktop).
+      - name: Write release notes from the commits since the previous tag
+        run: |
+          mkdir -p release-notes
+          previous=$(git describe --tags --abbrev=0 --match 'v*' "${GITHUB_SHA}^" 2>/dev/null || true)
+          if [ -n "$previous" ]; then
+            range="${previous}..${GITHUB_SHA}"
+            heading="Changes since ${previous}"
+          else
+            range="${GITHUB_SHA}"
+            heading="Changes"
+          fi
+          commits=$(git log --no-merges --pretty=format:'- %s (%h)' "$range")
+          [ -n "$commits" ] || commits="- No code changes since ${previous}."
+          {
+            echo "## Zettel Notes v${version}"
+            echo
+            echo "### ${heading}"
+            echo
+            echo "$commits"
+          } > release-notes/body.md
+          {
+            echo "## v${version}"
+            echo
+            echo "$commits"
+          } > apps/desktop/release-notes.md
+          cat release-notes/body.md
+
       - name: Download x86_64 artifacts
         uses: actions/download-artifact@v7
         with:
@@ -399,7 +434,8 @@ jobs:
           mv_sig "artifacts/offline-installer/nsis/Zettel Notes_${{ env.version }}_x64-setup.exe.sig" "artifacts/Zettel-Notes_v${{ env.version }}_offline_installer_x64-setup.exe.sig"
 
       - run: |
-          cat > release.txt << EOF
+          cp release-notes/body.md release.txt
+          cat >> release.txt << EOF
 
           ---
 
@@ -438,14 +474,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: v${{ env.version }}
-          releaseName: v${{ env.version }}
+          tag_name: v${{ env.version }}
+          name: Zettel Notes v${{ env.version }}
           body_path: release.txt
-          releaseDraft: false
+          draft: false
           prerelease: true
           files: ./artifacts/**/*
-
-      - uses: actions/checkout@v5
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -472,7 +506,7 @@ jobs:
       - name: Updater JSON
         if: env.HAS_SIGNING_KEY == 'true'
         run: |
-          yarn updater --token=${{ secrets.GITHUB_TOKEN }}
+          yarn updater --token=${{ secrets.GITHUB_TOKEN }} --logfile=release-notes.md
           # The updater CLI can exit 0 without writing the manifest; stop here with a clear error.
           test -s apps/desktop/updater/install.json || { echo "::error::yarn updater did not write apps/desktop/updater/install.json"; exit 1; }
 
