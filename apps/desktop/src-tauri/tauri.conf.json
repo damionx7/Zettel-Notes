@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Zettel Notes",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "identifier": "org.eu.thedoc.zettelnotes.desktop",
   "build": {
     "beforeDevCommand": "yarn dev",
