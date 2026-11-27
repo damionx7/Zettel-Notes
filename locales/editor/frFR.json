@@ -19,6 +19,10 @@
       "loading": "Chargement en",
       "accept": "Accepter"
     },
+    "preview": {
+      "fold": "Replier",
+      "unfold": "Déplier"
+    },
     "image": {
       "source": "Source",
       "sourcePlaceholder": "Saisissez une URL ou un chemin d’image",

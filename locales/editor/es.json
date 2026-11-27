@@ -19,6 +19,10 @@
       "loading": "Cargando",
       "accept": "Aceptar"
     },
+    "preview": {
+      "fold": "Plegar",
+      "unfold": "Desplegar"
+    },
     "image": {
       "source": "Origen",
       "sourcePlaceholder": "Introduce una URL o ruta de imagen",

@@ -368,6 +368,74 @@ export const WysiwygThemeWrapper = styled.div
     margin-bottom: 0 !important;
   }
 
+  & .mf-preview-content .mf-preview-fold-hidden {
+    display: none !important;
+  }
+
+  & .mf-preview-content :is(h1, h2, h3, h4, h5, h6, li)[data-mf-fold] {
+    position: relative;
+  }
+
+  & .mf-preview-content .mf-preview-fold-toggle {
+    position: absolute;
+    top: 0;
+    left: -1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25em;
+    height: 1lh;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: inherit;
+    font-size: 1rem;
+    line-height: inherit;
+    cursor: pointer;
+    opacity: 0;
+    user-select: none;
+    transition: opacity 120ms ease;
+  }
+
+  & .mf-preview-content li > .mf-preview-fold-toggle {
+    left: -2.6em;
+  }
+
+  & .mf-preview-content .mf-preview-fold-toggle::before {
+    content: '';
+    width: 0.4em;
+    height: 0.4em;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-20%) rotate(45deg);
+    transition: transform 120ms ease;
+  }
+
+  & .mf-preview-content .mf-preview-fold-toggle[aria-expanded='false']::before {
+    transform: rotate(-45deg);
+  }
+
+  & .mf-preview-content [data-mf-fold]:hover > .mf-preview-fold-toggle,
+  & .mf-preview-content .mf-preview-fold-toggle:focus-visible,
+  & .mf-preview-content .mf-preview-fold-toggle[aria-expanded='false'] {
+    opacity: 0.6;
+  }
+
+  & .mf-preview-content .mf-preview-fold-toggle:hover {
+    opacity: 1;
+  }
+
+  & .mf-preview-content .mf-preview-fold-toggle:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 1px;
+  }
+
+  & .mf-preview-content :is(h1, h2, h3, h4, h5, h6)[data-mf-fold='closed']::after {
+    content: ' …';
+    opacity: 0.5;
+  }
+
   & a:not([href]) {
     color: inherit;
     text-decoration: none;

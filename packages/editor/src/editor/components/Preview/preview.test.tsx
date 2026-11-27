@@ -127,6 +127,25 @@ describe('Preview', () => {
     expect(container.textContent).toBe('dark diagram')
   })
 
+  test('adds fold toggles only when foldable, so export surfaces stay clean', async () => {
+    harness.renderPreview.mockResolvedValue(
+      '<h1>Title</h1><p>Body</p><ul><li><p>a</p><ul><li><p>b</p></li></ul></li></ul>',
+    )
+
+    act(() => root.render(<Preview doc={createDoc()} />))
+    await flushScheduledRender()
+    expect(container.querySelectorAll('.mf-preview-fold-toggle')).toHaveLength(0)
+
+    act(() => root.render(<Preview doc={createDoc()} foldable />))
+    await flushScheduledRender()
+    const toggles = container.querySelectorAll<HTMLButtonElement>('.mf-preview-fold-toggle')
+    expect(toggles).toHaveLength(2)
+    expect(toggles[0].getAttribute('aria-label')).toBe('preview.fold')
+
+    act(() => toggles[0].click())
+    expect(container.querySelector('p')?.classList.contains('mf-preview-fold-hidden')).toBe(true)
+  })
+
   test('does not reprocess documents without Mermaid on theme changes', async () => {
     harness.renderPreview.mockResolvedValue('<p>plain</p>')
 

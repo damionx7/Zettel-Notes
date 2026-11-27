@@ -4,6 +4,8 @@ export interface PreviewMatch {
   range: Range
 }
 
+/** Handled by the editor's preview folding (`mf-preview-reveal` in rme). */
+const PREVIEW_REVEAL_EVENT = 'mf-preview-reveal'
 const HIGHLIGHT_NAME = 'mf-preview-find'
 const ACTIVE_HIGHLIGHT_NAME = 'mf-preview-find-active'
 
@@ -75,6 +77,9 @@ export const paintPreviewMatches = (matches: PreviewMatch[], activeIndex: number
 
 export const scrollPreviewMatchIntoView = (match: PreviewMatch | undefined): void => {
   const element = match?.range.startContainer.parentElement
+  // A match under a folded heading or list item is hidden. The preview unfolds it on
+  // this event; an event keeps the editor engine out of this module's import graph.
+  element?.dispatchEvent(new Event(PREVIEW_REVEAL_EVENT, { bubbles: true }))
   element?.scrollIntoView({ block: 'center' })
 }
 
