@@ -613,9 +613,50 @@ test('release notes list the commits since the previous tag, for both the releas
   const updater = steps.find((step) => step.name === 'Updater JSON')
   assert.equal(steps[checkout].with['fetch-depth'], 0, 'notes need the full history and tags')
   assert.ok(checkout < notes && notes < create)
-  assert.match(steps[notes].run, /git describe --tags --abbrev=0 --match 'v\*'/)
+  assert.match(steps[notes].run, /git tag --merged "\$\{GITHUB_SHA\}\^" --list 'v\*'/)
   assert.match(steps[notes].run, /> apps\/desktop\/release-notes\.md/)
   assert.equal(steps[create].with.name, 'Zettel Notes v${{ env.version }}')
   assert.equal(steps[create].with.body_path, 'release.txt')
   assert.match(updater.run, /yarn updater .*--logfile=release-notes\.md/)
+})
+
+// The updater CLI used to take the first v* tag GitHub listed, so a stray v0.1.0 tag made the
+// v0.0.12 release read v0.1.0's empty release and fail on win64. It must get this run's tag.
+test('the updater manifest is built from the tag being released', () => {
+  const updater = release.jobs.release.steps.find((step) => step.name === 'Updater JSON')
+  assert.match(updater.run, /yarn updater .*--tag="\$GITHUB_REF_NAME"/)
+})
+
+// Run the notes step in a scratch repository. A stray higher tag in the history (v0.1.0 before
+// v0.0.12) must not become "the previous release"; the highest older tag must.
+test('release notes start from the highest older tag, skipping stray higher tags', async () => {
+  const step = release.jobs.release.steps.find((s) => s.name?.startsWith('Write release notes'))
+  const directory = await mkdtemp(path.join(tmpdir(), 'release-notes-'))
+  try {
+    const git = (...args) => execFileAsync('git', args, { cwd: directory })
+    await git('init', '-q')
+    await git('config', 'user.email', 'ci@example.test')
+    await git('config', 'user.name', 'CI')
+    const commit = async (message, tag) => {
+      await git('commit', '-q', '--allow-empty', '-m', message)
+      if (tag) await git('tag', tag)
+    }
+    await commit('first', 'v0.0.9')
+    await commit('after v0.0.9')
+    await commit('stray', 'v0.1.0')
+    await commit('fix the thing', 'v0.0.12')
+    await mkdir(path.join(directory, 'apps/desktop'), { recursive: true })
+    const sha = (await git('rev-parse', 'HEAD')).stdout.trim()
+    await execFileAsync('bash', ['-e', '-c', step.run], {
+      cwd: directory,
+      env: { ...process.env, GITHUB_SHA: sha, GITHUB_REF_NAME: 'v0.0.12', version: '0.0.12' },
+    })
+    const body = await readFile(path.join(directory, 'release-notes/body.md'), 'utf8')
+    assert.match(body, /### Changes since v0\.0\.9/)
+    assert.match(body, /- fix the thing/)
+    assert.match(body, /- after v0\.0\.9/)
+    assert.doesNotMatch(body, /- first/)
+  } finally {
+    await rm(directory, { recursive: true, force: true })
+  }
 })

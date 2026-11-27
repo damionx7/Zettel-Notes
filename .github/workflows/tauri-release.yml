@@ -409,7 +409,16 @@ jobs:
       - name: Write release notes from the commits since the previous tag
         run: |
           mkdir -p release-notes
-          previous=$(git describe --tags --abbrev=0 --match 'v*' "${GITHUB_SHA}^" 2>/dev/null || true)
+          # The previous release is the highest v* tag in this commit's history that is older than
+          # this tag. `git describe` took the nearest tag instead, so a stray v0.1.0 made the v0.0.12
+          # notes read "Changes since v0.1.0".
+          previous=""
+          for candidate in $(git tag --merged "${GITHUB_SHA}^" --list 'v*' --sort=-v:refname 2>/dev/null); do
+            if [ "$candidate" != "$GITHUB_REF_NAME" ] && [ "$(printf '%s\n' "$candidate" "$GITHUB_REF_NAME" | sort -V | head -n 1)" = "$candidate" ]; then
+              previous="$candidate"
+              break
+            fi
+          done
           if [ -n "$previous" ]; then
             range="${previous}..${GITHUB_SHA}"
             heading="Changes since ${previous}"
@@ -571,7 +580,9 @@ jobs:
       - name: Updater JSON
         if: env.HAS_SIGNING_KEY == 'true'
         run: |
-          yarn updater --token=${{ secrets.GITHUB_TOKEN }} --logfile=release-notes.md
+          # --tag: build install.json from this run's release. Without it the CLI read the first
+          # v* tag GitHub listed, so a stray v0.1.0 tag broke the v0.0.12 release.
+          yarn updater --token=${{ secrets.GITHUB_TOKEN }} --tag="$GITHUB_REF_NAME" --logfile=release-notes.md
           # The updater CLI can exit 0 without writing the manifest; stop here with a clear error.
           test -s apps/desktop/updater/install.json || { echo "::error::yarn updater did not write apps/desktop/updater/install.json"; exit 1; }
 
