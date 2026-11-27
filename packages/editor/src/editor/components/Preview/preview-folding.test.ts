@@ -4,6 +4,7 @@ import {
   installPreviewFolding,
   PREVIEW_FOLD_HIDDEN_CLASS,
   PREVIEW_FOLD_TOGGLE_CLASS,
+  PREVIEW_REVEAL_EVENT,
   revealInPreviewFolds,
 } from './preview-folding'
 
@@ -143,6 +144,17 @@ describe('preview folding', () => {
     expect(toggleOf(container.querySelector('#item'))!.getAttribute('aria-label')).toBe('Fold')
     // Unrelated folds stay as they were.
     expect(isHidden(container.querySelector('#c-text'))).toBe(true)
+  })
+
+  test('the reveal event from inside the preview unfolds the target', () => {
+    const container = render('<h1 id="a">A</h1><p id="target">needle</p>')
+    installPreviewFolding(container, labels)
+    toggleOf(container.querySelector('#a'))!.click()
+
+    const target = container.querySelector('#target')!
+    target.dispatchEvent(new Event(PREVIEW_REVEAL_EVENT, { bubbles: true }))
+
+    expect(isHidden(target)).toBe(false)
   })
 
   test('applying folds with nothing folded hides nothing', () => {

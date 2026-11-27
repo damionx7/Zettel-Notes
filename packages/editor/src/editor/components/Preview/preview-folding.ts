@@ -14,6 +14,11 @@ export const PREVIEW_FOLD_TOGGLE_CLASS = 'mf-preview-fold-toggle'
 export const PREVIEW_FOLD_HIDDEN_CLASS = 'mf-preview-fold-hidden'
 const FOLD_ATTR = 'data-mf-fold'
 const CONTENT_SELECTOR = '.mf-preview-content'
+/**
+ * Dispatched (bubbling) from an element inside the preview to unfold whatever
+ * hides it. The desktop find bar uses it without importing the editor engine.
+ */
+export const PREVIEW_REVEAL_EVENT = 'mf-preview-reveal'
 
 export interface PreviewFoldLabels {
   fold: string
@@ -123,10 +128,13 @@ export function installPreviewFolding(
     syncToggle(owner)
     applyPreviewFolds(container)
   }
+  const handleReveal = (event: Event) => revealInPreviewFolds(event.target as Node)
   container.addEventListener('click', handleClick)
+  container.addEventListener(PREVIEW_REVEAL_EVENT, handleReveal)
 
   return () => {
     container.removeEventListener('click', handleClick)
+    container.removeEventListener(PREVIEW_REVEAL_EVENT, handleReveal)
     container.querySelectorAll(`.${PREVIEW_FOLD_TOGGLE_CLASS}`).forEach((toggle) => toggle.remove())
     container
       .querySelectorAll(`[${FOLD_ATTR}]`)
