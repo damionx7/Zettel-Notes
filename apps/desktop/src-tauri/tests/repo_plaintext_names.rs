@@ -3,9 +3,20 @@
 //! "keep file names readable" choice through.
 
 use std::fs;
+use std::sync::{Mutex, MutexGuard};
+
+/// The app keeps one unlocked repository per process, and the test harness runs these tests on
+/// parallel threads, so without this one test's `create` or `lock_volume` swaps the other's
+/// repository out from under it.
+static SERIAL: Mutex<()> = Mutex::new(());
+
+fn one_repository_at_a_time() -> MutexGuard<'static, ()> {
+    SERIAL.lock().unwrap_or_else(|poisoned| poisoned.into_inner())
+}
 
 #[test]
 fn repository_created_with_plaintext_names_has_readable_names() {
+    let _serial = one_repository_at_a_time();
     let temporary = tempfile::tempdir().expect("temp dir");
     let root = temporary.path().join("plain");
     fs::create_dir_all(&root).expect("create root");
@@ -31,6 +42,7 @@ fn repository_created_with_plaintext_names_has_readable_names() {
 
 #[test]
 fn repository_created_with_encrypted_names_stays_encrypted() {
+    let _serial = one_repository_at_a_time();
     let temporary = tempfile::tempdir().expect("temp dir");
     let root = temporary.path().join("sealed");
     fs::create_dir_all(&root).expect("create root");
