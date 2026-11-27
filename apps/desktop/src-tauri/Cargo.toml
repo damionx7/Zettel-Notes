@@ -1,6 +1,6 @@
 [package]
 name = "zettel-notes"
-version = "0.0.10"
+version = "0.0.12"
 description = "A Markdown Editor App"
 authors = ["drl990114", "zekabra", "damionx7"]
 license = "AGPL-3.0"
