@@ -1,55 +1,55 @@
 {
-  "version": "v0.0.9",
-  "notes": "- release: find the macOS app archives where upload-artifact puts them (c25ce6cc)",
-  "pub_date": "2026-11-26T17:16:52.298Z",
+  "version": "v0.0.13",
+  "notes": "- chore: release v0.0.13 (d90a5123)\n- fix(release): start release notes from the highest older tag (9edfc621)\n- fix(release): build install.json from the tag being released (f325fb71)",
+  "pub_date": "2026-11-27T18:15:27.286Z",
   "platforms": {
     "win64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WWQ3UEFIWURaUEo0TXBlU1l0dnArM3l6MXhtVFNjMndNUEptV2dHdkFoWkxodmxwcitaSjAvYlEvTm5jaEY1RGIxdTEwV2FGUmtkNEJVV1ZNRzVhUlE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NzEyNDgxCWZpbGU6WmV0dGVsIE5vdGVzXzAuMC45X3g2NF9lbi1VUy5tc2kJdmVyc2lvbjowLjAuOQpFb2I1eFVkZjRpVDZsTjEyT1FyNmwreGQ3Q09CZGs0Y2VHcUlYZmlNSDJWUnp6Ui8raUdra3d0RmgwV2lGWXVWTnVQcHhPbS9KTUhiVGN0S1lPZUxEZz09Cg==",
-      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.9/Zettel-Notes_v0.0.9_x64.msi"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WWRwci9WVVlLMmR1UHBHa29kdGRlNU81S1g0OC9hanRYbTBpbGZQS2FHRmpZd1hMZzRCQTc4TjZMVFFvVXozaWU0elBrcWg5WkZYZmFXM0xMMlUzaUE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1ODAyMDM5CWZpbGU6WmV0dGVsIE5vdGVzXzAuMC4xM194NjRfZW4tVVMubXNpCXZlcnNpb246MC4wLjEzClJxU3hTSk80dXVzcWFQOUlwK2hQdDFzaU9qTTQyelV0eHQ0a1hFdkljMmJKdFc5dWF4anhuT2pFajllemw0aEliTzJLa3MyRUt5THdiMzIzWDB0ZEJnPT0K",
+      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.13/Zettel-Notes_v0.0.13_x64.msi"
     },
     "linux": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVJ1bWQ3dkU0RnBURCt0SEJvbzZXSkxFNVdFa001UWhOekt6ZnY2UHR1YVl0NWVYYVhPWGFNTFA4TE16ZDB4eVNaa1JxMFNqbzRZZldPWm1zMUNrbVFNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NzEyMzkyCWZpbGU6WmV0dGVsIE5vdGVzXzAuMC45X2FtZDY0LkFwcEltYWdlCXZlcnNpb246MC4wLjkKZW9teDRYQm5vbERkRG1HZWZrNTRoMGsrQ0JXU25jemUwTzh0M054RUxEZEx4SjdXaU1VZ2FIa201alhvTWZNYXdDT3JoTFJXb3cxK20zaGZPQXMyQ2c9PQo=",
-      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.9/Zettel-Notes_v0.0.9_amd64.AppImage"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVE4OGxUVHU5Wm5ZeDNTZDc2UVh1R1lzTzVGK3BJTi82OVByRHprYkFFVWEwSElFVDBRMXlnZDErWnIyU1N5YWNpMFY5em5yY0NQY01OL3VoNnp5QXcwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1ODAxNDQ1CWZpbGU6WmV0dGVsIE5vdGVzXzAuMC4xM19hbWQ2NC5BcHBJbWFnZQl2ZXJzaW9uOjAuMC4xMwowQTBrdU5Bc2x1S1lJOUJWNXJ1QzdaenV6bDZkVk4vSDVDL3BZWW1XQUFzSDlGZmZ2Rnd4bmRKVHE4SHZxWWplc1VYTkhrQ3FIdGtMV2R3a25NU1pCdz09Cg==",
+      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.13/Zettel-Notes_v0.0.13_amd64.AppImage"
     },
     "darwin": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WWI2QVBzbEJLQW1iWWRDVHR5RnA4Vmdzenkxb1ZCTEQ2c2paNEtMNG5GZjRMUE0vVzNjRUFNKzlYejk4bE5hc1pXSVhQV0o0SmNycllWUVhhWms0VXdRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NzEyNjQ5CWZpbGU6WmV0dGVsIE5vdGVzLmFwcC50YXIuZ3oJdmVyc2lvbjowLjAuOQoyYjArTTJzc2k3LzhRUXd2UVIweHdJSzVvbzlld3NPK21YSDVFTWFtaFNPanBuLzdDbUtKczAvenhDZVZ1UWoxMFFYbmVjN1l4ODRVZ09DREU5eVpBZz09Cg==",
-      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.9/Zettel-Notes_x64.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVNDOHNMbjN3MmJldDV2My82dzU3N1g2MGdONS9oWVIwc0xzbERuNHdjMm1BMnVCR242YjUwZUN3MGY0aFN6UlJDT2wrcm03Wk9ZVHZnSmN6ekVqU2dnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1ODAyMjQxCWZpbGU6WmV0dGVsIE5vdGVzLmFwcC50YXIuZ3oJdmVyc2lvbjowLjAuMTMKVDFkUUh3amVVdEY1U3h3cDlZcEpWTy9EM3VtREVhUGR4akttc1BkVUhNdVJKT1U1MFQ4L2JrejcxK2NsUHdZWDEwbGJIK0JPSC9yQ2J5cC84QUFtQUE9PQo=",
+      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.13/Zettel-Notes_x64.app.tar.gz"
     },
     "darwin-aarch64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVYvN2xwc1ZrOVVDQmVuL0wydE9NNkhzTElXS1p0d0VHd0MveGlQeVpvaWl1QjltRlJ4MlNPTmlQbUhLVFR5VVJDSnNBYjBjTkQ3eUY2Q0VXeXlUYndRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NzEzMTA3CWZpbGU6WmV0dGVsIE5vdGVzLmFwcC50YXIuZ3oJdmVyc2lvbjowLjAuOQpVb0ttZmRxaVIrQ2ZCMnJwTGZzRFZwWSsvajkrR0haSE56c0g3cVpQL2V1MlVGTFdwNmtPL2JvSkliVEQrUUw5c28rWlJhU2xnT0Z3c0hxUzBQZ3BDUT09Cg==",
-      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.9/Zettel-Notes_aarch64.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVVmVlhXaEU4akp2TXg4a3JHY012TXhaamdLV1dhZm82RDBrMGJZOFJIZW1aR1VqMTZvNUp3L1dSOEFXUkl5Wk9lNWtwcmxCMFpmYWFpOEQrNHNBelFzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1ODAzMDIxCWZpbGU6WmV0dGVsIE5vdGVzLmFwcC50YXIuZ3oJdmVyc2lvbjowLjAuMTMKajNDNko1WVYzbTNwRFBMVi9MU3JnUVBRK2RJZXBUWlhjb2hiTXB4cEMyQzBZYU9VdklmdUpHUVY1YW5yOTlJaExwM2I4VDBydFZnUEZob2hyL0IyQ3c9PQo=",
+      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.13/Zettel-Notes_aarch64.app.tar.gz"
     },
     "darwin-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WWI2QVBzbEJLQW1iWWRDVHR5RnA4Vmdzenkxb1ZCTEQ2c2paNEtMNG5GZjRMUE0vVzNjRUFNKzlYejk4bE5hc1pXSVhQV0o0SmNycllWUVhhWms0VXdRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NzEyNjQ5CWZpbGU6WmV0dGVsIE5vdGVzLmFwcC50YXIuZ3oJdmVyc2lvbjowLjAuOQoyYjArTTJzc2k3LzhRUXd2UVIweHdJSzVvbzlld3NPK21YSDVFTWFtaFNPanBuLzdDbUtKczAvenhDZVZ1UWoxMFFYbmVjN1l4ODRVZ09DREU5eVpBZz09Cg==",
-      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.9/Zettel-Notes_x64.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVNDOHNMbjN3MmJldDV2My82dzU3N1g2MGdONS9oWVIwc0xzbERuNHdjMm1BMnVCR242YjUwZUN3MGY0aFN6UlJDT2wrcm03Wk9ZVHZnSmN6ekVqU2dnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1ODAyMjQxCWZpbGU6WmV0dGVsIE5vdGVzLmFwcC50YXIuZ3oJdmVyc2lvbjowLjAuMTMKVDFkUUh3amVVdEY1U3h3cDlZcEpWTy9EM3VtREVhUGR4akttc1BkVUhNdVJKT1U1MFQ4L2JrejcxK2NsUHdZWDEwbGJIK0JPSC9yQ2J5cC84QUFtQUE9PQo=",
+      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.13/Zettel-Notes_x64.app.tar.gz"
     },
     "linux-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVJ1bWQ3dkU0RnBURCt0SEJvbzZXSkxFNVdFa001UWhOekt6ZnY2UHR1YVl0NWVYYVhPWGFNTFA4TE16ZDB4eVNaa1JxMFNqbzRZZldPWm1zMUNrbVFNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NzEyMzkyCWZpbGU6WmV0dGVsIE5vdGVzXzAuMC45X2FtZDY0LkFwcEltYWdlCXZlcnNpb246MC4wLjkKZW9teDRYQm5vbERkRG1HZWZrNTRoMGsrQ0JXU25jemUwTzh0M054RUxEZEx4SjdXaU1VZ2FIa201alhvTWZNYXdDT3JoTFJXb3cxK20zaGZPQXMyQ2c9PQo=",
-      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.9/Zettel-Notes_v0.0.9_amd64.AppImage"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVE4OGxUVHU5Wm5ZeDNTZDc2UVh1R1lzTzVGK3BJTi82OVByRHprYkFFVWEwSElFVDBRMXlnZDErWnIyU1N5YWNpMFY5em5yY0NQY01OL3VoNnp5QXcwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1ODAxNDQ1CWZpbGU6WmV0dGVsIE5vdGVzXzAuMC4xM19hbWQ2NC5BcHBJbWFnZQl2ZXJzaW9uOjAuMC4xMwowQTBrdU5Bc2x1S1lJOUJWNXJ1QzdaenV6bDZkVk4vSDVDL3BZWW1XQUFzSDlGZmZ2Rnd4bmRKVHE4SHZxWWplc1VYTkhrQ3FIdGtMV2R3a25NU1pCdz09Cg==",
+      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.13/Zettel-Notes_v0.0.13_amd64.AppImage"
     },
     "linux-x86_64-appimage": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVJ1bWQ3dkU0RnBURCt0SEJvbzZXSkxFNVdFa001UWhOekt6ZnY2UHR1YVl0NWVYYVhPWGFNTFA4TE16ZDB4eVNaa1JxMFNqbzRZZldPWm1zMUNrbVFNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NzEyMzkyCWZpbGU6WmV0dGVsIE5vdGVzXzAuMC45X2FtZDY0LkFwcEltYWdlCXZlcnNpb246MC4wLjkKZW9teDRYQm5vbERkRG1HZWZrNTRoMGsrQ0JXU25jemUwTzh0M054RUxEZEx4SjdXaU1VZ2FIa201alhvTWZNYXdDT3JoTFJXb3cxK20zaGZPQXMyQ2c9PQo=",
-      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.9/Zettel-Notes_v0.0.9_amd64.AppImage"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVE4OGxUVHU5Wm5ZeDNTZDc2UVh1R1lzTzVGK3BJTi82OVByRHprYkFFVWEwSElFVDBRMXlnZDErWnIyU1N5YWNpMFY5em5yY0NQY01OL3VoNnp5QXcwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1ODAxNDQ1CWZpbGU6WmV0dGVsIE5vdGVzXzAuMC4xM19hbWQ2NC5BcHBJbWFnZQl2ZXJzaW9uOjAuMC4xMwowQTBrdU5Bc2x1S1lJOUJWNXJ1QzdaenV6bDZkVk4vSDVDL3BZWW1XQUFzSDlGZmZ2Rnd4bmRKVHE4SHZxWWplc1VYTkhrQ3FIdGtMV2R3a25NU1pCdz09Cg==",
+      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.13/Zettel-Notes_v0.0.13_amd64.AppImage"
     },
     "linux-x86_64-deb": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WWJOZWNiODRya1c1bXRyTVkvWFZ0ZGhrUXF5NHR1emlTSGJVNnRXNHkzYUVwbW1JSnZobkN2N0FPN0ErRi9Rb0ozeC9OaXhuTllLMG1BTUE0d1h6aEFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NzEyMzkyCWZpbGU6WmV0dGVsIE5vdGVzXzAuMC45X2FtZDY0LmRlYgl2ZXJzaW9uOjAuMC45CjY1QkhSYVZ6MjBmRUFlcG1Hc1kxbEQzOXVPZElZcFMyZ0R2MGtGOW9MeE9aUWMrQjM5M1JMNjRrV3ZXT1dKMnYxTEl1bno5aUVsOTRIUTQ5bm9QdUNnPT0K",
-      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.9/Zettel-Notes_v0.0.9_amd64.deb"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVoyWVhuLzJOZExFU0JJZ3UxWDdHelE4YXkxVmd0SzBWWXhXR0FjTTVYNDc0aTIxZUMwYXVVYzVMc0ZNQnBlcVdrSURLei9yVCtTN2pmTktjUEJ1VVFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1ODAxNDQ1CWZpbGU6WmV0dGVsIE5vdGVzXzAuMC4xM19hbWQ2NC5kZWIJdmVyc2lvbjowLjAuMTMKSnN6TlpNZjg3U1k1QVl3QWZjdy9MVllZTkFLU1JZdFVSQVdTYzd3WHRERDdPekFGN0ZhQzk1czZVbm9JOWN3QzFDMSs0RkloSnFnZlZIZ2FKekN0RGc9PQo=",
+      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.13/Zettel-Notes_v0.0.13_amd64.deb"
     },
     "linux-x86_64-rpm": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVNja2NraytPcm5wUmRYQUplb29lNlBSN1VYR1FJNmt4NFN6QW9qanhxV2Q4YXJaektpWmgxbzlUb0FnN1N5U2VoVVQxK1ZLUkY5cFhZa1lYUXRUQ1FJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NzEyMzkyCWZpbGU6WmV0dGVsIE5vdGVzLTAuMC45LTEueDg2XzY0LnJwbQl2ZXJzaW9uOjAuMC45ClFJQWNURTg0V0FVVkluZHBOYUZqU2dZYU1KZXFCanFHK3I2ZkdZWFRjUTdMNmZLL01nMkE3MGhnbks2OWRhUm9aTDlycG1HWUZ3YUhGbk9XbFZBNkJRPT0K",
-      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.9/Zettel-Notes-0.0.9-1.x86_64.rpm"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVQ0aGE5Y0hDMG1LQWcxalZ2bGNlOS9BQUE0RVZvcnNhZjdJdk4vU0pvUi9GVlNQWjB3c3g3bEFvN2J2UGtuc2dXT05IcDB1Z3BTaUhROGZUMWZReFFNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1ODAxNDQ1CWZpbGU6WmV0dGVsIE5vdGVzLTAuMC4xMy0xLng4Nl82NC5ycG0JdmVyc2lvbjowLjAuMTMKVkswcXdpdWNpdDJsZmNnQnBwTDdCRzh2Um45ZnQzSzEvNW1YaXFsckFIRTRQbnoxcVNZSVNZWDJKNTViTzFpa0x5ZDg3QnRmT1AwNkVRK2hyRDUrRGc9PQo=",
+      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.13/Zettel-Notes-0.0.13-1.x86_64.rpm"
     },
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WWQ3UEFIWURaUEo0TXBlU1l0dnArM3l6MXhtVFNjMndNUEptV2dHdkFoWkxodmxwcitaSjAvYlEvTm5jaEY1RGIxdTEwV2FGUmtkNEJVV1ZNRzVhUlE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NzEyNDgxCWZpbGU6WmV0dGVsIE5vdGVzXzAuMC45X3g2NF9lbi1VUy5tc2kJdmVyc2lvbjowLjAuOQpFb2I1eFVkZjRpVDZsTjEyT1FyNmwreGQ3Q09CZGs0Y2VHcUlYZmlNSDJWUnp6Ui8raUdra3d0RmgwV2lGWXVWTnVQcHhPbS9KTUhiVGN0S1lPZUxEZz09Cg==",
-      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.9/Zettel-Notes_v0.0.9_x64.msi"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WWRwci9WVVlLMmR1UHBHa29kdGRlNU81S1g0OC9hanRYbTBpbGZQS2FHRmpZd1hMZzRCQTc4TjZMVFFvVXozaWU0elBrcWg5WkZYZmFXM0xMMlUzaUE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1ODAyMDM5CWZpbGU6WmV0dGVsIE5vdGVzXzAuMC4xM194NjRfZW4tVVMubXNpCXZlcnNpb246MC4wLjEzClJxU3hTSk80dXVzcWFQOUlwK2hQdDFzaU9qTTQyelV0eHQ0a1hFdkljMmJKdFc5dWF4anhuT2pFajllemw0aEliTzJLa3MyRUt5THdiMzIzWDB0ZEJnPT0K",
+      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.13/Zettel-Notes_v0.0.13_x64.msi"
     },
     "windows-x86_64-msi": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WWQ3UEFIWURaUEo0TXBlU1l0dnArM3l6MXhtVFNjMndNUEptV2dHdkFoWkxodmxwcitaSjAvYlEvTm5jaEY1RGIxdTEwV2FGUmtkNEJVV1ZNRzVhUlE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NzEyNDgxCWZpbGU6WmV0dGVsIE5vdGVzXzAuMC45X3g2NF9lbi1VUy5tc2kJdmVyc2lvbjowLjAuOQpFb2I1eFVkZjRpVDZsTjEyT1FyNmwreGQ3Q09CZGs0Y2VHcUlYZmlNSDJWUnp6Ui8raUdra3d0RmgwV2lGWXVWTnVQcHhPbS9KTUhiVGN0S1lPZUxEZz09Cg==",
-      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.9/Zettel-Notes_v0.0.9_x64.msi"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WWRwci9WVVlLMmR1UHBHa29kdGRlNU81S1g0OC9hanRYbTBpbGZQS2FHRmpZd1hMZzRCQTc4TjZMVFFvVXozaWU0elBrcWg5WkZYZmFXM0xMMlUzaUE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1ODAyMDM5CWZpbGU6WmV0dGVsIE5vdGVzXzAuMC4xM194NjRfZW4tVVMubXNpCXZlcnNpb246MC4wLjEzClJxU3hTSk80dXVzcWFQOUlwK2hQdDFzaU9qTTQyelV0eHQ0a1hFdkljMmJKdFc5dWF4anhuT2pFajllemw0aEliTzJLa3MyRUt5THdiMzIzWDB0ZEJnPT0K",
+      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.13/Zettel-Notes_v0.0.13_x64.msi"
     },
     "windows-x86_64-nsis": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WWFCRTFsc0ZQMHpRSHdEVGNwcE1FNkw3NytRSjZLOE02ZVN4ckw1WURTM2tzelh6aE05dmJKZHplWGpBeTBPQi96c2pwK3NNTmdGbTkvMitEZmtRQ0FnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NzEyNDgxCWZpbGU6WmV0dGVsIE5vdGVzXzAuMC45X3g2NC1zZXR1cC5leGUJdmVyc2lvbjowLjAuOQpucFVwRGZVSmdTQXFsYXZFSDh0ZEs4NTBxZU50cExmc1gwOGI3ZmFpSzRmeTBSV1JVNGdWZGYxRDRhbWFkdUFWUHlaVFdSRzh0THVra1dwZXBQU0dDUT09Cg==",
-      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.9/Zettel-Notes_v0.0.9_x64-setup.exe"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVURElYejcrSEE3WVgvSWpJYnNzNDIvMnRoSmcxZkEza3RzcmlTT0N1Nk5PWU9DT1lKc1NFNTN1TnBSa1dIeExncHNydXMxU3ZxN3ZUNXg4M2krWXJMdHNhNlFFQTFvb2dVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1ODAyMDM5CWZpbGU6WmV0dGVsIE5vdGVzXzAuMC4xM194NjQtc2V0dXAuZXhlCXZlcnNpb246MC4wLjEzClJqTVVVRmN1Y0Y2TXJ5c3AzZ2o2QTd1anBFZEsyNml4Zkt5T1VIZm42ZEpibkpZak1hbmxNWmFvK0tFcTkybFVBbi91eTVUZXdFa0c4WEJyeTlyNkNBPT0K",
+      "url": "https://github.com/damionx7/Zettel-Notes/releases/download/v0.0.13/Zettel-Notes_v0.0.13_x64-setup.exe"
     }
   }
 }
