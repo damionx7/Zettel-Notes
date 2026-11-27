@@ -45,7 +45,7 @@ const signature = (name) => Buffer.from(`signature for ${name}`).toString('base6
 
 // Run the installed postinstall-patched modules, mocking only external IO.
 // Both distributed entry points must generate the same manifest.
-async function updaterHarness(format, releaseAssets = assets, fetchSignature) {
+async function updaterHarness(format, releaseAssets = assets, fetchSignature, argv = { token: 'fixture-token', tag: 'v1.2.0' }) {
   const source = await readFile(
     new URL(`../node_modules/@tauri-release/cli/dist/updater.${format}`, import.meta.url),
     'utf8',
@@ -61,14 +61,18 @@ async function updaterHarness(format, releaseAssets = assets, fetchSignature) {
     getOctokit: () => ({
       rest: {
         repos: {
-          listTags: async () => ({ data: [{ name: 'v1.2.0' }] }),
-          getReleaseByTag: async () => ({ data: { assets: releaseAssets } }),
+          // A higher stray tag listed first must not be picked: the release names its own tag.
+          listTags: async () => ({ data: [{ name: 'v9.9.9' }, { name: 'v1.2.0' }] }),
+          getReleaseByTag: async ({ tag }) => {
+            assert.equal(tag, argv.tag)
+            return { data: { assets: releaseAssets } }
+          },
         },
       },
     }),
   }
   const utils = {
-    $argv: () => ({ token: 'fixture-token' }),
+    $argv: () => argv,
     $: Object.fromEntries(['red', 'green', 'yellow', 'blue', 'gray'].map((key) => [key, String])),
     UPDATER_JSON_PATH: '/fixture/install.json',
     ROOT_PATH: '/fixture',
@@ -165,6 +169,18 @@ for (const format of ['mjs', 'cjs']) {
       assert.equal(writes[0].data.platforms[target].url, releaseUrl + name, target)
       assert.equal(writes[0].data.platforms[target].signature, signature(name), target)
     }
+  })
+
+  test(`${format}: the manifest uses the --tag release, not the first listed tag`, async () => {
+    const { run, writes } = await updaterHarness(format)
+    await run()
+    assert.equal(writes[0].data.version, 'v1.2.0')
+  })
+
+  test(`${format}: a missing --tag prevents manifest publication`, async () => {
+    const { run, writes } = await updaterHarness(format, assets, undefined, { token: 'fixture-token' })
+    await assert.rejects(run, /--tag=vX\.Y\.Z is required/)
+    assert.deepEqual(writes, [])
   })
 
   test(`${format}: ARM signature is fetched once and cannot overwrite the archive URL on retry`, async () => {

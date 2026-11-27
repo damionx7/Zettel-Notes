@@ -1,8 +1,78 @@
+diff --git a/node_modules/@tauri-release/cli/dist/updatelog.cjs b/node_modules/@tauri-release/cli/dist/updatelog.cjs
+index 1597cf7..273e642 100644
+--- a/node_modules/@tauri-release/cli/dist/updatelog.cjs
++++ b/node_modules/@tauri-release/cli/dist/updatelog.cjs
+@@ -15,7 +15,8 @@ function updatelog(tag) {
+   }
+   if (!fs.existsSync(filePath) && !fs.existsSync(utils.UPDATE_LOG_PATH)) {
+     console.log(utils.$.red("[\u{1F4A2} updater]"), `Could not found ${utils.$.yellow("UPDATE_LOG.md")}`);
+-    process.exit(0);
++    // Zettel Notes: release without notes instead of quitting before install.json is written.
++    return { filename: "", content: "" };
+   }
+   let _tag;
+   const tagMap = {};
+@@ -41,7 +42,8 @@ function updatelog(tag) {
+       utils.$.yellow(utils.relativePath(filePath)),
+       `Tag ${tag} does not exist.`
+     );
+-    process.exit(0);
++    // Zettel Notes: release without notes instead of quitting before install.json is written.
++    return { filename: utils.relativePath(filePath), content: "" };
+   }
+   return {
+     filename: utils.relativePath(filePath),
+diff --git a/node_modules/@tauri-release/cli/dist/updatelog.mjs b/node_modules/@tauri-release/cli/dist/updatelog.mjs
+index e6f1c29..b79a64d 100644
+--- a/node_modules/@tauri-release/cli/dist/updatelog.mjs
++++ b/node_modules/@tauri-release/cli/dist/updatelog.mjs
+@@ -13,7 +13,8 @@ function updatelog(tag) {
+   }
+   if (!fs.existsSync(filePath) && !fs.existsSync(UPDATE_LOG_PATH)) {
+     console.log($.red("[\u{1F4A2} updater]"), `Could not found ${$.yellow("UPDATE_LOG.md")}`);
+-    process.exit(0);
++    // Zettel Notes: release without notes instead of quitting before install.json is written.
++    return { filename: "", content: "" };
+   }
+   let _tag;
+   const tagMap = {};
+@@ -39,7 +40,8 @@ function updatelog(tag) {
+       $.yellow(relativePath(filePath)),
+       `Tag ${tag} does not exist.`
+     );
+-    process.exit(0);
++    // Zettel Notes: release without notes instead of quitting before install.json is written.
++    return { filename: relativePath(filePath), content: "" };
+   }
+   return {
+     filename: relativePath(filePath),
 diff --git a/node_modules/@tauri-release/cli/dist/updater.cjs b/node_modules/@tauri-release/cli/dist/updater.cjs
-index 8bc9ce9..7be94da 100644
+index 8bc9ce9..7eda107 100644
 --- a/node_modules/@tauri-release/cli/dist/updater.cjs
 +++ b/node_modules/@tauri-release/cli/dist/updater.cjs
-@@ -63,43 +63,38 @@
+@@ -39,14 +39,13 @@ async function updater() {
+   }
+   const options = { owner, repo };
+   const github$1 = github.getOctokit(argv.token);
+-  const { data: tags } = await github$1.rest.repos.listTags({
+-    ...options,
+-    per_page: 10,
+-    page: 1
+-  });
+-  const tag = tags.find((t) => t.name.startsWith("v"));
+-  if (!tag)
+-    return;
++  // Zettel Notes: use the tag this run releases (--tag). Upstream took the first v* tag that
++  // listTags returned, so a stray higher tag (v0.1.0) made the v0.0.12 release read the wrong release.
++  const tagName = argv.tag == null ? "" : String(argv.tag);
++  if (!/^v\d/.test(tagName)) {
++    throw new Error(`--tag=vX.Y.Z is required (got "${tagName}")`);
++  }
++  const tag = { name: tagName };
+   const { data: latestRelease } = await github$1.rest.repos.getReleaseByTag({
+     ...options,
+     tag: tag.name
+@@ -63,43 +62,38 @@ async function updater() {
        "darwin-aarch64": { signature: "", url: "" },
        "darwin-x86_64": { signature: "", url: "" },
        "linux-x86_64": { signature: "", url: "" },
@@ -72,7 +142,7 @@ index 8bc9ce9..7be94da 100644
    fs.writeFileSync(filename, JSON.stringify(updateData, null, 2));
    console.log(utils.$.green("[\u2728 updater]"), utils.$.green(utils.relativePath(filename)), "\n");
    console.log(utils.$.yellow("*".repeat(20)));
-@@ -110,13 +105,16 @@
+@@ -110,15 +104,18 @@ async function updater() {
    console.log(utils.$.yellow("*".repeat(20)));
  }
  async function getSignature(url) {
@@ -90,33 +160,57 @@ index 8bc9ce9..7be94da 100644
 +  });
 +  if (!response.ok) {
 +    throw new Error(`Failed to download updater signature: ${url}`);
-   }
++  }
 +  const signature = (await response.text()).trim();
 +  if (!signature) {
 +    throw new Error(`Empty updater signature: ${url}`);
-+  }
+   }
 +  return signature;
  }
+ 
+ module.exports = updater;
 diff --git a/node_modules/@tauri-release/cli/dist/updater.mjs b/node_modules/@tauri-release/cli/dist/updater.mjs
-index 883f7fa..f7ad46b 100644
+index 883f7fa..66ff8ab 100644
 --- a/node_modules/@tauri-release/cli/dist/updater.mjs
 +++ b/node_modules/@tauri-release/cli/dist/updater.mjs
 @@ -1,10 +1,10 @@
 +import { context, getOctokit } from '@actions/github';
  import fs from 'fs';
+-import path from 'path';
 +import 'module';
-+import fetch from 'node-fetch';
- import path from 'path';
--import fetch from 'node-fetch';
+ import fetch from 'node-fetch';
 -import { context, getOctokit } from '@actions/github';
 -import { $ as $argv, a as $, R as ROOT_PATH, r as relativePath, d as UPDATER_JSON_PATH } from './shared/cli.8f57657e.mjs';
++import path from 'path';
 +import { a as $, $ as $argv, r as relativePath, R as ROOT_PATH, d as UPDATER_JSON_PATH } from './shared/cli.8f57657e.mjs';
  import updatelog from './updatelog.mjs';
 -import 'module';
  
  async function updater() {
    const argv = $argv();
-@@ -61,43 +61,38 @@
+@@ -37,14 +37,13 @@ async function updater() {
+   }
+   const options = { owner, repo };
+   const github = getOctokit(argv.token);
+-  const { data: tags } = await github.rest.repos.listTags({
+-    ...options,
+-    per_page: 10,
+-    page: 1
+-  });
+-  const tag = tags.find((t) => t.name.startsWith("v"));
+-  if (!tag)
+-    return;
++  // Zettel Notes: use the tag this run releases (--tag). Upstream took the first v* tag that
++  // listTags returned, so a stray higher tag (v0.1.0) made the v0.0.12 release read the wrong release.
++  const tagName = argv.tag == null ? "" : String(argv.tag);
++  if (!/^v\d/.test(tagName)) {
++    throw new Error(`--tag=vX.Y.Z is required (got "${tagName}")`);
++  }
++  const tag = { name: tagName };
+   const { data: latestRelease } = await github.rest.repos.getReleaseByTag({
+     ...options,
+     tag: tag.name
+@@ -61,43 +60,38 @@ async function updater() {
        "darwin-aarch64": { signature: "", url: "" },
        "darwin-x86_64": { signature: "", url: "" },
        "linux-x86_64": { signature: "", url: "" },
@@ -186,7 +280,7 @@ index 883f7fa..f7ad46b 100644
    fs.writeFileSync(filename, JSON.stringify(updateData, null, 2));
    console.log($.green("[\u2728 updater]"), $.green(relativePath(filename)), "\n");
    console.log($.yellow("*".repeat(20)));
-@@ -108,13 +103,16 @@
+@@ -108,15 +102,18 @@ async function updater() {
    console.log($.yellow("*".repeat(20)));
  }
  async function getSignature(url) {
@@ -204,58 +298,12 @@ index 883f7fa..f7ad46b 100644
 +  });
 +  if (!response.ok) {
 +    throw new Error(`Failed to download updater signature: ${url}`);
-   }
++  }
 +  const signature = (await response.text()).trim();
 +  if (!signature) {
 +    throw new Error(`Empty updater signature: ${url}`);
-+  }
+   }
 +  return signature;
  }
-diff --git a/node_modules/@tauri-release/cli/dist/updatelog.cjs b/node_modules/@tauri-release/cli/dist/updatelog.cjs
-index 0000000..0000000 100644
---- a/node_modules/@tauri-release/cli/dist/updatelog.cjs
-+++ b/node_modules/@tauri-release/cli/dist/updatelog.cjs
-@@ -15,7 +15,8 @@
-   }
-   if (!fs.existsSync(filePath) && !fs.existsSync(utils.UPDATE_LOG_PATH)) {
-     console.log(utils.$.red("[\u{1F4A2} updater]"), `Could not found ${utils.$.yellow("UPDATE_LOG.md")}`);
--    process.exit(0);
-+    // Zettel Notes: release without notes instead of quitting before install.json is written.
-+    return { filename: "", content: "" };
-   }
-   let _tag;
-   const tagMap = {};
-@@ -41,7 +42,8 @@
-       utils.$.yellow(utils.relativePath(filePath)),
-       `Tag ${tag} does not exist.`
-     );
--    process.exit(0);
-+    // Zettel Notes: release without notes instead of quitting before install.json is written.
-+    return { filename: utils.relativePath(filePath), content: "" };
-   }
-   return {
-     filename: utils.relativePath(filePath),
-diff --git a/node_modules/@tauri-release/cli/dist/updatelog.mjs b/node_modules/@tauri-release/cli/dist/updatelog.mjs
-index 0000000..0000000 100644
---- a/node_modules/@tauri-release/cli/dist/updatelog.mjs
-+++ b/node_modules/@tauri-release/cli/dist/updatelog.mjs
-@@ -13,7 +13,8 @@
-   }
-   if (!fs.existsSync(filePath) && !fs.existsSync(UPDATE_LOG_PATH)) {
-     console.log($.red("[\u{1F4A2} updater]"), `Could not found ${$.yellow("UPDATE_LOG.md")}`);
--    process.exit(0);
-+    // Zettel Notes: release without notes instead of quitting before install.json is written.
-+    return { filename: "", content: "" };
-   }
-   let _tag;
-   const tagMap = {};
-@@ -39,7 +40,8 @@
-       $.yellow(relativePath(filePath)),
-       `Tag ${tag} does not exist.`
-     );
--    process.exit(0);
-+    // Zettel Notes: release without notes instead of quitting before install.json is written.
-+    return { filename: relativePath(filePath), content: "" };
-   }
-   return {
-     filename: relativePath(filePath),
+ 
+ export { updater as default };

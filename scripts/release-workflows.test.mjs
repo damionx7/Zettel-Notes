@@ -619,3 +619,10 @@ test('release notes list the commits since the previous tag, for both the releas
   assert.equal(steps[create].with.body_path, 'release.txt')
   assert.match(updater.run, /yarn updater .*--logfile=release-notes\.md/)
 })
+
+// The updater CLI used to take the first v* tag GitHub listed, so a stray v0.1.0 tag made the
+// v0.0.12 release read v0.1.0's empty release and fail on win64. It must get this run's tag.
+test('the updater manifest is built from the tag being released', () => {
+  const updater = release.jobs.release.steps.find((step) => step.name === 'Updater JSON')
+  assert.match(updater.run, /yarn updater .*--tag="\$GITHUB_REF_NAME"/)
+})

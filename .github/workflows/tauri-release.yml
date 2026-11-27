@@ -571,7 +571,9 @@ jobs:
       - name: Updater JSON
         if: env.HAS_SIGNING_KEY == 'true'
         run: |
-          yarn updater --token=${{ secrets.GITHUB_TOKEN }} --logfile=release-notes.md
+          # --tag: build install.json from this run's release. Without it the CLI read the first
+          # v* tag GitHub listed, so a stray v0.1.0 tag broke the v0.0.12 release.
+          yarn updater --token=${{ secrets.GITHUB_TOKEN }} --tag="$GITHUB_REF_NAME" --logfile=release-notes.md
           # The updater CLI can exit 0 without writing the manifest; stop here with a clear error.
           test -s apps/desktop/updater/install.json || { echo "::error::yarn updater did not write apps/desktop/updater/install.json"; exit 1; }
 
