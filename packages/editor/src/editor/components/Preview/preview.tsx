@@ -12,6 +12,7 @@ import {
 import { clearPreviewImageSource } from '../../utils/sanitize-html'
 import { defaultStyleToken, type EditorProps } from '../Editor'
 import { createWysiwygDelegate } from '../WysiwygEditor'
+import { installPreviewFolding } from './preview-folding'
 
 export interface PreviewImageHydration {
   readonly settled: Promise<void>
@@ -29,6 +30,11 @@ interface PreviewProps {
   onImageHydrationChange?: (hydration: PreviewImageHydration | null) => void
   handleLinkClick?: LinkClickHandler
   styleToken?: EditorProps['styleToken']
+  /**
+   * Adds fold toggles to headings and nested list items. Off by default so
+   * export and print surfaces, which reuse this component, never include them.
+   */
+  foldable?: boolean
 }
 
 export type HTMLAstNode = {
@@ -251,7 +257,14 @@ function hydratePreviewImages(
 }
 
 export const Preview: React.FC<PreviewProps> = (props) => {
-  const { doc, delegate, delegateOptions, handleLinkClick, styleToken = defaultStyleToken } = props
+  const {
+    doc,
+    delegate,
+    delegateOptions,
+    foldable = false,
+    handleLinkClick,
+    styleToken = defaultStyleToken,
+  } = props
   const { t } = useTranslation()
   const [preparedPreview, setPreparedPreview] = useState<{
     hydration: PreviewImageHydrationController
@@ -381,6 +394,17 @@ export const Preview: React.FC<PreviewProps> = (props) => {
       throw error
     }
   }, [handlePendingImageChange, preparedPreview, previewDelegateOptions])
+
+  const foldLabel = t('preview.fold')
+  const unfoldLabel = t('preview.unfold')
+  useEffect(() => {
+    const container = containerRef.current
+    if (!foldable || !container || !preparedPreview) {
+      return
+    }
+
+    return installPreviewFolding(container, { fold: foldLabel, unfold: unfoldLabel })
+  }, [foldable, foldLabel, preparedPreview, unfoldLabel])
 
   const handleClick = useCallback(
     (event: React.MouseEvent) => {

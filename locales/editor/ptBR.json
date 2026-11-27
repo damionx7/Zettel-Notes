@@ -4,6 +4,10 @@
       "loading": "Carregando",
       "accept": "Aceitar"
     },
+    "preview": {
+      "fold": "Recolher",
+      "unfold": "Expandir"
+    },
     "image": {
       "source": "Origem",
       "sourcePlaceholder": "Insira uma URL ou caminho da imagem",

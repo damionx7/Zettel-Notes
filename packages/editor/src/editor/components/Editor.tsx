@@ -180,6 +180,7 @@ export const Editor = memo(
             otherProps.delegate?.view === 'Wysiwyg' ? otherProps.delegate : undefined
           }
           delegateOptions={otherProps.delegateOptions}
+          foldable
           handleLinkClick={otherProps.delegateOptions?.handleLinkClick}
           onImageHydrationChange={handlePreviewImageHydrationChange}
           styleToken={otherProps.styleToken}

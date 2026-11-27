@@ -1,4 +1,5 @@
 import type { IHeadingData } from '@zettel-notes/interface'
+import { revealInPreviewFolds } from 'rme'
 
 export interface PreviewMatch {
   range: Range
@@ -75,6 +76,8 @@ export const paintPreviewMatches = (matches: PreviewMatch[], activeIndex: number
 
 export const scrollPreviewMatchIntoView = (match: PreviewMatch | undefined): void => {
   const element = match?.range.startContainer.parentElement
+  // A match under a folded heading or list item is hidden; unfold it first.
+  revealInPreviewFolds(element)
   element?.scrollIntoView({ block: 'center' })
 }
 
