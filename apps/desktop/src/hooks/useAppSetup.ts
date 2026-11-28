@@ -28,6 +28,7 @@ import {
   createWindowSessionPersistence,
   isWindowSessionReload,
   readWindowSession,
+  pruneMissingSessionFiles,
   restoreWindowDocuments,
   type WindowSession,
 } from '@/services/window-session'
@@ -54,7 +55,7 @@ import { useEditorStore } from '@/stores'
 import { consumeOpenedUrls, normalizeOpenedUrls, restoreOpenedUrls } from '@/startup/appearance'
 import { createAppStartupCoordinator } from '@/startup/appStartupCoordinator'
 import { restoreStartupWorkspace } from '@/startup/restoreStartupWorkspace'
-import { readRepoStatus } from '@/services/repo'
+import { readRepoStatus, unlockRepositoryForStartup } from '@/services/repo'
 import { createWorkspaceInputReader } from '@/startup/workspaceInputs'
 import { markStartupStage } from '@/startup/performance'
 import { afterStartupInteractive, waitForStartupInteractive } from '@/startup/interactive'
@@ -198,10 +199,11 @@ function closeDocumentsForWorkspaceChange(previousRoot: string | undefined, next
   ensureDocument()
 }
 
-async function isEncryptedWorkspaceRoot(path: string): Promise<boolean> {
+/** A repository whose volume is still locked: its notes cannot be reopened. */
+async function isLockedRepository(path: string): Promise<boolean> {
   try {
     const status = await readRepoStatus(path)
-    return status?.isRepo === true
+    return status?.isRepo === true && status.isUnlocked !== true
   } catch {
     return false
   }
@@ -425,20 +427,25 @@ async function appWorkspaceSetup(signal: AbortSignal) {
 
     startupSession = await readWindowSession(cacheStore, currentWindow.label, restoreSessionLabel)
     if (startupSession) {
+      let canRestoreDocuments = true
       if (startupSession.rootPath) {
         try {
-          if (await isEncryptedWorkspaceRoot(startupSession.rootPath)) {
-            useEditorStore.getState().setFolderDataPure(null)
-          }
+          const access = await unlockRepositoryForStartup(startupSession.rootPath)
+          throwIfStartupCancelled(signal)
+          // A repository left locked shows its unlock panel; its notes cannot be read yet.
+          canRestoreDocuments = access !== 'locked'
+          if (access === 'locked') useEditorStore.getState().setFolderDataPure(null)
           await restoreStartupWorkspace(startupSession.rootPath, Promise.resolve(undefined), signal)
         } catch (error) {
           throwIfStartupCancelled(signal)
           useEditorStore.getState().setFolderDataPure(null)
           useWorkspaceOpenError.setState({ path: startupSession.rootPath, error })
+          if (await isLockedRepository(startupSession.rootPath)) canRestoreDocuments = false
         }
       }
-      if (!startupSession.rootPath || !(await isEncryptedWorkspaceRoot(startupSession.rootPath))) {
-        restoreWindowDocuments(startupSession)
+      if (canRestoreDocuments) {
+        restoreWindowDocuments(await pruneMissingSessionFiles(startupSession))
+        throwIfStartupCancelled(signal)
       }
       return
     }
@@ -453,12 +460,15 @@ async function appWorkspaceSetup(signal: AbortSignal) {
 
       logger.debug('Reading directory:', targetWorkspacePath)
       try {
-        if (await isEncryptedWorkspaceRoot(targetWorkspacePath)) {
-          useEditorStore.getState().setFolderDataPure(null)
-        }
+        const access = await unlockRepositoryForStartup(targetWorkspacePath)
+        throwIfStartupCancelled(signal)
+        if (access === 'locked') useEditorStore.getState().setFolderDataPure(null)
         await restoreStartupWorkspace(
           targetWorkspacePath,
-          cacheStore.get<WorkspaceCache>(targetWorkspacePath),
+          // The tabs of a locked repository cannot be read; they come back with the next session.
+          access === 'locked'
+            ? Promise.resolve(undefined)
+            : cacheStore.get<WorkspaceCache>(targetWorkspacePath),
           signal,
         )
         throwIfStartupCancelled(signal)
