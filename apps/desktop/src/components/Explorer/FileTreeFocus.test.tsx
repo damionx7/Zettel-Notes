@@ -176,13 +176,15 @@ describe('FileTree user opening intent', () => {
     fireEvent.keyDown(row, { key: 'Enter' })
     expect(onOpen).toHaveBeenLastCalledWith(activeFile, { mode: 'permanent' })
     expect(onOpen).toHaveBeenCalledTimes(4)
+    // Ctrl/Cmd and Shift clicks build a multi-selection and never open the note.
     fireEvent.click(label, { ctrlKey: true })
-    expect(onOpen).toHaveBeenLastCalledWith(activeFile, { mode: 'permanent' })
-    expect(onOpen).toHaveBeenCalledTimes(5)
+    fireEvent.click(label, { metaKey: true })
+    fireEvent.click(label, { shiftKey: true })
+    expect(onOpen).toHaveBeenCalledTimes(4)
     // Middle click opens the note in its own tab as well.
     fireEvent(label, new MouseEvent('auxclick', { bubbles: true, button: 1 }))
     expect(onOpen).toHaveBeenLastCalledWith(activeFile, { mode: 'permanent' })
-    expect(onOpen).toHaveBeenCalledTimes(6)
+    expect(onOpen).toHaveBeenCalledTimes(5)
     expect(document.querySelector('.mf-file-tree-name-input')).toBeNull()
   })
 

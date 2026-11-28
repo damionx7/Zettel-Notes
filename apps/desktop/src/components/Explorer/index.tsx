@@ -311,8 +311,8 @@ const Explorer: FC<ExplorerProps> = (props) => {
   )
 
   const handleRequestDelete = useCallback(
-    ({ file, mode, onConfirm }: FileTreeDeletionRequest) => {
-      void dialog.confirmFileDeletion({ file, mode }).then(async (action) => {
+    ({ file, files, mode, onConfirm }: FileTreeDeletionRequest) => {
+      void dialog.confirmFileDeletion({ file, files, mode }).then(async (action) => {
         if (action === 'confirm') await onConfirm()
       }).catch((error: unknown) => logger.error('File deletion confirmation failed', error))
     },

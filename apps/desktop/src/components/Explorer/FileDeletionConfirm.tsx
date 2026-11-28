@@ -10,9 +10,69 @@ import {
 import { ConfirmModal } from '@/components/Modal/Confirm'
 import { Button } from '@/components/ui/button'
 
+type DeletionEntry = Pick<IFile, 'name' | 'path' | 'kind'>
+
 export interface FileDeletionConfirmProps {
-  file: Pick<IFile, 'name' | 'path' | 'kind'>
+  file: DeletionEntry
+  /** Every entry of a multi-selection; when it holds more than one, the dialog lists them. */
+  files?: DeletionEntry[]
   mode: 'permanent' | 'trash'
+}
+
+const LISTED_ENTRY_LIMIT = 5
+
+export function FileDeletionConfirmModal({ file, files, mode }: FileDeletionConfirmProps) {
+  if (files && files.length > 1) return <MultiFileDeletionConfirm files={files} mode={mode} />
+  return <SingleFileDeletionConfirm file={file} mode={mode} />
+}
+
+function MultiFileDeletionConfirm({
+  files,
+  mode,
+}: {
+  files: DeletionEntry[]
+  mode: FileDeletionConfirmProps['mode']
+}) {
+  const { t } = useTranslation()
+  const listed = files.slice(0, LISTED_ENTRY_LIMIT)
+  const hidden = files.length - listed.length
+
+  return (
+    <ConfirmModal
+      title={t(`file_deletion.${mode}_title_many`, { count: files.length })}
+      describeContent
+      content={
+        <div className='space-y-4'>
+          <ul className='m-0 space-y-1 p-0 list-none'>
+            {listed.map((entry) => (
+              <li
+                key={entry.path ?? entry.name}
+                className='text-ui-body text-muted-foreground [overflow-wrap:anywhere]'
+                dir='ltr'
+                title={entry.path}
+              >
+                {entry.kind === 'dir' ? `${entry.name}/` : entry.name}
+              </li>
+            ))}
+            {hidden > 0 ? (
+              <li className='text-ui-body text-muted-foreground'>
+                {t('file_deletion.more_items', { count: hidden })}
+              </li>
+            ) : null}
+          </ul>
+          {mode === 'permanent' ? (
+            <p className='m-0 text-ui-body font-medium text-destructive'>
+              {t('file_deletion.permanent_warning')}
+            </p>
+          ) : null}
+        </div>
+      }
+      actions={[
+        { id: 'cancel', label: t('common.cancel'), autoFocus: true },
+        { id: 'confirm', label: t(`file_deletion.${mode}_action`), danger: true },
+      ]}
+    />
+  )
 }
 
 type SummaryState =
@@ -20,7 +80,7 @@ type SummaryState =
   | { status: 'ready'; summary: FolderDeletionSummary }
   | { status: 'error' }
 
-export function FileDeletionConfirmModal({ file, mode }: FileDeletionConfirmProps) {
+function SingleFileDeletionConfirm({ file, mode }: Pick<FileDeletionConfirmProps, 'file' | 'mode'>) {
   const { t } = useTranslation()
   const [summaryState, setSummaryState] = useState<SummaryState>({ status: 'loading' })
   const [attempt, setAttempt] = useState(0)

@@ -31,6 +31,11 @@ import {
   getCurrentFileMutationNodes,
 } from './file-mutation'
 import { mergeDirectoryChildren, moveFileNode } from './file-operator'
+import {
+  applyFileTreeClickSelection,
+  getFileTreeActionNodes,
+  getFileTreeClickIntent,
+} from './selection'
 import { FileTreeStickyRoot, FileTreeStickyViewport } from './styles'
 import { SimpleTree } from './types'
 
@@ -41,6 +46,10 @@ function fileTreePathKey(path: string) {
   const windows = /^[a-z]:[\\/]/i.test(path) || path.startsWith('\\\\')
   const normalized = windows ? path.replace(/\\/g, '/').toLowerCase() : path
   return normalized.replace(/\/+$/, '')
+}
+
+function describeEntries(files: Pick<IFile, 'name'>[]) {
+  return files.length === 1 ? files[0].name : `${files.length} items`
 }
 
 type FileTreeRowState = {
@@ -485,13 +494,14 @@ const FileTree: FC<FileTreeProps> = (props) => {
   const onMove: TreeProps<IFile>['onMove'] = async (args) => {
     if (disableFileOperations) return
 
-    const _dragNodes = args.dragNodes.filter((node) => {
-      return !args.dragIds.includes(node.parent?.id || '')
-    })
-    const _dragNode = _dragNodes[0]
     const parentNode = args.parentNode
+    // A dragged selection moves its top-level entries; rows already in the destination stay.
+    const _dragNodes = getFileTreeActionNodes(args.dragNodes, rootId).filter(
+      (node) => node.parent?.id !== parentNode?.id,
+    )
+    const _dragNode = _dragNodes[0]
 
-    if (!_dragNode || !parentNode || _dragNode.parent?.id === parentNode.id) {
+    if (!_dragNode || !parentNode) {
       return
     }
     const sourceTargets = _dragNodes.map((dragNode) => captureFileMutationTarget(dragNode.data))
@@ -542,7 +552,7 @@ const FileTree: FC<FileTreeProps> = (props) => {
 
         if (!replace && existingTargetPaths.length > 0) {
           onShowConfirm({
-            title: `Replace ${verifiedDragNodes[0].data.name}?`,
+            title: `Replace ${describeEntries(verifiedDragNodes.map((dragNode) => dragNode.data))}?`,
             onConfirm: () => void move(true),
           })
           return
@@ -657,19 +667,20 @@ const FileTree: FC<FileTreeProps> = (props) => {
 
     if (isExist) {
       onShowConfirm({
-        title: `Replace ${_dragNode.data.name}?`,
+        title: `Replace ${describeEntries(_dragNodes.map((dragNode) => dragNode.data))}?`,
         onConfirm: () => void move(true),
       })
     } else {
       onShowConfirm({
-        title: `Move ${_dragNode.data.name}?`,
+        title: `Move ${describeEntries(_dragNodes.map((dragNode) => dragNode.data))}?`,
         onConfirm: () => void move(),
       })
     }
   }
 
   const handleSelect = (nodes: { data: IFile }[] | null | undefined) => {
-    if (nodes && nodes.length > 0 && nodes[0]?.data) {
+    // A multi-selection has no single file to report; hosts only hear about one-row picks.
+    if (nodes?.length === 1 && nodes[0]?.data) {
       onSelect?.(nodes[0].data)
     }
   }
@@ -764,8 +775,7 @@ const FileTree: FC<FileTreeProps> = (props) => {
               indent={indentSize}
               rowHeight={rowHeight}
               rowClassName='mf-file-tree-item'
-              renderRow={stickyRoot || onOpen ? FileTreeRow : undefined}
-              disableMultiSelection
+              renderRow={FileTreeRow}
               onSelect={handleSelect}
               onMove={onMove}
               onToggle={onToggle}
@@ -941,6 +951,11 @@ export function FileTreeRow({
       data-mf-file-tree-root-row={isRoot || undefined}
       data-mf-file-tree-root-row-suppressed={suppressed || undefined}
       onClick={(event) => {
+        // Shift and Cmd/Ctrl build a selection for bulk actions and never open the note.
+        if (applyFileTreeClickSelection(node, getFileTreeClickIntent(event))) {
+          event.preventDefault()
+          return
+        }
         node.handleClick(event)
         if (canOpen && !event.defaultPrevented) {
           // With "open notes in the same tab" the click replaces the note on screen; otherwise
@@ -958,7 +973,7 @@ export function FileTreeRow({
         if (event.button === 1) event.preventDefault()
       }}
       onDoubleClick={(event) => {
-        if (!canOpen || event.defaultPrevented) return
+        if (!canOpen || event.defaultPrevented || getFileTreeClickIntent(event) !== 'single') return
         rowState.onOpen?.(node.data, { mode: 'permanent' })
       }}
       onKeyDown={(event) => {
