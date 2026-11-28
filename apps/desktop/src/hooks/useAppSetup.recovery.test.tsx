@@ -110,6 +110,7 @@ vi.mock('@/services/workspace-cache', () => ({ createWorkspaceCachePersistence: 
 vi.mock('@/services/window-session', () => ({
   createWindowSessionPersistence: () => ({ flush: mocks.flush, dispose: vi.fn() }),
   readWindowSession: mocks.readSession, restoreWindowDocuments: mocks.restoreDocuments,
+  pruneMissingSessionFiles: async (session: unknown) => session,
   isWindowSessionReload: mocks.sessionReload,
 }))
 vi.mock('@/services/workspace-session', () => ({

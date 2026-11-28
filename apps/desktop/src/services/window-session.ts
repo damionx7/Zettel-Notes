@@ -1,3 +1,4 @@
+import { invoke } from '@tauri-apps/api/core'
 import type { LazyStore } from '@tauri-apps/plugin-store'
 import { z } from 'zod'
 import useFileCacheStore, { getFileObject } from '@/helper/files'
@@ -75,6 +76,30 @@ export async function readWindowSession(
   if (!key) return undefined
   const parsed = windowSessionSchema.safeParse(await store.get(key))
   return parsed.success ? parsed.data : undefined
+}
+
+/**
+ * Drop saved tabs whose note was deleted or moved since the last run.
+ *
+ * Reopening them only showed a "file not found" tab. A note that still has an unsaved draft is
+ * kept, so its recovery stays offered. A failed check keeps the tab: it is not proof of absence.
+ */
+export async function pruneMissingSessionFiles(
+  session: WindowSession,
+  fileExists: (path: string) => Promise<boolean> = (filePath) =>
+    invoke<boolean>('file_exists', { filePath }),
+): Promise<WindowSession> {
+  const draftPaths = new Set(
+    recoveryDocuments(session.drafts).flatMap((file) => file.path ? [getPathIdentityKey(file.path)] : []),
+  )
+  const missing = new Set<string>()
+  await Promise.all(session.files.map(async (file) => {
+    if (!file.path || draftPaths.has(getPathIdentityKey(file.path))) return
+    const exists = await fileExists(file.path).catch(() => true)
+    if (!exists) missing.add(file.id)
+  }))
+  if (missing.size === 0) return session
+  return { ...session, files: session.files.filter((file) => !missing.has(file.id)) }
 }
 
 export function restoreWindowDocuments(session: WindowSession) {

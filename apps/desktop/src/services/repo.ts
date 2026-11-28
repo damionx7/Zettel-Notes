@@ -135,3 +135,28 @@ export async function ensureRepoUnlocked(path: string): Promise<boolean> {
   }
   return true
 }
+
+/** How a workspace reopened at launch can be read. */
+export type StartupRepositoryAccess = 'plain' | 'unlocked' | 'locked'
+
+/**
+ * Ask for the password of the repository reopened at launch, before its tree and notes load.
+ *
+ * Without this the last repository came back as an empty "locked" panel and its notes stayed
+ * closed. Cancelling keeps that panel, so the owner can still unlock it from the explorer.
+ */
+export async function unlockRepositoryForStartup(path: string): Promise<StartupRepositoryAccess> {
+  let status: RepoStatus | null = null
+  try {
+    status = await readRepoStatus(path)
+  } catch {
+    return 'plain'
+  }
+  if (!status || status.isRepo !== true) return 'plain'
+  if (status.isUnlocked === true) {
+    // A WebView reload keeps the backend unlocked while the UI store starts empty.
+    useRepoStore.getState().setUnlocked(path)
+    return 'unlocked'
+  }
+  return (await ensureRepoUnlocked(path)) ? 'unlocked' : 'locked'
+}

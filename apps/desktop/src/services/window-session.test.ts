@@ -14,6 +14,7 @@ import {
   createWindowSessionPersistence,
   filterSessionLayout,
   LAST_WINDOW_SESSION_KEY,
+  pruneMissingSessionFiles,
   readWindowSession,
   restoreWindowDocuments,
   windowSessionKey,
@@ -479,5 +480,43 @@ describe('document-first sessions', () => {
     expect(useEditorStore.getState().editorLayout).toBe(layout)
     expect((data.get(windowSessionKey('main')) as WindowSession).rootPath).toBeUndefined()
     expect((data.get(windowSessionKey('main')) as WindowSession).files[0].path).toBe('/notes/saved.md')
+  })
+})
+
+describe('pruneMissingSessionFiles', () => {
+  const session = (files: WindowSession['files'], drafts: WindowSession['drafts'] = { version: 1, documents: [] }): WindowSession => ({
+    version: 1,
+    windowLabel: 'main',
+    rootPath: '/repo',
+    files,
+    editorLayout: { type: 'leaf', id: 'g', opened: files.map((file) => file.id), activeId: files[0]?.id },
+    drafts,
+  })
+
+  it('drops tabs whose note no longer exists and keeps the rest', async () => {
+    const input = session([
+      { id: 'kept', name: 'kept.md', path: '/repo/kept.md' },
+      { id: 'gone', name: 'gone.md', path: '/repo/gone.md' },
+      { id: 'untitled', name: 'Untitled' },
+    ])
+    const result = await pruneMissingSessionFiles(input, async (path) => path !== '/repo/gone.md')
+    expect(result.files.map((file) => file.id)).toEqual(['kept', 'untitled'])
+  })
+
+  it('keeps a missing note that still has an unsaved draft', async () => {
+    const input = session(
+      [{ id: 'draft', name: 'a.md', path: '/repo/a.md' }],
+      { version: 1, documents: [{ id: 'draft', name: 'a.md', path: '/repo/a.md', content: 'unsaved' }] },
+    )
+    const result = await pruneMissingSessionFiles(input, async () => false)
+    expect(result.files.map((file) => file.id)).toEqual(['draft'])
+  })
+
+  it('keeps a tab when the existence check fails', async () => {
+    const input = session([{ id: 'a', name: 'a.md', path: '/repo/a.md' }])
+    const result = await pruneMissingSessionFiles(input, async () => {
+      throw new Error('no repository is unlocked')
+    })
+    expect(result).toBe(input)
   })
 })
