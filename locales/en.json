@@ -369,6 +369,8 @@
                                          "delete_file":  "Delete file",
                                          "delete_folder":  "Delete folder",
                                          "moveto_trash":  "Move to trash",
+                                         "delete_selected":  "Delete {{count}} items",
+                                         "moveto_trash_selected":  "Move {{count}} items to trash",
                                          "copy":  "Copy",
                                          "duplicate_file":  "Duplicate file",
                                          "copy_to":  "Copy to…",
@@ -1418,6 +1420,9 @@
     "file_deletion":  {
                           "permanent_title":  "Permanently delete “{{name}}”?",
                           "trash_title":  "Move “{{name}}” to trash?",
+                          "permanent_title_many":  "Permanently delete {{count}} items?",
+                          "trash_title_many":  "Move {{count}} items to trash?",
+                          "more_items":  "and {{count}} more",
                           "permanent_action":  "Permanently delete",
                           "trash_action":  "Move to trash",
                           "counting":  "Counting…",

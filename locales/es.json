@@ -334,6 +334,8 @@
                                          "delete_file":  "Eliminar archivo",
                                          "delete_folder":  "Eliminar archivo",
                                          "moveto_trash":  "Mover a la papelera",
+                                         "delete_selected":  "Eliminar {{count}} elementos",
+                                         "moveto_trash_selected":  "Mover {{count}} elementos a la papelera",
                                          "copy":  "Copiar",
                                          "duplicate_file":  "Crear una copia",
                                          "copy_to":  "Copiar a…",
@@ -1418,6 +1420,9 @@
     "file_deletion":  {
                           "permanent_title":  "¿Eliminar «{{name}}» permanentemente?",
                           "trash_title":  "¿Mover «{{name}}» a la papelera?",
+                          "permanent_title_many":  "¿Eliminar {{count}} elementos permanentemente?",
+                          "trash_title_many":  "¿Mover {{count}} elementos a la papelera?",
+                          "more_items":  "y {{count}} más",
                           "permanent_action":  "Eliminar permanentemente",
                           "trash_action":  "Mover a la papelera",
                           "counting":  "Contando…",

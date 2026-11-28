@@ -334,6 +334,8 @@
                                          "delete_folder":  "Supprimer le dossier",
                                          "rename":  "Renommer",
                                          "moveto_trash":  "Déplacer vers la corbeille",
+                                         "delete_selected":  "Supprimer {{count}} éléments",
+                                         "moveto_trash_selected":  "Déplacer {{count}} éléments vers la corbeille",
                                          "copy":  "Réplication",
                                          "duplicate_file":  "Créer une copie",
                                          "copy_to":  "Copier vers…",
@@ -1418,6 +1420,9 @@
     "file_deletion":  {
                           "permanent_title":  "Supprimer définitivement « {{name}} » ?",
                           "trash_title":  "Déplacer « {{name}} » dans la corbeille ?",
+                          "permanent_title_many":  "Supprimer définitivement {{count}} éléments ?",
+                          "trash_title_many":  "Déplacer {{count}} éléments dans la corbeille ?",
+                          "more_items":  "et {{count}} de plus",
                           "permanent_action":  "Supprimer définitivement",
                           "trash_action":  "Déplacer dans la corbeille",
                           "counting":  "Comptage…",

@@ -369,6 +369,8 @@
                                          "delete_file":  "Excluir arquivo",
                                          "delete_folder":  "Excluir pasta",
                                          "moveto_trash":  "Mover para a lixeira",
+                                         "delete_selected":  "Excluir {{count}} itens",
+                                         "moveto_trash_selected":  "Mover {{count}} itens para a lixeira",
                                          "copy":  "Copiar",
                                          "duplicate_file":  "Duplicar arquivo",
                                          "copy_to":  "Copiar para…",
@@ -1418,6 +1420,9 @@
     "file_deletion":  {
                           "permanent_title":  "Excluir “{{name}}” permanentemente?",
                           "trash_title":  "Mover “{{name}}” para a lixeira?",
+                          "permanent_title_many":  "Excluir {{count}} itens permanentemente?",
+                          "trash_title_many":  "Mover {{count}} itens para a lixeira?",
+                          "more_items":  "e mais {{count}}",
                           "permanent_action":  "Excluir permanentemente",
                           "trash_action":  "Mover para a lixeira",
                           "counting":  "Contando…",

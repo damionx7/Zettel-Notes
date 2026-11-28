@@ -15,6 +15,7 @@ import { moveFileNode } from './file-operator'
 import { copyFileTreeNode, getCopyParentPath } from './file-copy'
 import NewFileInput from './NewFileInput'
 import { hasRenameConflict } from './rename-conflict'
+import { getFileTreeActionNodes, getFileTreeClickIntent } from './selection'
 import { EmptyFolderStatus, LoadingIcon, NodeContainer } from './styles'
 import { SimpleTree } from './types'
 import { getFileNameFromPath } from './verify-file-name'
@@ -76,6 +77,11 @@ export type FileTreeNodeIconRenderer = (
 export interface FileTreeDeletionRequest {
   /** Snapshot of the requested entry, captured before the confirmation opens. */
   file: IFile
+  /**
+   * Every entry of a multi-selection, in tree order, when more than one is being removed.
+   * `file` is then the first of them.
+   */
+  files?: IFile[]
   mode: 'permanent' | 'trash'
   onConfirm: () => Promise<void>
 }
@@ -201,22 +207,32 @@ function FileNode({
     revealInFolder,
   } = useFileSystem()
 
-  const requestDeletion = (mode: FileTreeDeletionRequest['mode']) => {
-    const target = captureFileMutationTarget(node.data)
+  const requestDeletion = (
+    mode: FileTreeDeletionRequest['mode'],
+    entries: IFile[] = [node.data],
+  ) => {
     const root = getCurrentFolderData()[0]
     const workspace = root ? captureFileMutationTarget(root) : undefined
-    if (
-      !target ||
-      !workspace ||
-      (target.id === workspace.id && target.path === workspace.path)
-    ) return
-    const file: IFile = {
-      id: target.id,
-      path: target.path,
-      name: node.data.name,
-      kind: node.data.kind,
-      ext: node.data.ext,
+    if (!workspace) return
+    const isWorkspaceRoot = (target: { id: string; path: string }) =>
+      target.id === workspace.id && target.path === workspace.path
+    const snapshots: { target: { id: string; path: string }; file: IFile }[] = []
+    for (const entry of entries) {
+      const target = captureFileMutationTarget(entry)
+      if (!target || isWorkspaceRoot(target)) return
+      snapshots.push({
+        target,
+        file: {
+          id: target.id,
+          path: target.path,
+          name: entry.name,
+          kind: entry.kind,
+          ext: entry.ext,
+        },
+      })
     }
+    if (snapshots.length === 0) return
+    const files = snapshots.map(({ file }) => file)
     const isCurrentWorkspace = (data: IFile[]) =>
       data[0]?.id === workspace.id && data[0]?.path === workspace.path
 
@@ -225,46 +241,68 @@ function FileNode({
         await runFileMutation(async (lease) => {
           const currentData = getCurrentFolderData()
           if (!isCurrentWorkspace(currentData)) return
-          if (currentData[0]?.id === target.id && currentData[0]?.path === target.path) return
           const mutationTree = new SimpleTree(currentData)
-          const currentNode = getCurrentFileMutationNode(mutationTree, getFileObject, target)
-          if (!currentNode) return
+          const currentNodes = snapshots
+            .map(({ target }) => getCurrentFileMutationNode(mutationTree, getFileObject, target))
+            .filter((currentNode): currentNode is NonNullable<typeof currentNode> => !!currentNode)
+          if (currentNodes.length === 0) return
           const protection = collectFileMutationProtection(
-            [currentNode.data],
+            currentNodes.map((currentNode) => currentNode.data),
             getFileObject,
             getFileIdsByPathPrefix,
           )
           lease.protectFileIds(protection.fileIds)
           lease.protectPaths(protection.paths)
 
-          await (mode === 'permanent' ? deleteNode : trashNode)(currentNode.data)
+          // Remove entries one at a time so a failure keeps the tree in step with the disk:
+          // entries already removed leave the tree, the failed one and the rest stay.
+          const removed: { id: string; path: string }[] = []
+          let failure: unknown
+          for (const currentNode of currentNodes) {
+            try {
+              await (mode === 'permanent' ? deleteNode : trashNode)(currentNode.data)
+              const target = captureFileMutationTarget(currentNode.data)
+              if (target) removed.push(target)
+            } catch (error) {
+              failure = error
+              break
+            }
+          }
 
           // Directory reads can update other branches during the backend call.
-          // Apply the successful removal to the latest tree instead of the snapshot.
+          // Apply the successful removals to the latest tree instead of the snapshot.
           const latestData = getCurrentFolderData()
-          if (!isCurrentWorkspace(latestData)) return
-          const currentTree = new SimpleTree(latestData)
-          if (!getCurrentFileMutationNode(currentTree, getFileObject, target)) return
-          currentTree.drop({ id: target.id })
-          if (deleteFileObjectsByPathPrefix) {
-            deleteFileObjectsByPathPrefix(target.path)
-          } else {
-            deletePathEntry?.(target.path)
+          if (removed.length > 0 && isCurrentWorkspace(latestData)) {
+            const currentTree = new SimpleTree(latestData)
+            let changed = false
+            for (const target of removed) {
+              if (!getCurrentFileMutationNode(currentTree, getFileObject, target)) continue
+              currentTree.drop({ id: target.id })
+              if (deleteFileObjectsByPathPrefix) {
+                deleteFileObjectsByPathPrefix(target.path)
+              } else {
+                deletePathEntry?.(target.path)
+              }
+              changed = true
+            }
+            if (changed) setFolderData(currentTree.data)
           }
-          setFolderData(currentTree.data)
+          if (failure !== undefined) throw failure
         })
       } catch (error) {
         toast.error(error instanceof Error ? error.message : String(error))
       }
     }
 
+    const [file] = files
     if (onRequestDelete) {
-      onRequestDelete({ file, mode, onConfirm })
+      onRequestDelete(files.length > 1 ? { file, files, mode, onConfirm } : { file, mode, onConfirm })
     } else {
+      const subject = files.length > 1 ? `${files.length} items` : file.name
       onShowConfirm({
         title: mode === 'permanent'
-          ? `Are you sure you want to delete ${file.name}?`
-          : `Are you sure you want to move ${file.name} to trash?`,
+          ? `Are you sure you want to delete ${subject}?`
+          : `Are you sure you want to move ${subject} to trash?`,
         onConfirm,
       })
     }
@@ -399,6 +437,32 @@ function FileNode({
     e.stopPropagation()
     e.preventDefault()
     if (disableFileOperations) return
+
+    // Right-clicking inside a multi-selection acts on the whole selection.
+    const selection =
+      node.isSelected && tree.hasMultipleSelections
+        ? getFileTreeActionNodes(tree.selectedNodes, getCurrentFolderData()[0]?.id)
+        : []
+    if (selection.length > 1) {
+      const entries = selection.map((selected) => selected.data)
+      onShowContextMenu({
+        x: e.clientX,
+        y: e.clientY,
+        items: [
+          {
+            value: 'delete_selected',
+            label: t('contextmenu.explorer.delete_selected', { count: entries.length }),
+            handler: () => requestDeletion('permanent', entries),
+          },
+          {
+            value: 'trash_selected',
+            label: t('contextmenu.explorer.moveto_trash_selected', { count: entries.length }),
+            handler: () => requestDeletion('trash', entries),
+          },
+        ],
+      })
+      return
+    }
 
     const items: ContextMenuItem[] = []
 
@@ -657,7 +721,11 @@ function FileNode({
     tree.dragDestinationParent?.isAncestorOf(node) &&
     tree.dragDestinationParent?.id !== tree.dragNode?.parent?.id
   )
-  const isSelected = activeId === node.id
+  // The open note shows as selected until the selection moves away from it (a multi-selection,
+  // or a Ctrl/Cmd click that left another row); then the selection is what shows.
+  const showsTreeSelection =
+    tree.hasMultipleSelections || (!tree.hasNoSelection && !tree.isSelected(activeId ?? undefined))
+  const isSelected = showsTreeSelection ? node.isSelected : activeId === node.id
 
   const renderPendingEntry = () => (
     <>
@@ -862,6 +930,7 @@ function FileNode({
       inert={isRootSuppressed || undefined}
       highlight={isDropHighlighted}
       selected={isSelected}
+      data-mf-file-tree-selected={isSelected || undefined}
       aria-busy={isLoading || undefined}
       onContextMenu={handleContextMenu}
       onClick={(e) => {
@@ -869,7 +938,8 @@ function FileNode({
           e.stopPropagation()
           return
         }
-        if (e.shiftKey) {
+        // Shift and Cmd/Ctrl clicks select the folder instead of opening or closing it.
+        if (getFileTreeClickIntent(e) !== 'single') {
           return
         }
         if (node.data.kind === 'dir') {
